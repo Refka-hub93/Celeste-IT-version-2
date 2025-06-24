@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+<a href=""> <img src="{{ asset('images/logo_final.png') }}"  alt="Logo"> </a>
+<nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+        <!-- Bouton toggle pour les petits écrans -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Contenu de la navbar -->
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav g-2">
+                <li class="nav-item">
+                    <a href="{{ path('app_main') }}" class="nav-link">Accueil</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_features') }}" class="nav-link">Fonctionnalités</a>
+                </li>
+                <li><a href="{{ path('app_subscriptionHome') }}" class="nav-link">Abonnement</a></li> <!-- Lien vers la page d'abonnement -->
+                <li class="nav-item">
+                    <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

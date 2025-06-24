@@ -1,0 +1,102 @@
+{% extends 'base.html.twig' %}
+
+{% block javascripts %}
+	<script src="{{ asset('js/table.js') }}" defer></script>
+
+
+{% endblock %}
+
+{% block title %}
+	Celeste-IT Table de projet
+{% endblock %}
+
+{% block body %}
+	<main class="board" id="board">
+		<div class="text-center mb-4">
+			<button id="add-list-button" class="btn btn-primary">Ajouter une liste</button>
+			<div class="cards"></div>
+		</div>
+		<div class="lists-container" id="lists-container"></div>
+	</main>
+
+	<template id="list-template">
+		<section class="list">
+			<div class="list-header m-1">
+				<input type="text" class="list-title form-control" placeholder="Titre de la liste">
+				<button class="add-card-button btn pe-2 m-3"  >
+					Ajouter une carte
+				</button>
+ 
+				<button class="remove-list-button btn btn-danger">Supprimer cette liste</button>
+				<!-- Bouton pour supprimer la colonne -->
+			</div>
+			<ul class="cards text-center me-4 pe-2"></ul>
+		</section>
+	</template>
+
+	{# <template id="card-template">
+		        <li class="card me-2 my-2">
+		            <button type="button" class="card-title text-center btn btn-light">Nouvelle Carte</button>
+		            <button class="remove-card-button">Supprimer cette carte</button>
+		        </li>
+		    </template> #}
+
+	<template id="card-template">
+		<li class="card">
+			<div class="card-body">
+				<h5 class="card-title btn">Titre</h5>
+				<button class="remove-card-button">🗑 Supprimer</button>
+			</div>
+		</li>
+	</template>
+
+	
+
+	<!-- Bouton pour ouvrir le modal -->
+	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cardModal">
+		Ajouter une carte
+	</button>
+
+	<!-- Modal Bootstrap -->
+	<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+
+				<div class="modal-header">
+					<h5 class="modal-title" id="cardModalLabel">Nouvelle carte</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+				</div>
+
+				<div class="modal-body">
+					<form id="card-details-form">
+
+						<div class="mb-3">
+							<label for="card-title" class="form-label">Titre :</label>
+							<input type="text" id="card-title" class="form-control" placeholder="Titre de la carte">
+						</div>
+
+						<div class="mb-3">
+							<label for="card-description" class="form-label">Description :</label>
+							<textarea id="card-description" class="form-control" rows="3" placeholder="Ajoutez une description"></textarea>
+						</div>
+
+						<div class="mb-3">
+							<label for="card-comments" class="form-label">Commentaires :</label>
+							<textarea id="card-comments" class="form-control" rows="3" placeholder="Ajoutez des commentaires"></textarea>
+						</div>
+
+						<ul id="comments-list" class="list-group mt-2"></ul>
+
+						<button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
+					</form>
+				</div>
+
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+				</div>
+
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
