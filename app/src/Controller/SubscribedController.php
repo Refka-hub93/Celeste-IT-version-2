@@ -19,42 +19,42 @@ final class SubscribedController extends AbstractController
         return $this->render('profil/subscribed.html.twig');
     }
 
-    // Création du tableau
-    #[Route('/table', name: 'app_table', methods: ['POST'])]
-    public function createTable(Request $request, EntityManagerInterface $entityManager)
-    {
-        try {
-            // Récupérer les données du formulaire (titre)
-            $title = $request->request->get('title');
+    // // Création du tableau
+    // #[Route('/table', name: 'app_table', methods: ['POST'])]
+    // public function createTable(Request $request, EntityManagerInterface $entityManager)
+    // {
+    //     try {
+    //         // Récupérer les données du formulaire (titre)
+    //         $title = $request->request->get('title');
 
-            if (!$title) {
-                throw new \Exception('Le titre est requis');
-            }
+    //         if (!$title) {
+    //             throw new \Exception('Le titre est requis');
+    //         }
 
-            // Créer un nouveau tableau
-            $table = new Tables();
-            $table->setTableTitle($title);  // Assurez-vous que la méthode setTableTitle existe dans ton entité
+    //         // Créer un nouveau tableau
+    //         $table = new Tables();
+    //         $table->setTableTitle($title);  // Assurez-vous que la méthode setTableTitle existe dans ton entité
 
-            // Sauvegarder dans la base de données
-            $entityManager->persist($table);
-            $entityManager->flush();
+    //         // Sauvegarder dans la base de données
+    //         $entityManager->persist($table);
+    //         $entityManager->flush();
 
-            // Récupérer l'ID du tableau nouvellement créé
-            $tableId = $table->getId();
+    //         // Récupérer l'ID du tableau nouvellement créé
+    //         $tableId = $table->getId();
 
-            // Retourner une réponse JSON avec l'URL de redirection
-            return new Response(
-                json_encode(['success' => true, 'redirect_url' => $this->generateUrl('table', ['id' => $tableId])]),
-                Response::HTTP_OK,
-                ['Content-Type' => 'application/json']
-            );
-        } catch (\Exception $e) {
-            // En cas d'erreur, retourner un message d'erreur en JSON
-            return new Response(
-                json_encode(['success' => false, 'error' => $e->getMessage()]),
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                ['Content-Type' => 'application/json']
-            );
-        }
-    }
+    //         // Retourner une réponse JSON avec l'URL de redirection
+    //         return new Response(
+    //             json_encode(['success' => true, 'redirect_url' => $this->generateUrl('table', ['id' => $tableId])]),
+    //             Response::HTTP_OK,
+    //             ['Content-Type' => 'application/json']
+    //         );
+    //     } catch (\Exception $e) {
+    //         // En cas d'erreur, retourner un message d'erreur en JSON
+    //         return new Response(
+    //             json_encode(['success' => false, 'error' => $e->getMessage()]),
+    //             Response::HTTP_INTERNAL_SERVER_ERROR,
+    //             ['Content-Type' => 'application/json']
+    //         );
+    //     }
+    // }
 }
