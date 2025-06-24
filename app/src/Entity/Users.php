@@ -6,13 +6,11 @@ use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -36,19 +34,18 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 50)]
+    private ?string $lastname = null;
+
+    #[ORM\Column(length: 50)]
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $lastname = null;
-
-
-
+    private ?string $role = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
-
-    /**
+        /**
      * @var Collection<int, Orders>
      */
     #[ORM\OneToMany(targetEntity: Orders::class, mappedBy: 'users')]
@@ -140,18 +137,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getFirstname(): ?string
-    {
-        return $this->firstname;
-    }
-
-    public function setFirstname(string $firstname): static
-    {
-        $this->firstname = $firstname;
-
-        return $this;
-    }
-
     public function getLastname(): ?string
     {
         return $this->lastname;
@@ -164,6 +149,29 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): static
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getRole(): ?string
+    {
+        return $this->role;
+    }
+
+    public function setRole(string $role): static
+    {
+        $this->role = $role;
+
+        return $this;
+    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -219,8 +227,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->tables->contains($table)) {
             $this->tables->add($table);
-            $table->addUser($this); // ← synchronisation inverse
-
         }
 
         return $this;

@@ -5,7 +5,6 @@ namespace App\Entity;
 use App\Repository\CardsRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Columns;
 
 #[ORM\Entity(repositoryClass: CardsRepository::class)]
 class Cards
@@ -18,35 +17,39 @@ class Cards
     #[ORM\Column(length: 50)]
     private ?string $cardTitle = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $comments = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comment = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
-
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $startDate = null;
-
-    #[ORM\Column(length: 50)]
-    private ?string $members = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $notifications = null;
-
-    #[ORM\Column(length: 50, nullable: true)]
-    private ?string $attachement = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTime $deadline = null;
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
     }
+
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTime $startDate = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $members = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $notification = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $attachement = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $deadline = null;
+
+    #[ORM\ManyToOne(inversedBy: 'cards')]
+    private ?Columns $columns = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -69,21 +72,21 @@ class Cards
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getComments(): ?string
+    public function getComment(): ?string
     {
-        return $this->comments;
+        return $this->comment;
     }
 
-    public function setComments(string $comments): static
+    public function setComment(?string $comment): static
     {
-        $this->comments = $comments;
+        $this->comment = $comment;
 
         return $this;
     }
@@ -105,7 +108,7 @@ class Cards
         return $this->startDate;
     }
 
-    public function setStartDate(?\DateTime $startDate): static
+    public function setStartDate(\DateTime $startDate): static
     {
         $this->startDate = $startDate;
 
@@ -117,21 +120,21 @@ class Cards
         return $this->members;
     }
 
-    public function setMembers(string $members): static
+    public function setMembers(?string $members): static
     {
         $this->members = $members;
 
         return $this;
     }
 
-    public function getNotifications(): ?string
+    public function getNotification(): ?string
     {
-        return $this->notifications;
+        return $this->notification;
     }
 
-    public function setNotifications(string $notifications): static
+    public function setNotification(?string $notification): static
     {
-        $this->notifications = $notifications;
+        $this->notification = $notification;
 
         return $this;
     }
@@ -141,7 +144,7 @@ class Cards
         return $this->attachement;
     }
 
-    public function setAttachement(string $attachement): static
+    public function setAttachement(?string $attachement): static
     {
         $this->attachement = $attachement;
 
@@ -156,6 +159,18 @@ class Cards
     public function setDeadline(?\DateTime $deadline): static
     {
         $this->deadline = $deadline;
+
+        return $this;
+    }
+
+    public function getColumns(): ?Columns
+    {
+        return $this->columns;
+    }
+
+    public function setColumns(?Columns $columns): static
+    {
+        $this->columns = $columns;
 
         return $this;
     }
