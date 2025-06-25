@@ -1,6 +1,9 @@
 {# templates/security/login.html.twig #}
 {% extends 'base.html.twig' %}
 
+  {% block javascripts %}
+  <script src="{{ asset('js/login.js') }}" defer></script>
+  {% endblock %}
 {% block title %}Connexion
 {% endblock %}
 

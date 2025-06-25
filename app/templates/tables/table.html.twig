@@ -54,44 +54,47 @@
  
 	<!-- Modal Bootstrap -->
 	<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-			<div class="modal-content">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content p-3">
 
-				<div class="modal-header">
-					<h5 class="modal-title" id="cardModalLabel">Nouvelle carte</h5>
-					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-				</div>
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="cardModalLabel">Créer une carte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
 
-				<div class="modal-body">
-					<form id="card-details-form">
+      <div class="modal-body">
+        <form id="card-details-form">
 
-						<div class="mb-3">
-							<label for="card-title" class="form-label">Titre :</label>
-							<input type="text" id="card-title" class="form-control" placeholder="Titre de la carte">
-						</div>
+          <div class="mb-4 w-100">
+            <label for="card-title" class="form-label fw-semibold">Titre de la carte</label>
+            <input type="text" id="card-title" class="form-control form-control-lg w-100" placeholder="Titre de la carte">
+          </div>
 
-						<div class="mb-3">
-							<label for="card-description" class="form-label">Description :</label>
-							<textarea id="card-description" class="form-control" rows="3" placeholder="Ajoutez une description"></textarea>
-						</div>
+          <div class="mb-4 w-100">
+            <label for="card-description" class="form-label fw-semibold">Description</label>
+            <textarea id="card-description" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez une description"></textarea>
+          </div>
 
-						<div class="mb-3">
-							<label for="card-comments" class="form-label">Commentaires :</label>
-							<textarea id="card-comments" class="form-control" rows="3" placeholder="Ajoutez des commentaires"></textarea>
-						</div>
+          <div class="mb-4 w-100">
+            <label for="card-comments" class="form-label fw-semibold">Commentaires</label>
+            <textarea id="card-comments" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez des commentaires"></textarea>
+          </div>
 
-						<ul id="comments-list" class="list-group mt-2"></ul>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
 
-						<button type="submit" class="btn btn-primary mt-3">Enregistrer</button>
-					</form>
-				</div>
+        </form>
+      </div>
 
-				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
-				</div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+      </div>
 
-			</div>
-		</div>
-	</div>
+    </div>
+  </div>
+</div>
+
+
 
 {% endblock %}

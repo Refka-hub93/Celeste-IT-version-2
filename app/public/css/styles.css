@@ -7,6 +7,7 @@
     --titlecolor: rgb(87, 85, 85);
     --font-color: rgb(104, 7, 117);
     --board-color: rgba(241, 236, 236, 0.767);
+    --button-table:rgb(255, 102, 196);
     font-size: 16px;
 
 }
@@ -310,18 +311,18 @@ article ul {
     /* Évite que la colonne devienne trop étroite */
     border-radius: 4px;
     border: none;
-    background-color: rgb(192, 192, 192);
+    background-color: rgb(255, 255, 255);
     box-shadow: 1px 1px 1px 1px rgba(0, 0, 255, 0.2);
 
     .list-header {
         border-radius: 9px;
-        background-color: var(--font-color);
+        background-color: var(--board-color);
         max-height: 100%;
 
         button {
 
             justify-content: center;
-            background-color: var(--board-color);
+            background-color: var(--button-table);
             border: none;
 
             max-width: 40%;
@@ -376,56 +377,30 @@ button {
 /* Modal */
 
 
-/* Styles de base pour masquer/afficher la modale */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    /* Arrière-plan semi-transparent */
-    display: none;
-    /* Par défaut, la modale est masquée */
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-}
-
-.modal.visible {
-    display: flex;
-    /* Affiche la modale en mode flex */
-}
-
-/* Contenu de la modale */
-.modal-content {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 20px;
-    width: 70%;
-    /* Prend 70% de la largeur */
-    max-width: 800px;
-    max-height: 90%;
-    /* Limite la hauteur à 90% de l'écran */
-    overflow-y: auto;
-    /* Ajoute un défilement si le contenu dépasse */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-}
-
-/* Bouton pour fermer la modale */
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 24px;
-    cursor: pointer;
-    background: none;
-    border: none;
-}
-
 
 /* CSS page LOGIN / SIGNIN et formulaire de contact */
+
+/* Champ mot de passe : espace à droite */
+#password {
+  padding-right: 2.5rem;
+}
+
+/* Bouton œil simple et transparent */
+.btn-show {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+    padding: 0;
+  line-height: 1;
+  font-size: 1.2rem;
+  cursor: pointer;
+  
+
+}
+
 
 
 /* Global form styling */
@@ -716,6 +691,6 @@ footer {
         text-align: center;
         font-size: 2rem;
     }
-
+ 
 
 }

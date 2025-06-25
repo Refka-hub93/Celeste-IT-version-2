@@ -21,8 +21,7 @@ final class ContactController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $contact->setStatus('en attente'); // valeur par défaut au moment de la soumission
-
+          
             $entityManager->persist($contact);
             $entityManager->flush();
 
