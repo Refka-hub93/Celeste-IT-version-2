@@ -1,77 +1,77 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const passwordInput = document.querySelector("#registration_form_plainPassword");
-    const agreeCheckbox = document.querySelector("#registration_form_agreeTerms");
-    const submitButton = document.querySelector("button[type='submit']");
+ 
+    // const passwordInput = document.querySelector("#registration_form_plainPassword");
+    // const agreeCheckbox = document.querySelector("#registration_form_agreeTerms");
+    // const submitButton = document.querySelector("button[type='submit']");
 
-    // Crée un message sous le champ mot de passe
-    const message = document.createElement("div");
-    message.className = "form-text mt-1";
-    passwordInput.parentElement.appendChild(message);
+    // // Crée un message sous le champ mot de passe
+    // const message = document.createElement("div");
+    // message.className = "form-text mt-1";
+    // passwordInput.parentElement.appendChild(message);
 
-    // Crée la case "Afficher le mot de passe"
-    const showPasswordDiv = document.createElement("div");
-    showPasswordDiv.className = "form-check mt-2";
+    // // Crée la case "Afficher le mot de passe"
+    // const showPasswordDiv = document.createElement("div");
+    // showPasswordDiv.className = "form-check mt-2";
 
-    const showPasswordCheckbox = document.createElement("input");
-    showPasswordCheckbox.type = "checkbox";
-    showPasswordCheckbox.className = "form-check-input";
-    showPasswordCheckbox.id = "showPassword";
+    // const showPasswordCheckbox = document.createElement("input");
+    // showPasswordCheckbox.type = "checkbox";
+    // showPasswordCheckbox.className = "form-check-input";
+    // showPasswordCheckbox.id = "showPassword";
 
-    const showPasswordLabel = document.createElement("label");
-    showPasswordLabel.className = "form-check-label";
-    showPasswordLabel.textContent = "Afficher le mot de passe";
-    showPasswordLabel.htmlFor = "showPassword";
+    // const showPasswordLabel = document.createElement("label");
+    // showPasswordLabel.className = "form-check-label";
+    // showPasswordLabel.textContent = "Afficher le mot de passe";
+    // showPasswordLabel.htmlFor = "showPassword";
 
-    showPasswordDiv.appendChild(showPasswordCheckbox);
-    showPasswordDiv.appendChild(showPasswordLabel);
-    passwordInput.parentElement.appendChild(showPasswordDiv);
+    // showPasswordDiv.appendChild(showPasswordCheckbox);
+    // showPasswordDiv.appendChild(showPasswordLabel);
+    // passwordInput.parentElement.appendChild(showPasswordDiv);
 
-    // Fonction pour valider le mot de passe
-    function validatePassword() {
-        const password = passwordInput.value;
+    // // Fonction pour valider le mot de passe
+    // function validatePassword() {
+    //     const password = passwordInput.value;
 
-        // regex : au moins 8 caractères, 1 maj, 1 min, 1 chiffre, 1 caractère spécial
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    //     // regex : au moins 8 caractères, 1 maj, 1 min, 1 chiffre, 1 caractère spécial
+    //     const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
 
-        if (regex.test(password)) {
-            message.textContent = "Mot de passe valide.";
-            message.style.color = "green";
-            return true;
-        } else {
-            message.textContent = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un symbole.";
-            message.style.color = "red";
-            return false;
-        }
-    }
+    //     if (regex.test(password)) {
+    //         message.textContent = "Mot de passe valide.";
+    //         message.style.color = "green";
+    //         return true;
+    //     } else {
+    //         message.textContent = "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un symbole.";
+    //         message.style.color = "red";
+    //         return false;
+    //     }
+    // }
 
-    // Fonction pour activer/désactiver le bouton
-    function updateButton() {
-        const passwordOk = validatePassword();
-        const termsOk = agreeCheckbox.checked;
+    // // Fonction pour activer/désactiver le bouton
+    // function updateButton() {
+    //     const passwordOk = validatePassword();
+    //     const termsOk = agreeCheckbox.checked;
 
-        if (passwordOk && termsOk) {
-            submitButton.disabled = false;
-        } else {
-            submitButton.disabled = true;
-        }
-    }
+    //     if (passwordOk && termsOk) {
+    //         submitButton.disabled = false;
+    //     } else {
+    //         submitButton.disabled = true;
+    //     }
+    // }
 
-    // Voir ou cacher le mot de passe
-    showPasswordCheckbox.addEventListener("change", function () {
-        if (showPasswordCheckbox.checked) {
-            passwordInput.type = "text";
-        } else {
-            passwordInput.type = "password";
-        }
-    });
+    // // Voir ou cacher le mot de passe
+    // showPasswordCheckbox.addEventListener("change", function () {
+    //     if (showPasswordCheckbox.checked) {
+    //         passwordInput.type = "text";
+    //     } else {
+    //         passwordInput.type = "password";
+    //     }
+    // });
 
-    // Quand on tape dans le champ ou clique sur la case
-    passwordInput.addEventListener("input", updateButton);
-    agreeCheckbox.addEventListener("change", updateButton);
+    // // Quand on tape dans le champ ou clique sur la case
+    // passwordInput.addEventListener("input", updateButton);
+    // agreeCheckbox.addEventListener("change", updateButton);
 
-    // Vérifie au début
-    updateButton();
-});
+    // // Vérifie au début
+    // updateButton();
+ 
 
 
 
@@ -137,4 +137,4 @@ champEmail.addEventListener("input", verifierFormulaire);
 caseConditions.addEventListener("change", verifierFormulaire);
 
 verifierFormulaire();
-});
+ 

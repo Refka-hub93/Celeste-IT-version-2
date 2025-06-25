@@ -1,45 +1,82 @@
+{# templates/security/login.html.twig #}
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
-
-{% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
-
-        {% if app.user %}
-               <div class="mb-3">
-                Vous êtes connecté(e) en tant que
-                {{ app.user.userIdentifier }},
-                <a href="{{ path('app_logout') }}">Déconnexion</a>
-            </div>
-        {% endif %}
-
-        <h1 class="h3 mb-3 font-weight-normal">Créer un compte Celeste-It
-        </h1>
-        <label for="username"><strong> Email :</strong></label>
-        <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
-        <label for="password"><strong>Password :</strong></label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
-
-        <div class="checkbox p-3">
-            <input type="checkbox" name="_remember_me" id="_remember_me"  >
-            <label for="_remember_me"  >Se souvenir de moi</label>
-
-        </div>
-        <button class="btn   btn-primary" type="submit">
-            Se connecter
-        </button>
-    </form>
-
-    <div class="container text-center mt-4">
-        <p class="fs-5 fw-bold">Vous n'êtes pas encore inscrit(e) ?</p>
-        <p class="text-muted">Il vous suffit de cliquer ici pour nous rejoindre :</p>
-        <a href="{{ path('app_register') }}" class="btn btn-primary">Créer un compte</a>
-    </div>
-
-
+{% block title %}Connexion
 {% endblock %}
 
+{% block body %}
+	{# ——— SECTION CENTRÉE ——— #}
+	<section class="m-1 d-flex justify-content-center align-items-center">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-6">
+					<div
+						class="shadow p-4 mt-5 bg-white rounded text-center">
+
+						{# ——— ÉTAT CONNECTÉ ——— #}
+						{% if app.user %}
+							<div class="alert alert-info mb-4 text-start">
+								Vous êtes connecté(e) en tant que
+								<strong>{{ app.user.userIdentifier }}</strong>.
+								<a href="{{ path('app_logout') }}" class="alert-link">
+									Déconnexion
+								</a>
+							</div>
+						{% endif %}
+
+						{# ——— ERREUR D’AUTHENTIFICATION ——— #}
+						{% if error %}
+							<div class="alert alert-danger mb-4">
+								{{ error.messageKey|trans(error.messageData, 'security') }}
+							</div>
+						{% endif %}
+
+						{# ——— TITRE ——— #}
+						<h1 class="mb-4 fw-bold">Se connecter à Celeste-IT</h1>
+
+						{# ——— FORMULAIRE ——— #}
+						<form method="post" class="row g-3">
+
+							<div class="col-12 text-start">
+								<label for="username" class="form-label fw-semibold">Email</label>
+								<input type="email" id="username" name="_username" value="{{ last_username }}" class="form-control" placeholder="Entrez votre adresse email" autocomplete="email" required autofocus>
+							</div>
+
+							<div class="col-12 text-start">
+								<label for="password" class="form-label fw-semibold">Mot de passe</label>
+								<input type="password" id="password" name="_password" class="form-control" placeholder="Entrez votre mot de passe" autocomplete="current-password" required>
+							</div>
+
+
+							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+							<div class="col-12 text-start form-check">
+								<input type="checkbox" id="_remember_me" name="_remember_me" class="form-check-input">
+								<label for="_remember_me" class="form-check-label">
+									Se souvenir de moi
+								</label>
+							</div>
+
+							<div class="col-12">
+								<button type="submit" class="btn btn-primary px-4 py-2 w-100">
+									Se connecter
+								</button>
+							</div>
+						</form>
+
+						{# ——— LIEN VERS INSCRIPTION ——— #}
+						<div class="mt-4">
+							<p class="fs-5 fw-bold mb-1">Pas encore inscrit(e) ?</p>
+							<p class="text-muted mb-3">Clique ici pour nous rejoindre :</p>
+							<a href="{{ path('app_register') }}" class="btn btn-outline-primary">
+								Créer un compte
+							</a>
+						</div>
+
+					</div>
+					{# /.card #}
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

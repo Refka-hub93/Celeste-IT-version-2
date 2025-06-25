@@ -26,21 +26,24 @@ class RegistrationController extends AbstractController
 
             // encode the plain password
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
+            
+    $user->setRoles(['ROLE_USER']); // 💡 Assure le rôle par défaut
+
 
             $entityManager->persist($user);
             $entityManager->flush();
 
             // do anything else you need here, like send an email
 
-            $email = (new TemplatedEmail())
-                ->from('demo@celeste-it.fr')
-                ->to($user->getEmail())
-                ->subject('Votre inscription sur notre site')
-                ->htmlTemplate('emails/register.html.twig')
-                ->context($context)
-            ;
+            // $email = (new TemplatedEmail())
+            //     ->from('demo@celeste-it.fr')
+            //     ->to($user->getEmail())
+            //     ->subject('Votre inscription sur notre site')
+            //     ->htmlTemplate('emails/register.html.twig')
+            //     ->context($context)
+            // ;
 
-            $mailer->send($email);
+            // $mailer->send($email);
 
 
 

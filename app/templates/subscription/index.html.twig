@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+ 
+
+{% block body %}
+
+<section id="abonnement" class="container mt-4 mb-5 p-4 shadow d-flex flex-column align-items-center text-center">
+    <h1 class="p-3 pb-3 fs-2">Souscrivez à l'abonnement annuel Celeste-IT</h1>
+
+    <!-- Texte d'encouragement à souscrire -->
+    <div class="m-4">
+        <p>Accédez à toutes les fonctionnalités de notre tableau de projet pour toute l'année.
+        </p>
+        <p>Souscrivez maintenant pour un accès complet</p>
+    </div>
+
+    <!-- Détails de l'abonnement -->
+    <div id="details" class="w-100" style="max-width: 600px;">
+        <h2 class="pb-3 text-start fs-3">Détails de l'abonnement</h2>
+        <ul class="list-group text-start">
+            <li class="list-group-item">
+                <i class="bi bi-clock me-2" style="color: #007bff; font-size: 1.5rem;"></i>
+                Durée : 1 an
+            </li>
+            <li class="list-group-item">
+                <i class="bi bi-graph-up-arrow me-2" style="color: #28a745; font-size: 1.5rem;"></i>
+                Accès illimité à l'ensemble de vos tableaux de projet
+            </li>
+            <li class="list-group-item">
+                <i class="bi bi-gear me-2" style="color: #ffc107; font-size: 1.5rem;"></i>
+                Gestion complète de vos projets
+            </li>
+
+            <li class="list-group-item">
+                <i class="bi bi-arrow-clockwise me-2" style="color: #17a2b8; font-size: 1.5rem;"></i>
+                Mises à jour continues pour garantir la pertinence de votre tableau
+            </li>
+            <li class="list-group-item">
+                <i class="bi bi-headset me-2" style="color: #e01cc3; font-size: 1.5rem;"></i>
+                Support technique prioritaire
+            </li>
+            <li class="list-group-item">
+                <i class="bi bi-currency-euro me-2" style="color: #e01cc3; font-size: 1.5rem;"></i>
+                Prix :
+                <strong>49€ / an</strong>
+            </li>
+        </ul>
+
+
+        <!-- Bouton d'appel à l'action (lien vide) -->
+        <div class="mt-4 text-center">
+            <a href=" /register" class="btn p-2 btn-primary">Souscrire à l'abonnement annuel</a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

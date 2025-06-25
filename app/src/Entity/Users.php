@@ -42,7 +42,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $firstname = null;
 
     #[ORM\Column(length: 50)]
-    private ?string $role = null;
+    private array $role = [];  ///
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;

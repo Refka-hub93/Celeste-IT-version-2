@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block body %}
-	<main class="board" id="board">
+	<main class="board d-flex flex-wrap   gap-3 p-1" id="board">
 		<div class="text-center mb-4">
 			<button id="add-list-button" class="btn btn-primary">Ajouter une liste</button>
 			<div class="cards"></div>
@@ -20,7 +20,7 @@
 	</main>
 
 	<template id="list-template">
-		<section class="list">
+		<section class="list border p-2 rounded shadow ">
 			<div class="list-header m-1">
 				<input type="text" class="list-title form-control" placeholder="Titre de la liste">
 				<button class="add-card-button btn pe-2 m-3"  >
@@ -51,12 +51,7 @@
 	</template>
 
 	
-
-	<!-- Bouton pour ouvrir le modal -->
-	<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cardModal">
-		Ajouter une carte
-	</button>
-
+ 
 	<!-- Modal Bootstrap -->
 	<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
 		<div class="modal-dialog">

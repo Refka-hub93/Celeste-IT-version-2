@@ -12,7 +12,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class ContactController extends AbstractController
 {
-    #[Route('/contact', name: 'app_contact')]
+    
+ #[Route('/contact', name: 'app_contact')]
     public function contact(Request $request, EntityManagerInterface $entityManager): Response
     {
         $contact = new Contact();
@@ -33,13 +34,13 @@ final class ContactController extends AbstractController
             return $this->redirectToRoute('app_contact');
         }
 
-        // ❗️ C’est cette ligne qui transmet le formulaire à Twig :
+// ❗️ C’est cette ligne qui transmet le formulaire à Twig :
         return $this->render('contact/index.html.twig', [
             'form' => $form->createView(),
         ]);
 
 
-        return $this->render('contact/index.html.twig', compact('contact')
+         return $this->render('contact/index.html.twig', compact('contact')
         );
     }
 }
