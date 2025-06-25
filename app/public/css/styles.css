@@ -7,7 +7,7 @@
     --titlecolor: rgb(87, 85, 85);
     --font-color: rgb(104, 7, 117);
     --board-color: rgba(241, 236, 236, 0.767);
-    --button-table:rgb(255, 102, 196);
+    --button-table: rgb(255, 102, 196);
     font-size: 16px;
 
 }
@@ -73,6 +73,16 @@ header {
         /* Effet visuel supplémentaire */
     }
 
+    .nav-link.active {
+        color: inherit !important;
+        /* garde la couleur du thème */
+        font-weight: bold !important;
+        /* rend le lien actif gras */
+        background-color: transparent !important;
+        /* supprime le fond gris Bootstrap */
+    }
+
+
     #logonav {
         display: flex;
         align-items: center;
@@ -99,34 +109,38 @@ header {
 
     #titre {
         background: url("../images/font-header.png");
-
+        height: 60vh;
         background-size: cover;
         /* Couvre toute la zone sans déformation */
         background-position: center;
         /* Centre l'image */
         background-repeat: no-repeat;
-
+        margin: 0 !important;
         overflow: auto;
         width: 100%;
-
+        /* // Centrage Flexbox */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
 
     }
 
     .contenu-texte {
+        max-width: 100%;
 
         h1 {
 
             font-size: 1.5rem;
             font-weight: bold;
             color: rgb(255, 255, 255);
-
         }
 
         p {
 
             font-size: 1rem;
             padding: 1rem;
-            margin: 1rem;
+
             color: white;
             text-align: center;
 
@@ -280,7 +294,7 @@ article ul {
     gap: 10px;
     margin: 0.2rem;
     padding: 20px;
- 
+
     height: 100vh;
     background-color: var(--board-color);
     border-radius: 20px;
@@ -295,7 +309,7 @@ article ul {
     gap: 16px;
     /* espace entre les colonnes */
     overflow-x: auto;
-     
+
 }
 
 
@@ -382,22 +396,22 @@ button {
 
 /* Champ mot de passe : espace à droite */
 #password {
-  padding-right: 2.5rem;
+    padding-right: 2.5rem;
 }
 
 /* Bouton œil simple et transparent */
 .btn-show {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
     padding: 0;
-  line-height: 1;
-  font-size: 1.2rem;
-  cursor: pointer;
-  
+    line-height: 1;
+    font-size: 1.2rem;
+    cursor: pointer;
+
 
 }
 
@@ -626,23 +640,20 @@ footer {
         }
 
         #titre {
-
+            justify-content: flex-start;
+            align-items: start;
             height: 100vh;
 
             .contenu-texte {
                 padding: 2rem;
                 max-width: 50%;
-                padding-block: 3rem;
+                margin: 2rem;
 
                 h1 {
-
                     font-size: 3rem;
-
-
                 }
 
                 p {
-
                     font-size: 2rem;
                     padding: 2rem;
                 }
@@ -691,6 +702,6 @@ footer {
         text-align: center;
         font-size: 2rem;
     }
- 
+
 
 }
