@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer un tableau{% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau tableau</h1>
+
+    {# Messages flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <div class="alert alert-{{ label }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endfor %}
+
+    <form method="post" action="{{ path('app_tables_addTable') }}">
+        <input type="text" name="titre_du_tableau" placeholder="Titre du tableau" required>
+        <button type="submit">Créer</button>
+    </form>
+
+    {# ✅ Si tableau existe, afficher lien vers la page correspondante #}
+    {% if tableau is defined and tableau %}
+        <div class="alert alert-info mt-3">
+            ✅ Ton tableau <strong>{{ tableau.title }}</strong> a bien été créé !
+            <br>
+            <a href="{{ path('app_tables_show', {'id': tableau.id}) }}">🔎 Voir ce tableau</a>
+            |
+            <a href="{{ path('app_tables') }}">📂 Voir mes tableaux</a>
+        </div>
+    {% endif %}
+{% endblock %}
