@@ -6,13 +6,11 @@ use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -26,9 +24,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @var list<string> The user roles
      */
-    #[ORM\Column(type: 'json')]
+    #[ORM\Column]
     private array $roles = [];
 
+    /**
+     * @var string The hashed password
+     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -42,45 +43,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?\DateTimeImmutable $createdAt = null;
 
     /**
-     * @var Collection<int, Orders>
-     */
-    #[ORM\OneToMany(targetEntity: Orders::class, mappedBy: 'users')]
-    private Collection $orders;
-
-    // /**
-    //  * @var Collection<int, Tables>
-    //  */
-    // #[ORM\ManyToMany(targetEntity: Tables::class, inversedBy: 'users')]
-    // private Collection $tables;
-
-    /**
      * @var Collection<int, Tables>
      */
     #[ORM\ManyToMany(targetEntity: Tables::class, inversedBy: 'users')]
-    #[ORM\JoinTable(name: 'users_tables')]
     private Collection $tables;
-
-    public function addTable(Tables $table): static
-    {
-        if (!$this->tables->contains($table)) {
-            $this->tables->add($table);
-            $table->addUser($this); // ← Ajout de la relation réciproque
-        }
-        return $this;
-    }
-
-    public function removeTable(Tables $table): static
-    {
-        if ($this->tables->removeElement($table)) {
-            $table->removeUser($this); // ← Suppression de la relation réciproque
-        }
-        return $this;
-    }
 
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
-        $this->orders = new ArrayCollection();
         $this->tables = new ArrayCollection();
     }
 
@@ -97,27 +67,45 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
         return $this;
     }
 
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
+
         return array_unique($roles);
     }
 
+    /**
+     * @param list<string> $roles
+     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
+
         return $this;
     }
 
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -126,11 +114,16 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
+
         return $this;
     }
 
+    /**
+     * @see UserInterface
+     */
     public function eraseCredentials(): void
     {
+        // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
@@ -142,6 +135,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
+
         return $this;
     }
 
@@ -153,6 +147,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
+
         return $this;
     }
 
@@ -164,34 +159,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
         $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Orders>
-     */
-    public function getOrders(): Collection
-    {
-        return $this->orders;
-    }
-
-    public function addOrder(Orders $order): static
-    {
-        if (!$this->orders->contains($order)) {
-            $this->orders->add($order);
-            $order->setUsers($this);
-        }
-
-        return $this;
-    }
-
-    public function removeOrder(Orders $order): static
-    {
-        if ($this->orders->removeElement($order)) {
-            if ($order->getUsers() === $this) {
-                $order->setUsers(null);
-            }
-        }
 
         return $this;
     }
@@ -202,5 +169,21 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getTables(): Collection
     {
         return $this->tables;
+    }
+
+    public function addTable(Tables $table): static
+    {
+        if (!$this->tables->contains($table)) {
+            $this->tables->add($table);
+        }
+
+        return $this;
+    }
+
+    public function removeTable(Tables $table): static
+    {
+        $this->tables->removeElement($table);
+
+        return $this;
     }
 }

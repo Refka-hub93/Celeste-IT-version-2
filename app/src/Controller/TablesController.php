@@ -17,6 +17,24 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')] // Toutes les routes ici nécessitent un utilisateur connecté
 final class TablesController extends AbstractController
 {
+//     // ✅ Page web avec affichage des tableaux de l'utilisateur
+//     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
+//     public function index(Users $user): Response
+//     {
+//    // Récupérer l'utilisateur actuellement connecté
+       
+
+//         // Vérifier si l'utilisateur est connecté
+//         if (!$user) {
+//             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+//         }
+
+//         $mesTableaux = $user->getTables();
+
+//         return $this->render('tables/index.html.twig', [
+//             'tableaux' => $mesTableaux,
+//         ]);
+//     }
 
 
     // ✅ Page web avec affichage des tableaux de l'utilisateur
@@ -29,7 +47,6 @@ public function index(UserInterface $user): Response
     }
 
     $mesTableaux = $user->getTables(); // devrait contenir les tableaux liés
- 
 
     return $this->render('tables/index.html.twig', [
         'tableaux' => $mesTableaux,
@@ -37,19 +54,39 @@ public function index(UserInterface $user): Response
 }
 
  
+    // // ✅ Formulaire HTML classique pour créer un tableau
+    // #[Route('/tables/addTable', name: 'app_tables_addTable', methods: ['GET', 'POST'])]
+    // public function tableAdd(Request $request, EntityManagerInterface $em, UserInterface $user): Response
+    // {
+    //     if ($request->isMethod('POST')) {
+    //         $titre = $request->request->get('titre_du_tableau');
+
+    //         if ($titre) {
+    //             $tableau = new Tables();
+    //             $tableau->setTitle($titre);
+    //             $tableau->addUser($user);
+
+    //             $em->persist($tableau);
+    //             $em->flush();
+
+    //             $this->addFlash('success', 'Tableau créé avec succès.');
+    //             return $this->redirectToRoute('app_tables_addTable');
+    //         }
+
+    //         $this->addFlash('error', 'Le titre du tableau est requis.');
+    //     }
+
+    //     return $this->render('tables/addTable.html.twig');
+    // }
 #[Route('/tables/addTable', name: 'app_tables_addTable', methods: ['GET', 'POST'])]
 public function tableAdd(Request $request, EntityManagerInterface $entityManagerInterface, UserInterface $user): Response
 {
-
-
 
     
     $tableau = null;
 
     if ($request->isMethod('POST')) {
         $titre = $request->request->get('titre_du_tableau');
-
- 
 
         if ($titre) {
             $tableau = new Tables();
@@ -63,8 +100,6 @@ public function tableAdd(Request $request, EntityManagerInterface $entityManager
         } else {
             $this->addFlash('error', 'Le titre du tableau est requis.');
         }
-
-        
     }
 
     return $this->render('tables/addTable.html.twig', [
@@ -163,6 +198,23 @@ public function showTable(Tables $tableau): Response
 
 
 
+
+
+
+
+
+
+
+
+    // // ✅ Page web pour afficher un tableau spécifique
+    // #[Route('/tables/{id}', name: 'app_tables_show', methods: ['GET'])]
+    // public function showTable(Tables $tableau): Response
+    // {
+    //     // Vérifie si l'utilisateur connecté a accès à ce tableau
+    //     $user = $this->getUser();
+    //     if (!$tableau->getUsers()->contains($user)) {
+    //         throw $this->createAccessDeniedException('Vous n\'avez pas accès à ce tableau.');
+    //     } je veux faire la meme chose pour les colonnes et carte je dois crééer des contrller à part
 
 
 
