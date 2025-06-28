@@ -40,13 +40,7 @@ class Tables
 
     public function __construct()
     {
-        $this->
-        
-        
-        
-        
-        
-        users = new ArrayCollection();
+        $this->users = new ArrayCollection();
         $this->columns = new ArrayCollection();
     }
 

@@ -47,11 +47,35 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Orders::class, mappedBy: 'users')]
     private Collection $orders;
 
+    // /**
+    //  * @var Collection<int, Tables>
+    //  */
+    // #[ORM\ManyToMany(targetEntity: Tables::class, inversedBy: 'users')]
+    // private Collection $tables;
+
     /**
      * @var Collection<int, Tables>
      */
     #[ORM\ManyToMany(targetEntity: Tables::class, inversedBy: 'users')]
+    #[ORM\JoinTable(name: 'users_tables')]
     private Collection $tables;
+
+    public function addTable(Tables $table): static
+    {
+        if (!$this->tables->contains($table)) {
+            $this->tables->add($table);
+            $table->addUser($this); // ← Ajout de la relation réciproque
+        }
+        return $this;
+    }
+
+    public function removeTable(Tables $table): static
+    {
+        if ($this->tables->removeElement($table)) {
+            $table->removeUser($this); // ← Suppression de la relation réciproque
+        }
+        return $this;
+    }
 
     public function __construct()
     {
@@ -178,21 +202,5 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     public function getTables(): Collection
     {
         return $this->tables;
-    }
-
-    public function addTable(Tables $table): static
-    {
-        if (!$this->tables->contains($table)) {
-            // $this->tables->add($table);
-            
-        }
-
-        return $this;
-    }
-
-    public function removeTable(Tables $table): static
-    {
-        $this->tables->removeElement($table);
-        return $this;
     }
 }

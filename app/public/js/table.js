@@ -114,3 +114,75 @@ function fetchTables() {
         console.error('Erreur lors du chargement des tableaux :', error);
     });
 }
+
+
+// colonne 
+
+/* -------------------------------------------------------------
+ * columns.js  –  Gestion exclusive des colonnes (listes)
+ * ----------------------------------------------------------- */
+// document.addEventListener('DOMContentLoaded', () => {
+//   /* ---------- Sélecteurs & constantes ---------- */
+//   const tableId        = window.TABLE_ID;                      // injecté depuis Twig
+//   const API_COLUMNS    = `/api/tables/${tableId}/columns`;     // racine REST
+//   const listsContainer = document.getElementById('lists-container');
+//   const listTemplate   = document.getElementById('list-template');
+//   const addListBtn     = document.getElementById('add-list-button');
+
+//   /* ---------- Helpers DOM ---------- */
+//   /**
+//    * Construit un <section class="list"> à partir d’un objet colonne.
+//    * @param {{id:number,title:string}} col
+//    * @returns {HTMLElement}
+//    */
+//   function buildList(col) {
+//     const fragment = listTemplate.content.cloneNode(true);
+//     const section  = fragment.querySelector('section.list');
+//     section.dataset.id = col.id;
+
+//     /* -- titre editable -- */
+//     const titleInput = section.querySelector('.list-title');
+//     titleInput.value = col.title;
+//     titleInput.addEventListener('change', () => {
+//       const newTitle = titleInput.value.trim();
+//       if (!newTitle) return;
+//       fetch(`/api/columns/${col.id}`, {
+//         method : 'PUT',
+//         headers: { 'Content-Type': 'application/json' },
+//         body   : JSON.stringify({ title: newTitle })
+//       });
+//     });
+
+//     /* -- bouton supprimer -- */
+//     const removeBtn = section.querySelector('.remove-list-button');
+//     removeBtn.addEventListener('click', async () => {
+//       await fetch(`/api/columns/${col.id}`, { method: 'DELETE' });
+//       section.remove();
+//     });
+
+//     /* -- on ignore complètement add-card-button & <ul class="cards"> -- */
+//     return section;
+//   }
+
+//   /* ---------- Initialisation ---------- */
+//   (async () => {
+//     /* 1. Récupère et affiche toutes les colonnes existantes */
+//     const res     = await fetch(API_COLUMNS);
+//     const columns = await res.json();          // [{id,title}, …]
+//     columns.forEach(col => listsContainer.appendChild(buildList(col)));
+//   })();
+
+//   /* 2. Crée une nouvelle colonne via le bouton principal */
+//   addListBtn.addEventListener('click', async () => {
+//     const title = prompt('Titre de la nouvelle liste :');
+//     if (!title) return;
+
+//     const res   = await fetch(API_COLUMNS, {
+//       method : 'POST',
+//       headers: { 'Content-Type': 'application/json' },
+//       body   : JSON.stringify({ title })
+//     });
+//     const col   = await res.json();            // {id,title}
+//     listsContainer.appendChild(buildList(col));
+//   });
+// });
