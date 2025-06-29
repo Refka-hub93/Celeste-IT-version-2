@@ -204,17 +204,4 @@ public function showTable(Tables $tableau): Response
 
 
 
-
-
-    // // ✅ Page web pour afficher un tableau spécifique
-    // #[Route('/tables/{id}', name: 'app_tables_show', methods: ['GET'])]
-    // public function showTable(Tables $tableau): Response
-    // {
-    //     // Vérifie si l'utilisateur connecté a accès à ce tableau
-    //     $user = $this->getUser();
-    //     if (!$tableau->getUsers()->contains($user)) {
-    //         throw $this->createAccessDeniedException('Vous n\'avez pas accès à ce tableau.');
-    //     } je veux faire la meme chose pour les colonnes et carte je dois crééer des contrller à part
-
-
-
+ 
