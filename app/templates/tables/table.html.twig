@@ -2,7 +2,9 @@
 
 {% block javascripts %}
 	<script src="{{ asset('js/table.js') }}" defer></script>
-
+	<script src="{{ asset('js/bootstrapModal.js') }}" defer></script>
+	<script src="{{ asset('js/columnsApi.js') }}" defer></script>
+	<script src="{{ asset('js/tableApi.js') }}" defer></script>
 
 {% endblock %}
 
@@ -11,7 +13,8 @@
 {% endblock %}
 
 {% block body %}
-	<main class="board d-flex flex-wrap   gap-3 p-1" id="board">
+	<main class="board d-flex flex-wrap gap-3 p-1" id="board" data-table-id="{{ tableau.id }}">
+
 		<div class="text-center mb-4">
 			<button id="add-list-button" class="btn btn-primary">Ajouter une liste</button>
 			<div class="cards"></div>
@@ -23,10 +26,10 @@
 		<section class="list border p-2 rounded shadow ">
 			<div class="list-header m-1">
 				<input type="text" class="list-title form-control" placeholder="Titre de la liste">
-				<button class="add-card-button btn pe-2 m-3"  >
+				<button class="add-card-button btn pe-2 m-3">
 					Ajouter une carte
 				</button>
- 
+
 				<button class="remove-list-button btn btn-danger">Supprimer cette liste</button>
 				<!-- Bouton pour supprimer la colonne -->
 			</div>
@@ -35,11 +38,11 @@
 	</template>
 
 	{# <template id="card-template">
-		        <li class="card me-2 my-2">
-		            <button type="button" class="card-title text-center btn btn-light">Nouvelle Carte</button>
-		            <button class="remove-card-button">Supprimer cette carte</button>
-		        </li>
-		    </template> #}
+				        <li class="card me-2 my-2">
+				            <button type="button" class="card-title text-center btn btn-light">Nouvelle Carte</button>
+				            <button class="remove-card-button">Supprimer cette carte</button>
+				        </li>
+				    </template> #}
 
 	<template id="card-template">
 		<li class="card">
@@ -50,51 +53,49 @@
 		</li>
 	</template>
 
-	
- 
+
 	<!-- Modal Bootstrap -->
 	<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content p-3">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content p-3">
 
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="cardModalLabel">Créer une carte</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
-      </div>
+				<div class="modal-header">
+					<h5 class="modal-title fw-bold" id="cardModalLabel">Créer une carte</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+				</div>
 
-      <div class="modal-body">
-        <form id="card-details-form">
+				<div class="modal-body">
+					<form id="card-details-form">
 
-          <div class="mb-4 w-100">
-            <label for="card-title" class="form-label fw-semibold">Titre de la carte</label>
-            <input type="text" id="card-title" class="form-control form-control-lg w-100" placeholder="Titre de la carte">
-          </div>
+						<div class="mb-4 w-100">
+							<label for="card-title" class="form-label fw-semibold">Titre de la carte</label>
+							<input type="text" id="card-title" class="form-control form-control-lg w-100" placeholder="Titre de la carte">
+						</div>
 
-          <div class="mb-4 w-100">
-            <label for="card-description" class="form-label fw-semibold">Description</label>
-            <textarea id="card-description" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez une description"></textarea>
-          </div>
+						<div class="mb-4 w-100">
+							<label for="card-description" class="form-label fw-semibold">Description</label>
+							<textarea id="card-description" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez une description"></textarea>
+						</div>
 
-          <div class="mb-4 w-100">
-            <label for="card-comments" class="form-label fw-semibold">Commentaires</label>
-            <textarea id="card-comments" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez des commentaires"></textarea>
-          </div>
+						<div class="mb-4 w-100">
+							<label for="card-comments" class="form-label fw-semibold">Commentaires</label>
+							<textarea id="card-comments" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez des commentaires"></textarea>
+						</div>
 
-          <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Enregistrer</button>
-          </div>
+						<div class="d-grid">
+							<button type="submit" class="btn btn-primary">Enregistrer</button>
+						</div>
 
-        </form>
-      </div>
+					</form>
+				</div>
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
-      </div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Fermer</button>
+				</div>
 
-    </div>
-  </div>
-</div>
-
+			</div>
+		</div>
+	</div>
 
 
 {% endblock %}

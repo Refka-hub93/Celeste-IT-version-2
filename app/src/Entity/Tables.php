@@ -27,9 +27,16 @@ class Tables
     #[ORM\ManyToMany(targetEntity: Users::class, mappedBy: 'tables')]
     private Collection $users;
 
+    /**
+     * @var Collection<int, Columns>
+     */
+    #[ORM\OneToMany(targetEntity: Columns::class, mappedBy: 'tables')]
+    private Collection $columns;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
+        $this->columns = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -83,6 +90,36 @@ class Tables
     {
         if ($this->users->removeElement($user)) {
             $user->removeTable($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Columns>
+     */
+    public function getColumns(): Collection
+    {
+        return $this->columns;
+    }
+
+    public function addColumn(Columns $column): static
+    {
+        if (!$this->columns->contains($column)) {
+            $this->columns->add($column);
+            $column->setTables($this);
+        }
+
+        return $this;
+    }
+
+    public function removeColumn(Columns $column): static
+    {
+        if ($this->columns->removeElement($column)) {
+            // set the owning side to null (unless already changed)
+            if ($column->getTables() === $this) {
+                $column->setTables(null);
+            }
         }
 
         return $this;

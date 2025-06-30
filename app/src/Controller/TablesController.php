@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Controller;
-use App\Entity\Users; 
+
+use App\Entity\Users;
 
 use App\Entity\Tables;
-use App\Repository\TablesRepository;
+
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,125 +18,79 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')] // Toutes les routes ici nécessitent un utilisateur connecté
 final class TablesController extends AbstractController
 {
-//     // ✅ Page web avec affichage des tableaux de l'utilisateur
-//     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
-//     public function index(Users $user): Response
-//     {
-//    // Récupérer l'utilisateur actuellement connecté
-       
+    //     // ✅ Page web avec affichage des tableaux de l'utilisateur
+    //     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
+    //     public function index(Users $user): Response
+    //     {
+    //    // Récupérer l'utilisateur actuellement connecté
 
-//         // Vérifier si l'utilisateur est connecté
-//         if (!$user) {
-//             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
-//         }
 
-//         $mesTableaux = $user->getTables();
+    //         // Vérifier si l'utilisateur est connecté
+    //         if (!$user) {
+    //             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+    //         }
 
-//         return $this->render('tables/index.html.twig', [
-//             'tableaux' => $mesTableaux,
-//         ]);
-//     }
+    //         $mesTableaux = $user->getTables();
+
+    //         return $this->render('tables/index.html.twig', [
+    //             'tableaux' => $mesTableaux,
+    //         ]);
+    //     }
 
 
     // ✅ Page web avec affichage des tableaux de l'utilisateur
     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
-public function index(UserInterface $user): Response
-{
-    // Vérification du chargement de l'utilisateur
-    if (!$user instanceof Users) {
-        throw new \LogicException('Mauvais type d’utilisateur');
-    }
-
-    $mesTableaux = $user->getTables(); // devrait contenir les tableaux liés
-
-    return $this->render('tables/index.html.twig', [
-        'tableaux' => $mesTableaux,
-    ]);
-}
-
- 
-    // // ✅ Formulaire HTML classique pour créer un tableau
-    // #[Route('/tables/addTable', name: 'app_tables_addTable', methods: ['GET', 'POST'])]
-    // public function tableAdd(Request $request, EntityManagerInterface $em, UserInterface $user): Response
-    // {
-    //     if ($request->isMethod('POST')) {
-    //         $titre = $request->request->get('titre_du_tableau');
-
-    //         if ($titre) {
-    //             $tableau = new Tables();
-    //             $tableau->setTitle($titre);
-    //             $tableau->addUser($user);
-
-    //             $em->persist($tableau);
-    //             $em->flush();
-
-    //             $this->addFlash('success', 'Tableau créé avec succès.');
-    //             return $this->redirectToRoute('app_tables_addTable');
-    //         }
-
-    //         $this->addFlash('error', 'Le titre du tableau est requis.');
-    //     }
-
-    //     return $this->render('tables/addTable.html.twig');
-    // }
-#[Route('/tables/addTable', name: 'app_tables_addTable', methods: ['GET', 'POST'])]
-public function tableAdd(Request $request, EntityManagerInterface $entityManagerInterface, UserInterface $user): Response
-{
-
-    
-    $tableau = null;
-
-    if ($request->isMethod('POST')) {
-        $titre = $request->request->get('titre_du_tableau');
-
-        if ($titre) {
-            $tableau = new Tables();
-            $tableau->setTitle($titre);
-            $tableau->addUser($user);
-
-            $entityManagerInterface->persist($tableau);
-            $entityManagerInterface->flush();
-
-            $this->addFlash('success', 'Tableau créé avec succès.');
-        } else {
-            $this->addFlash('error', 'Le titre du tableau est requis.');
+    public function index(UserInterface $user): Response
+    {
+        // Vérification du chargement de l'utilisateur
+        if (!$user instanceof Users) {
+            throw new \LogicException('Mauvais type d’utilisateur');
         }
+
+        $mesTableaux = $user->getTables(); // devrait contenir les tableaux liés
+
+        return $this->render('tables/index.html.twig', [
+            'tableaux' => $mesTableaux,
+        ]);
     }
 
-    return $this->render('tables/addTable.html.twig', [
-        'tableau' => $tableau
-    ]);
-}
+    #[Route('/tables/addTable', name: 'app_tables_addTable', methods: ['GET', 'POST'])]
+    public function tableAdd(Request $request, EntityManagerInterface $entityManagerInterface, UserInterface $user): Response
+    {
 
 
-#[Route('/tables/{id}', name: 'app_tables_show', methods: ['GET'])]
-public function showTable(Tables $tableau): Response
-{
-    return $this->render('tables/show.html.twig', [
-        'tableau' => $tableau,
-    ]);
-}
+        $tableau = null;
+
+        if ($request->isMethod('POST')) {
+            $titre = $request->request->get('titre_du_tableau');
+
+            if ($titre) {
+                $tableau = new Tables();
+                $tableau->setTitle($titre);
+                $tableau->addUser($user);
+
+                $entityManagerInterface->persist($tableau);
+                $entityManagerInterface->flush();
+
+                $this->addFlash('success', 'Tableau créé avec succès.');
+            } else {
+                $this->addFlash('error', 'Le titre du tableau est requis.');
+            }
+        }
+
+        return $this->render('tables/addTable.html.twig', [
+            'tableau' => $tableau
+        ]);
+    }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    #[Route('/tables/{id}', name: 'app_tables_show', methods: ['GET'])]
+    public function showTable(Tables $tableau): Response
+    {
+        return $this->render('tables/show.html.twig', [
+            'tableau' => $tableau,
+        ]);
+    }
 
 
 
@@ -193,15 +148,3 @@ public function showTable(Tables $tableau): Response
         return new JsonResponse($data, Response::HTTP_OK);
     }
 }
-
-
-
-
-
-
-
-
-
-
-
- 
