@@ -1,4 +1,4 @@
-<div id="logonav">
+{# <div id="logonav">
   <a href="/">
     <img src="/images/logo_final.png" alt="Logo">
   </a>
@@ -21,6 +21,59 @@
           <li class="nav-item"><a href="/subscription" class="nav-link">Abonnement</a></li>
           <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
           <li class="nav-item"><a href="/login" class="nav-link">Connexion</a></li>
+        </ul>
+      </div>
+
+
+
+  {% if app.user %}
+            <!-- Si l'utilisateur est connecté, afficher ces liens -->
+            <li class="nav-item"><a href="{{ path('app_tables') }}" class="nav-link">Mes Tableaux</a></li>
+            <li class="nav-item"><a href="{{ path('app_tables_addTable') }}" class="nav-link">Ajouter un tableau </a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
+          {% else %}
+            <!-- Si l'utilisateur n'est pas connecté, afficher le lien de connexion -->
+            <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+
+
+    </div>
+  </nav>
+</div> #}
+ <div id="logonav">
+  <a href="/">
+    <img src="/images/logo_final.png" alt="Logo">
+  </a>
+
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-fluid">
+
+      <!-- Burger toggle pour mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+              data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown"
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Menu mobile -->
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav g-2">
+          {% if not app.user %}
+            <!-- Liens visibles uniquement lorsque l'utilisateur n'est pas connecté -->
+            <li class="nav-item"><a href="/" class="nav-link">Accueil</a></li>
+            <li class="nav-item"><a href="/features" class="nav-link">Fonctionnalités</a></li>
+            <li class="nav-item"><a href="/subscription" class="nav-link">Abonnement</a></li>
+            <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+            <li class="nav-item"><a href="{{ path('app_login') }}" class="nav-link">Connexion</a></li>
+          {% else %}
+            <!-- Liens visibles uniquement lorsque l'utilisateur est connecté -->
+            <li class="nav-item"><a href="{{ path('app_tables') }}" class="nav-link">Mes Tableaux</a></li>
+            <li class="nav-item"><a href="{{ path('app_tables_addTable') }}" class="nav-link">Ajouter un tableau</a></li>
+            <li class="nav-item"><a href="{{ path('app_logout') }}" class="nav-link">Déconnexion</a></li>
+          {% endif %}
         </ul>
       </div>
 

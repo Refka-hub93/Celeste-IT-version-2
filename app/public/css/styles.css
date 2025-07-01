@@ -338,7 +338,6 @@ article ul {
             justify-content: center;
             background-color: var(--button-table);
             border: none;
-
             max-width: 40%;
             color: white;
             font-size: small;
@@ -355,7 +354,6 @@ article ul {
             font-weight: bold;
             margin-bottom: 10px;
             font-style: normal;
-
         }
 
     }
@@ -384,12 +382,42 @@ button {
 
 
 
+.card {
+  cursor: move; /* Change le curseur pour indiquer que la carte est déplaçable */
+}
+
+.list.drag-over {
+  background-color: #f0f0f0; /* Change la couleur de fond pour indiquer que la liste est une cible de dépôt valide */
+}
 
 /* Fin CSS du Tableau */
 
 
 /* Modal */
 
+#add-table-page {
+    padding: 3rem;                /* Espacement intérieur */
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    margin: 4rem auto;            /* Marge en haut et bas, centré horizontalement */
+    max-width: 1000px;             /* Augmenter la largeur maximale pour un meilleur design sur les grands écrans */
+    
+    form {
+        margin: 2rem auto;
+        width: 100%;               /* Prendre toute la largeur possible */
+        padding: 2rem;             /* Réduire un peu le padding pour ne pas surcharger */
+    }
+
+    .cadre {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;               /* Prendre toute la largeur disponible */
+        max-width: 900px;          /* Limiter la largeur de .cadre pour les grands écrans */
+        margin: 0 auto;            /* Centrer .cadre horizontalement */
+    }
+}
 
 
 /* CSS page LOGIN / SIGNIN et formulaire de contact */

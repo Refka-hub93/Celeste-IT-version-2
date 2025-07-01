@@ -2,6 +2,10 @@
 const addListButton = document.querySelector('#add-list-button');
 const listsContainer = document.querySelector('#lists-container');
 
+
+  let draggedCard = null;
+// Gestion du glisser-déposer des cartes
+
 // Gestion de l'ajout de nouvelle liste
 addListButton.addEventListener('click', function () {
     const listTemplate = document.querySelector('#list-template');
@@ -12,6 +16,8 @@ addListButton.addEventListener('click', function () {
     const addCardButton = newList.querySelector('.add-card-button');
     const removeListButton = newList.querySelector('.remove-list-button');
     const cardsContainer = newList.querySelector('.cards');
+
+
 
     // Ajout de carte dans la liste
     addCardButton.addEventListener('click', function () {
@@ -44,8 +50,66 @@ addListButton.addEventListener('click', function () {
     removeListButton.addEventListener('click', function () {
         listsContainer.removeChild(newList);
     });
-});
 
+
+
+
+
+// drag and drop
+
+    // Ajouter des écouteurs d'événements pour le glisser-déposer
+    newList.addEventListener('dragover', handleDragOver);
+    newList.addEventListener('dragenter', handleDragEnter);
+    newList.addEventListener('dragleave', handleDragLeave);
+    newList.addEventListener('drop', handleDrop);
+ });
+
+  function handleDragStart(e) {
+    draggedCard = this;
+    e.dataTransfer.setData('text/plain', this.getAttribute('data-card-id'));
+    setTimeout(() => {
+      this.style.display = 'none';
+    }, 0);
+  }
+
+  function handleDragEnd() {
+    setTimeout(() => {
+      this.style.display = 'block';
+    }, 0);
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    return false;
+  }
+
+  function handleDragEnter(e) {
+    e.preventDefault();
+    this.classList.add('drag-over');
+  }
+
+  function handleDragLeave() {
+    this.classList.remove('drag-over');
+  }
+
+  function handleDrop(e) {
+    e.preventDefault();
+    this.classList.remove('drag-over');
+
+    if (draggedCard) {
+      const cardId = draggedCard.getAttribute('data-card-id');
+      const newColumnId = this.getAttribute('data-column-id');
+
+      this.querySelector('.cards').appendChild(draggedCard);
+      draggedCard = null;
+
+      if (cardId && newColumnId) {
+        moveCard(cardId, newColumnId)
+          .then(data => console.log('✅ Carte déplacée :', data))
+          .catch(err => console.error('❌ Déplacement échoué :', err.message));
+      }
+    }
+  }
  
 
 

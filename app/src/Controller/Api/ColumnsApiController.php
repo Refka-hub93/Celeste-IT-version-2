@@ -15,12 +15,38 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 #[Route('/api/columns', name: 'api_columns_')]
 class ColumnsApiController extends AbstractController
 {
+
+#[Route('/api/columns', name: 'api_columns_index', methods: ['GET'])]
+public function index(Request $request, ColumnsRepository $columnsRepo): JsonResponse
+{
+    $tableId = $request->query->get('tableId');
+
+    if (!$tableId) {
+        return new JsonResponse(['error' => 'Table ID is required'], 400);
+    }
+
+    $columns = $columnsRepo->findBy(['tables' => $tableId]);
+
+    $data = [];
+    foreach ($columns as $column) {
+        $data[] = [
+            'id' => $column->getId(),
+            'title' => $column->getColumnTitle(),
+            'ranking' => $column->getRanking()
+        ];
+    }
+
+    return new JsonResponse($data);
+}
+
+
+
     #[Route('', name: 'create', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em, TablesRepository $tablesRepo): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
-        $title    = $data['columnTitle'] ?? null;
+        $title    = $data['columnTitle'] ?? 'Nouvelle Colonne';
         $tableId  = $data['tables'] ?? null;
         $ranking  = $data['ranking'] ?? null;
 

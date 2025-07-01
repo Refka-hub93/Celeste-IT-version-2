@@ -40,11 +40,66 @@
 /**
  * Ajoute les écouteurs « blur » et « Enter » à un input de titre.
  */
-function hookTitleInput(input, tableId) {
-  // ➜ Perte de focus → enregistrement
+ 
+
+/* ------------------  CRUD COLONNES  ------------------ */
+
+/**
+ * 🔁 Crée une colonne dans la BDD.
+ * @param {string} columnTitle
+ * @param {number} ranking
+ * @param {number} tableId
+ */
+// function createColumn(columnTitle, ranking = 0, tableId) {
+//   fetch('/api/columns', {
+//     method : 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body   : JSON.stringify({
+//       columnTitle,
+//       ranking,
+//       tables: tableId
+//     })
+//   })
+//     .then(checkResponse)
+//     .then(data => console.log('✅ Colonne créée :', data))
+//     .catch(err => console.error('❌ Création échouée :', err.message));
+// }
+function createColumn(columnTitle, ranking = 0, tableId) {
+  return fetch('/api/columns', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      columnTitle: columnTitle || 'Nouvelle Colonne',
+      ranking,
+      tables: tableId
+    })
+  })
+    .then(checkResponse);
+}
+
+function hookTitleInput(input, tableId, columnId = null) {
+  const listElement = input.closest('.list');
+
+  // Si la colonne a déjà un ID, c'est une colonne existante, donc pas besoin de la créer à nouveau
+  if (!columnId) {
+    const title = input.value.trim() || 'Nouvelle Colonne';
+    createColumn(title, 0, tableId).then(response => {
+      const data = response;
+      if (data.column && data.column.id) {
+        listElement.setAttribute('data-column-id', data.column.id);
+      }
+    });
+  }
+
+  // ➜ Perte de focus → mise à jour
   input.addEventListener('blur', () => {
     const title = input.value.trim();
-    if (title) createColumn(title, 0, tableId);
+    if (title) {
+      const columnId = listElement.getAttribute('data-column-id');
+      if (columnId) {
+        updateColumn(columnId, title, 0);
+      }
+    }
   });
 
   // ➜ Appui sur Entrée → déclenche blur
@@ -56,28 +111,7 @@ function hookTitleInput(input, tableId) {
   });
 }
 
-/* ------------------  CRUD COLONNES  ------------------ */
 
-/**
- * 🔁 Crée une colonne dans la BDD.
- * @param {string} columnTitle
- * @param {number} ranking
- * @param {number} tableId
- */
-function createColumn(columnTitle, ranking = 0, tableId) {
-  fetch('/api/columns', {
-    method : 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body   : JSON.stringify({
-      columnTitle,
-      ranking,
-      tables: tableId
-    })
-  })
-    .then(checkResponse)
-    .then(data => console.log('✅ Colonne créée :', data))
-    .catch(err => console.error('❌ Création échouée :', err.message));
-}
 
 /**
  * ✏️ Met à jour une colonne.
@@ -101,10 +135,15 @@ function updateColumn(columnId, columnTitle, ranking) {
  * @param {number} columnId
  */
 function deleteColumn(columnId) {
-  fetch(`/api/columns/${columnId}`, { method: 'DELETE' })
+  return fetch(`/api/columns/${columnId}`, { method: 'DELETE' })
     .then(checkResponse)
-    .then(() => console.log('🗑️ Colonne supprimée :', columnId))
-    .catch(err => console.error('❌ Suppression échouée :', err.message));
+    .then(() => {
+      console.log('🗑️ Colonne supprimée :', columnId);
+    })
+    .catch(err => {
+      console.error('❌ Suppression échouée :', err.message);
+      throw err; // Rejeter la promesse pour que l'erreur soit gérée par l'appelant
+    });
 }
 
 /**
@@ -119,5 +158,32 @@ async function checkResponse(response) {
   return data;
 }
 
+function fetchColumns(tableId) {
+  fetch(`/api/columns?tableId=${tableId}`, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  })
+    .then(checkResponse)
+    .then(data => {
+      data.forEach(column => {
+        // Ajoute les colonnes existantes au DOM
+        const listTemplate = document.querySelector('#list-template');
+        const listClone = listTemplate.content.cloneNode(true);
+        listsContainer.appendChild(listClone);
+
+        const newList = listsContainer.lastElementChild;
+        const titleInput = newList.querySelector('.list-title');
+        titleInput.value = column.title;
+
+        // Ajoute les écouteurs d'événements
+        hookTitleInput(titleInput, tableId);
+      });
+    })
+    .catch(err => console.error('❌ Chargement des colonnes échoué :', err.message));
+}
 
 
+document.addEventListener('DOMContentLoaded', function () {
+  const tableId = Number(board.dataset.tableId);
+  fetchColumns(tableId);
+});

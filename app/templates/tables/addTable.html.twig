@@ -3,30 +3,48 @@
 {% block title %}Créer un tableau{% endblock %}
 
 {% block body %}
-    <h1>Créer un nouveau tableau</h1>
+    <div class="container" id="add-table-page">
+        <h1 class="text-center mb-4">Créer un nouveau tableau</h1>
 
-    {# Messages flash #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <div class="alert alert-{{ label }}">
-                {{ message }}
-            </div>
+        {# Messages flash #}
+        {% for label, messages in app.flashes %}
+            {% for message in messages %}
+                <div class="alert alert-{{ label }} text-center">
+                    {{ message }}
+                </div>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
 
-    <form method="post" action="{{ path('app_tables_addTable') }}">
-        <input type="text" name="titre_du_tableau" placeholder="Titre du tableau" required>
-        <button type="submit">Créer</button>
-    </form>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8 col-lg-6">
+                <div class="card shadow p-4">
+                    <form method="post" action="{{ path('app_tables_addTable') }}">
+                        <div class="m-3 cadre">
+                            <label for="titre_du_tableau" class="form-label mb-3">Titre du tableau :</label>
+                            <input type="text" name="titre_du_tableau" id="titre_du_tableau" class="form-control" placeholder="Tapez içi ...." required>
+                        </div>
 
-    {# ✅ Si tableau existe, afficher lien vers la page correspondante #}
-    {% if tableau is defined and tableau %}
-        <div class="alert alert-info mt-3">
-            ✅ Ton tableau <strong>{{ tableau.title }}</strong> a bien été créé !
-            <br>
-            <a href="{{ path('app_tables_show', {'id': tableau.id}) }}">🔎 Voir ce tableau</a>
-            |
-            <a href="{{ path('app_tables') }}">📂 Voir mes tableaux</a>
+                        {# Premier bouton (Créer) sur une ligne #}
+                        <div class="m-3">
+                            <button type="submit" class="btn btn-primary w-100">Créer</button>
+                        </div>
+
+                        {# Deuxième bouton (Retour à mes tableaux) sur une autre ligne #}
+                        <div class="m-3">
+                            <a href="{{ path('app_tables') }}" class="btn btn-danger w-100">Retour à mes tableaux</a>
+                        </div>
+                    </form>
+
+                    {# ✅ Si tableau existe, afficher lien vers la page correspondante #}
+                    {% if tableau is defined and tableau %}
+                        <div class="alert alert-info mt-3 text-center">
+                            ✅ Ton tableau <strong>{{ tableau.title }}</strong> a bien été créé !
+                            <br>
+                            <a href="{{ path('app_tables_show', {'id': tableau.id}) }}" class="btn btn-link">🔎 Voir ce tableau</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

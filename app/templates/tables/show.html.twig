@@ -14,13 +14,20 @@
 	{{ tableau.title }}
 {% endblock %}
 
+
 {% block body %}
-	<h1>🗂️
-		{{ tableau.title }}</h1>
-	<p>Contenu de ton tableau ici (listes, cartes, etc.).</p>
+    <div class="container mt-5">
+        <h1 class="display-4 text-center text-primary">
+            🗂️ {{ tableau.title }}
+        </h1>
 
-	<a href="{{ path('app_tables') }}">⬅️ Retour à mes tableaux</a>
-
+        <!-- Lien retour avec un style de bouton Bootstrap -->
+        <div class="text-center mt-4">
+            <a href="{{ path('app_tables') }}" class="btn btn-secondary">
+                ⬅️ Retour à mes tableaux
+            </a>
+        </div>
+    </div>
 
 	{# #################### #}
 	<main class="board d-flex flex-wrap   gap-3 p-1" id="board" data-table-id="{{ tableau.id }}">
@@ -49,7 +56,7 @@
 
 
 	<template id="card-template">
-		<li class="card">
+		<li class="card" draggable="true" data-card-id="">
 			<div class="card-body">
 				<h5 class="card-title btn">Titre</h5>
 				<button class="remove-card-button">🗑 Supprimer</button>
