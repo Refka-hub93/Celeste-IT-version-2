@@ -1,8 +1,48 @@
-<footer>
-  <ul>
-    {# <li><a href="{{ path('app_mentions') }}">Mentions légales</a></li> #}
-    <li><a href="{{ path('app_cgv') }}">CGV</a></li>
-    <li><a href="{{ path('app_confidentialite') }}">Confidentialité</a></li>
-    <li><a href="{{ path('app_contact') }}">Contact</a></li>
-  </ul>
+<footer class="bg-dark text-white py-4">
+    <div class="container">
+        <div class="row">
+            <!-- Première colonne : Liens -->
+            <div class="col-12 col-md-6 text-center text-md-left mb-4 mb-md-0">
+                <ul class="list-unstyled">
+                    <li><a href="{{ path('app_mentions') }}" class="text-white text-decoration-none">Mentions légales</a></li>
+                    <li><a href="{{ path('app_cgv') }}" class="text-white text-decoration-none">CGV</a></li>
+                    <li><a href="{{ path('app_confidentialite') }}" class="text-white text-decoration-none">Confidentialité</a></li>
+                    <li><a href="{{ path('app_contact') }}" class="text-white text-decoration-none">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Deuxième colonne : Réseaux sociaux -->
+            <div class="col-12 col-md-6 text-center text-md-right mb-4 mb-md-0">
+                <ul class="list-unstyled d-flex justify-content-center justify-content-md-end">
+                    <li class="mx-3">
+                        <a href="https://www.facebook.com" target="_blank" class="text-white">
+                            <i class="fab fa-facebook fa-2x"></i>  <!-- Facebook Icon -->
+                        </a>
+                    </li>
+                    <li class="mx-3">
+                        <a href="https://www.twitter.com" target="_blank" class="text-white">
+                            <i class="fab fa-twitter fa-2x"></i>  <!-- Twitter Icon -->
+                        </a>
+                    </li>
+                    <li class="mx-3">
+                        <a href="https://www.instagram.com" target="_blank" class="text-white">
+                            <i class="fab fa-instagram fa-2x"></i>  <!-- Instagram Icon -->
+                        </a>
+                    </li>
+                    <li class="mx-3">
+                        <a href="https://www.linkedin.com" target="_blank" class="text-white">
+                            <i class="fab fa-linkedin fa-2x"></i>  <!-- LinkedIn Icon -->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Troisième colonne : Copyright -->
+        <div class="row">
+            <div class="col-12 text-center mt-4">
+                
+            </div>
+        </div>
+    </div>
 </footer>

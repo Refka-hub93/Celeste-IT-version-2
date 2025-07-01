@@ -18,26 +18,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')] // Toutes les routes ici nécessitent un utilisateur connecté
 final class TablesController extends AbstractController
 {
-    //     // ✅ Page web avec affichage des tableaux de l'utilisateur
-    //     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
-    //     public function index(Users $user): Response
-    //     {
-    //    // Récupérer l'utilisateur actuellement connecté
-
-
-    //         // Vérifier si l'utilisateur est connecté
-    //         if (!$user) {
-    //             throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
-    //         }
-
-    //         $mesTableaux = $user->getTables();
-
-    //         return $this->render('tables/index.html.twig', [
-    //             'tableaux' => $mesTableaux,
-    //         ]);
-    //     }
-
-
+    
     // ✅ Page web avec affichage des tableaux de l'utilisateur
     #[Route('/tables', name: 'app_tables', methods: ['GET'])]
     public function index(UserInterface $user): Response

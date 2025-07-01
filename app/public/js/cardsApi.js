@@ -17,6 +17,24 @@ function createCard(cardTitle, columnId, description = '') {
   }).then(checkResponse);
 }
 
+
+fetch('/api/cards', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ cardTitle: "Ma carte", columns: 4})
+})
+.then(res => res.json())
+.then(data => {
+  const cardId = data.card.id;
+
+  // 🔁 Appel de l'API pour récupérer les détails
+  return fetch(`/api/cards/${cardId}`);
+})
+.then(res => res.json())
+.then(details => {
+  console.log("Détails complets de la carte :", details);
+});
+
 /**
  * ✏️ Met à jour une carte (titre, description, date, etc.)
  * @param {number} cardId - L’ID de la carte à modifier
@@ -31,16 +49,7 @@ function updateCard(cardId, payload) {
   }).then(checkResponse);
 }
 
-/**
- * 🗑️ Supprime une carte
- * @param {number} cardId - L’ID de la carte à supprimer
- * @returns {Promise<void>}
- */
-function deleteCard(cardId) {
-  return fetch(`/api/cards/${cardId}`, {
-    method: 'DELETE'
-  }).then(checkResponse);
-}
+
 
 /**
  * 📦 Déplace une carte vers une autre colonne
@@ -52,18 +61,7 @@ function moveCard(cardId, newColumnId) {
   return updateCard(cardId, { columns: newColumnId });
 }
 
-/**
- * ✅ Vérifie et retourne la réponse d'une requête fetch
- * @param {Response} response
- * @returns {Promise<any>}
- */
-async function checkResponse(response) {
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    throw new Error(data.message || 'Erreur API');
-  }
-  return data;
-}
+
 
 
 createCard("Nouvelle tâche", 4, "")

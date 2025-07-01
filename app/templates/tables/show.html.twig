@@ -29,13 +29,65 @@
         </div>
     </div>
 
-	{# #################### #}
+	
 	<main class="board d-flex flex-wrap   gap-3 p-1" id="board" data-table-id="{{ tableau.id }}">
 		<div class="text-center mb-4">
 			<button id="add-list-button" class="btn btn-primary">Ajouter une liste</button>
 			<div class="cards"></div>
 		</div>
-		<div class="lists-container" id="lists-container"></div>
+		<div class="lists-container" id="lists-container">
+		
+		
+		{# #################### #}
+		
+		
+		{# 🔁 BOUCLE SUR LES COLONNES #}
+    {% for column in tableau.columns %}
+      <div class="list border p-2 rounded shadow" data-column-id="{{ column.id }}">
+        <div class="list-header m-1">
+          {# titre de la colonne #}
+          <input type="text"
+                 class="list-title form-control"
+                 value="{{ column.columnTitle }}"
+                 placeholder="Titre de la liste…">
+
+          <button class="add-card-button btn pe-2 m-3">Ajouter une carte</button>
+          <button class="remove-list-button btn btn-danger">Supprimer cette liste</button>
+        </div>
+
+        <ul class="cards text-center me-4 pe-2">
+          {# 🔁 BOUCLE SUR LES CARTES DE LA COLONNE #}
+		 
+			
+		  
+          {% for card in column.cards %}
+            <li class="card" draggable="true" data-card-id="{{ card.id }}">
+		 
+              <div class="card-body">
+                <h5 class="card-title btn"
+                    data-bs-toggle="modal"
+                    data-bs-target="#cardModal"
+                    data-bs-title="{{ card.cardTitle }}"
+                    data-bs-description="{{ card.description }}"
+                    data-bs-comments="">
+                  {{ card.cardTitle }}
+                </h5>
+
+                <button class="remove-card-button">🗑 Supprimer</button>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  
+		
+		
+		
+		
+		
+		
+		</div>
 	</main>
 
 	<template id="list-template">

@@ -6,8 +6,8 @@
     --thirdcolor: #3a15f4;
     --titlecolor: rgb(87, 85, 85);
     --font-color: rgb(104, 7, 117);
-    --board-color: rgba(241, 236, 236, 0.767);
-    --button-table: rgb(255, 102, 196);
+    --board-color: #f1ececc4;
+    --button-table: #ff66c4;
     font-size: 16px;
 
 }
@@ -390,6 +390,10 @@ button {
   background-color: #f0f0f0; /* Change la couleur de fond pour indiquer que la liste est une cible de dépôt valide */
 }
 
+
+#dashborard-card {
+color: rgb(206, 13, 206);
+}
 /* Fin CSS du Tableau */
 
 
@@ -540,8 +544,10 @@ footer {
         font-weight: lighter;
     }
 
-}
 
+
+}
+ 
 
 
 /* Fin Footer */

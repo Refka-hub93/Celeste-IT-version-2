@@ -130,60 +130,124 @@ function updateColumn(columnId, columnTitle, ranking) {
     .catch(err => console.error('❌ Mise à jour échouée :', err.message));
 }
 
-/**
- * 🗑️ Supprime une colonne.
- * @param {number} columnId
- */
-function deleteColumn(columnId) {
-  return fetch(`/api/columns/${columnId}`, { method: 'DELETE' })
-    .then(checkResponse)
-    .then(() => {
-      console.log('🗑️ Colonne supprimée :', columnId);
-    })
-    .catch(err => {
-      console.error('❌ Suppression échouée :', err.message);
-      throw err; // Rejeter la promesse pour que l'erreur soit gérée par l'appelant
-    });
-}
 
 /**
  * Vérifie la réponse fetch ; lève une erreur si !response.ok.
  */
-async function checkResponse(response) {
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const msg = data.message || 'Erreur serveur';
-    throw new Error(msg);
-  }
-  return data;
-}
+// async function checkResponse(response) {
+//   const data = await response.json().catch(() => ({}));
+//   if (!response.ok) {
+//     const msg = data.message || 'Erreur serveur';
+//     throw new Error(msg);
+//   }
+//   return data;
+// }
 
-function fetchColumns(tableId) {
-  fetch(`/api/columns?tableId=${tableId}`, {
-    method: 'GET',
-    headers: { 'Content-Type': 'application/json' },
-  })
-    .then(checkResponse)
-    .then(data => {
-      data.forEach(column => {
-        // Ajoute les colonnes existantes au DOM
-        const listTemplate = document.querySelector('#list-template');
-        const listClone = listTemplate.content.cloneNode(true);
-        listsContainer.appendChild(listClone);
+// function fetchColumns(tableId) {
+//   fetch(`/api/columns?tableId=${tableId}`, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   })
+//     .then(checkResponse)
+//     .then(data => {
+//       data.forEach(column => {
+//         // Ajoute les colonnes existantes au DOM
+//         const listTemplate = document.querySelector('#list-template');
+//         const listClone = listTemplate.content.cloneNode(true);
+//         listsContainer.appendChild(listClone);
 
-        const newList = listsContainer.lastElementChild;
-        const titleInput = newList.querySelector('.list-title');
-        titleInput.value = column.title;
+//         const newList = listsContainer.lastElementChild;
+//         const titleInput = newList.querySelector('.list-title');
+//         titleInput.value = column.title;
 
-        // Ajoute les écouteurs d'événements
-        hookTitleInput(titleInput, tableId);
-      });
-    })
-    .catch(err => console.error('❌ Chargement des colonnes échoué :', err.message));
-}
+//         // Ajoute les écouteurs d'événements
+//         hookTitleInput(titleInput, tableId);
+//       });
+//     })
+//     .catch(err => console.error('❌ Chargement des colonnes échoué :', err.message));
+// }
 
 
 document.addEventListener('DOMContentLoaded', function () {
   const tableId = Number(board.dataset.tableId);
-  fetchColumns(tableId);
+  // fetchColumns(tableId);
 });
+
+// // /**
+// //  * 🔁 Charge les colonnes + cartes depuis l’API et les affiche dans l’interface
+// //  */
+// function loadColumnsAndCards(tableId) {
+//   fetch(`/api/columns?tableId=${tableId}`, {
+//     method: 'GET',
+//     headers: { 'Content-Type': 'application/json' },
+//   })
+//     .then(checkResponse)
+//     .then(async columns => {
+//       for (const column of columns) {
+//         // 👉 Clone de la colonne
+//         const listTemplate = document.querySelector('#list-template');
+//         const listClone = listTemplate.content.cloneNode(true);
+//         listsContainer.appendChild(listClone);
+
+//         const newList = listsContainer.lastElementChild;
+//         const titleInput = newList.querySelector('.list-title');
+//         const cardsUl = newList.querySelector('.cards');
+
+//         titleInput.value = column.title;
+//         newList.dataset.columnId = column.id;
+
+//         hookTitleInput(titleInput, tableId, column.id); // met à jour sur blur/enter
+
+//         // 🔁 Récupérer les cartes de cette colonne
+//         const cards = await fetch(`/api/cards?columnId=${column.id}`)
+//           .then(checkResponse)
+//           .catch(() => []);
+
+//         for (const card of cards) {
+//           const cardTemplate = document.querySelector('#card-template');
+//           const cardClone = cardTemplate.content.cloneNode(true);
+//           const li = cardClone.querySelector('li');
+
+//           li.dataset.cardId = card.id;
+//           li.querySelector('.card-title').textContent = card.title;
+
+//           // Activation du modal sur le titre
+//           const cardTitle = li.querySelector('.card-title');
+//           cardTitle.setAttribute('data-bs-toggle', 'modal');
+//           cardTitle.setAttribute('data-bs-target', '#cardModal');
+//           cardTitle.setAttribute('data-bs-title', card.title);
+//           cardTitle.setAttribute('data-bs-description', card.description || '');
+//           cardTitle.setAttribute('data-bs-comments', '');
+
+//           // Bouton suppression carte
+//           const removeCardButton = li.querySelector('.remove-card-button');
+//           removeCardButton?.addEventListener('click', () => li.remove());
+
+//           cardsUl.appendChild(li);
+//         }
+
+//         // Gestion drag & drop
+//         newList.addEventListener('dragover', handleDragOver);
+//         newList.addEventListener('dragenter', handleDragEnter);
+//         newList.addEventListener('dragleave', handleDragLeave);
+//         newList.addEventListener('drop', handleDrop);
+
+//         // Suppression colonne
+//         const removeListButton = newList.querySelector('.remove-list-button');
+//         removeListButton.addEventListener('click', () => {
+//           deleteColumn(newList.dataset.columnId);
+//           listsContainer.removeChild(newList);
+//         });
+//       }
+//     })
+//     .catch(err => console.error('❌ Erreur de chargement des colonnes/cartes :', err.message));
+// }
+
+// // Appeler la fonction au chargement de la page
+// document.addEventListener('DOMContentLoaded', function () {
+//   const tableId = Number(board.dataset.tableId);
+//   if (tableId) {
+//     loadColumnsAndCards(tableId);
+//   }
+// });
+

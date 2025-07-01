@@ -115,4 +115,4 @@ public function index(Request $request, ColumnsRepository $columnsRepo): JsonRes
     }
  
 
-}
+} 
