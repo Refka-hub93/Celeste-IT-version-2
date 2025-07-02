@@ -107,11 +107,11 @@ class ColumnsApiController extends AbstractController
         if (!$column) {
             return new JsonResponse(['error' => 'Colonne introuvable'], 404);
         }
-        // // Supprimer les cartes associées à la colonne
-        // $cards = $column->getCards();
-        // foreach ($cards as $card) {
-        //     $em->remove($card);
-        // }
+        // Supprimer les cartes associées à la colonne
+        $cards = $column->getCards();
+        foreach ($cards as $card) {
+            $em->remove($card);
+        }
      
      
 

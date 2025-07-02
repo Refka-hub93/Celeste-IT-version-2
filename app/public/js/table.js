@@ -16,10 +16,10 @@ for (const button of removeListButton) {
   button.addEventListener('click', function () {
     const newList = this.closest('.list');
 
-// //  // ✅ Demande de confirmation
-//     if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
-//       return; // l’utilisateur a annulé
-//     }
+//  // ✅ Demande de confirmation
+    if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
+      return; // l’utilisateur a annulé
+    }
 
 
     // Récupération de l'ID de la colonne à supprimer
@@ -245,53 +245,112 @@ document.addEventListener('DOMContentLoaded', () => {
         columns: currentColumnId, // <‑‑ champ attendu par l’API Symfony
       };
 
-      try {
-        const response = await fetch(url, {
-          method,
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(payload),
-        });
+      // try {
+      //   const response = await fetch(url, {
+      //     method,
+      //     headers: {
+      //       'Content-Type': 'application/json',
+      //     },
+      //     body: JSON.stringify(payload),
+      //   });
 
-        if (!response.ok) {
-          const errorText = await response.text();
-          throw new Error(`HTTP ${response.status} — ${errorText}`);
-        }
+      //   if (!response.ok) {
+      //     const errorText = await response.text();
+      //     throw new Error(`HTTP ${response.status} — ${errorText}`);
+      //   }
 
-        const result = await response.json();
+      //   const result = await response.json();
 
-        /* ---------- Mise à jour DOM ---------- */
-        if (cardId) {
-          // Modification d’une carte existante
-          currentCardElement.querySelector('.card-title').textContent = title;
-        } else {
-          // Création : injecte la nouvelle carte dans la bonne colonne
-          const cardTemplate = document.getElementById('card-template');
-          const clone = cardTemplate.content.cloneNode(true);
-          const newCard = clone.querySelector('.card');
-          newCard.dataset.cardId = result.id;
-          const titleEl = newCard.querySelector('.card-title');
-          titleEl.textContent = title;
-          titleEl.setAttribute('data-bs-toggle', 'modal');
-          titleEl.setAttribute('data-bs-target', '#cardModal');
-          titleEl.setAttribute('data-bs-title', title);
-          titleEl.setAttribute('data-bs-description', description);
-          titleEl.setAttribute('data-bs-comments', comments);
+      //   /* ---------- Mise à jour DOM ---------- */
+      //   if (cardId) {
+      //     // Modification d’une carte existante
+      //     currentCardElement.querySelector('.card-title').textContent = title;
+      //   } else {
+      //     // Création : injecte la nouvelle carte dans la bonne colonne
+      //     const cardTemplate = document.getElementById('card-template');
+      //     const clone = cardTemplate.content.cloneNode(true);
+      //     const newCard = clone.querySelector('.card');
+      //     newCard.dataset.cardId = result.id;
+      //     const titleEl = newCard.querySelector('.card-title');
+      //     titleEl.textContent = title;
+      //     titleEl.setAttribute('data-bs-toggle', 'modal');
+      //     titleEl.setAttribute('data-bs-target', '#cardModal');
+      //     titleEl.setAttribute('data-bs-title', title);
+      //     titleEl.setAttribute('data-bs-description', description);
+      //     titleEl.setAttribute('data-bs-comments', comments);
 
-          const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
-          column?.appendChild(newCard);
-        }
+      //     const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
+      //     column?.appendChild(newCard);
+      //   }
 
-        /* ---------- Nettoyage ---------- */
-        bootstrap.Modal.getInstance(cardModal).hide();
-        form.reset();
-        currentCardElement = null;
-        currentColumnId = null;
-      } catch (error) {
-        console.error('❌ Enregistrement échoué :', error);
-        alert('Une erreur est survenue — consulte la console pour plus de détails');
-      }
+      //   /* ---------- Nettoyage ---------- */
+      //   bootstrap.Modal.getInstance(cardModal).hide();
+      //   form.reset();
+      //   currentCardElement = null;
+      //   currentColumnId = null;
+      // } catch (error) {
+      //   console.error('❌ Enregistrement échoué :', error);
+      //   alert('Une erreur est survenue — consulte la console pour plus de détails');
+      // }
+try {
+  const response = await fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const errorText = await response.text();
+    throw new Error(`HTTP ${response.status} — ${errorText}`);
+  }
+
+  const result = await response.json();
+
+  /* ---------- Mise à jour DOM ---------- */
+  if (cardId) {
+    // Modification d’une carte existante
+    currentCardElement.querySelector('.card-title').textContent = title;
+  } else {
+    // Création réelle après clic sur "Ajouter une carte"
+    if (currentCardElement) {
+      currentCardElement.dataset.cardId = result.card.id;
+
+      const titleEl = currentCardElement.querySelector('.card-title');
+      titleEl.textContent = title;
+      titleEl.setAttribute('data-bs-title', title);
+      titleEl.setAttribute('data-bs-description', description);
+      titleEl.setAttribute('data-bs-comments', comments);
+    } else {
+      const cardTemplate = document.getElementById('card-template');
+      const clone = cardTemplate.content.cloneNode(true);
+      const newCard = clone.querySelector('.card');
+      newCard.dataset.cardId = result.card.id;
+
+      const titleEl = newCard.querySelector('.card-title');
+      titleEl.textContent = title;
+      titleEl.setAttribute('data-bs-toggle', 'modal');
+      titleEl.setAttribute('data-bs-target', '#cardModal');
+      titleEl.setAttribute('data-bs-title', title);
+      titleEl.setAttribute('data-bs-description', description);
+      titleEl.setAttribute('data-bs-comments', comments);
+
+      const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
+      column?.appendChild(newCard);
+    }
+  }
+
+  // ✅ Nettoyage (à faire quoi qu’il arrive après réussite)
+  bootstrap.Modal.getInstance(cardModal).hide();
+  form.reset();
+  currentCardElement = null;
+  currentColumnId = null;
+
+} catch (error) {
+  console.error('❌ Enregistrement échoué :', error);
+  alert('Une erreur est survenue — consulte la console pour plus de détails');
+}
 
       
     });
