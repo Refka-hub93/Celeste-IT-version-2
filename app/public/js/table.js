@@ -16,10 +16,10 @@ for (const button of removeListButton) {
   button.addEventListener('click', function () {
     const newList = this.closest('.list');
 
-//  // ✅ Demande de confirmation
-    if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
-      return; // l’utilisateur a annulé
-    }
+// //  // ✅ Demande de confirmation
+//     if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
+//       return; // l’utilisateur a annulé
+//     }
 
 
     // Récupération de l'ID de la colonne à supprimer
@@ -119,7 +119,7 @@ function addButtonListener() {
   const cardTitle = insertedCard.querySelector('.card-title');
 
 // 🛠️ Initialisation correcte de la carte vide
-cardTitle.textContent = 'Nouvelle carte';  // Ce qui s'affiche visuellement
+// cardTitle.textContent = 'Nouvelle carte';  // Ce qui s'affiche visuellement
 cardTitle.setAttribute('data-bs-toggle', 'modal');
 cardTitle.setAttribute('data-bs-target', '#cardModal');
 cardTitle.setAttribute('data-bs-title', '');         // ❌ Vide pour éviter remplissage
@@ -292,53 +292,55 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('❌ Enregistrement échoué :', error);
         alert('Une erreur est survenue — consulte la console pour plus de détails');
       }
+
+      
     });
   }
 });
 
 
-  // drag and drop
-function handleDragStart(e) {
-  draggedCard = this;
-  e.dataTransfer.setData('text/plain', this.dataset.cardId);
-  setTimeout(() => {
-    this.style.display = 'none';
-  }, 0);
-}
+//   // drag and drop
+// function handleDragStart(e) {
+//   draggedCard = this;
+//   e.dataTransfer.setData('text/plain', this.dataset.cardId);
+//   setTimeout(() => {
+//     this.style.display = 'none';
+//   }, 0);
+// }
 
-function handleDragEnd() {
-  setTimeout(() => {
-    this.style.display = 'block';
-  }, 0);
-  draggedCard = null;
-}
+// function handleDragEnd() {
+//   setTimeout(() => {
+//     this.style.display = 'block';
+//   }, 0);
+//   draggedCard = null;
+// }
 
-function handleDragOver(e) {
-  e.preventDefault();
-}
+// function handleDragOver(e) {
+//   e.preventDefault();
+// }
 
-function handleDragEnter(e) {
-  e.preventDefault();
-  this.classList.add('drag-over');
-}
+// function handleDragEnter(e) {
+//   e.preventDefault();
+//   this.classList.add('drag-over');
+// }
 
-function handleDragLeave() {
-  this.classList.remove('drag-over');
-}
+// function handleDragLeave() {
+//   this.classList.remove('drag-over');
+// }
 
-function handleDrop(e) {
-  e.preventDefault();
-  this.classList.remove('drag-over');
+// function handleDrop(e) {
+//   e.preventDefault();
+//   this.classList.remove('drag-over');
 
-  const newColumnId = this.dataset.columnId;
-  if (draggedCard && newColumnId) {
-    this.querySelector('.cards').appendChild(draggedCard);
+//   const newColumnId = this.dataset.columnId;
+//   if (draggedCard && newColumnId) {
+//     this.querySelector('.cards').appendChild(draggedCard);
 
-    const cardId = draggedCard.dataset.cardId;
-    if (cardId) {
-      moveCard(cardId, newColumnId)
-        .then(data => console.log('✅ Carte déplacée :', data))
-        .catch(err => console.error('❌ Déplacement échoué :', err.message));
-    }
-  }
-}
+//     const cardId = draggedCard.dataset.cardId;
+//     if (cardId) {
+//       moveCard(cardId, newColumnId)
+//         .then(data => console.log('✅ Carte déplacée :', data))
+//         .catch(err => console.error('❌ Déplacement échoué :', err.message));
+//     }
+//   }
+// }

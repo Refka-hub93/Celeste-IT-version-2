@@ -27,6 +27,7 @@ class CardsApiController extends AbstractController
         $title     = $data['cardTitle'] ?? null;
         $columnId  = $data['columns']   ?? null;   // id de colonne
         $desc      = $data['description'] ?? null;
+        // $comments  = $data['comments'] ?? null; // <-- 👈 ici
 
         if (!$title || !$columnId) {
             return new JsonResponse(
@@ -46,6 +47,7 @@ class CardsApiController extends AbstractController
         $card = (new Cards())
             ->setCardTitle($title)
             ->setDescription($desc)
+            // ->setComment($comments) // 👈 ici
             ->setColumns($column);
 
         $em->persist($card);
@@ -156,6 +158,7 @@ class CardsApiController extends AbstractController
             'id'          => $c->getId(),
             'title'       => $c->getCardTitle(),
             'description' => $c->getDescription(),
+         
         ], $cards);
 
         return new JsonResponse($data);
