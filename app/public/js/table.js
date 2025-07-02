@@ -81,6 +81,10 @@ addListButton.addEventListener('click', function () {
 
   // Suppression de liste
   removeListButton.addEventListener('click', function () {
+//  // ✅ Demande de confirmation
+    if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
+      return; // l’utilisateur a annulé
+    }
 
     // ########
     deleteColumn(newList.dataset.columnId);
@@ -170,6 +174,15 @@ async function checkResponse(response) {
   }
   return data;
 }
+
+
+
+
+
+
+
+
+
 
 
 

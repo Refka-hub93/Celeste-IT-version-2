@@ -1,7 +1,7 @@
 
 
 /**
- * table.js – version corrigée
+  * 🗂️ Gestion des colonnes (listes) dans le tableau Kanban
  * Hypothèses :
  *   – L’API utilise les routes suivantes :
  *       POST   /api/columns            (création)
@@ -172,6 +172,35 @@ document.addEventListener('DOMContentLoaded', function () {
   const tableId = Number(board.dataset.tableId);
   // fetchColumns(tableId);
 });
+
+// async function addListButtonListener() {
+//   // 1️⃣ Créer la colonne dans Symfony
+//   const res = await fetch('/api/columns', {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify({
+//       columnTitle: 'Nouvelle colonne',
+//       tables: currentTableId,   // <-- l’ID du tableau
+//       ranking: 0
+//     })
+//   });
+//   if (!res.ok) {
+//     alert("Impossible de créer la colonne");
+//     return;
+//   }
+//   const { column } = await res.json(); // { id, title, ranking }
+
+//   // 2️⃣ Cloner puis peupler la liste
+//   const listTemplate   = document.querySelector('#list-template');
+//   const listClone      = listTemplate.content.cloneNode(true);
+//   const newList        = listClone.querySelector('.list');
+//   newList.dataset.columnId = column.id;   // ✅ ID maintenant présent !
+
+//   // 3️⃣ Brancher les handlers puis insérer dans le DOM
+//   listsContainer.appendChild(listClone);
+//   attachListHandlers(newList);
+// }
+
 
 // // /**
 // //  * 🔁 Charge les colonnes + cartes depuis l’API et les affiche dans l’interface
