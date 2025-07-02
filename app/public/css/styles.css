@@ -7,7 +7,7 @@
     --titlecolor: rgb(87, 85, 85);
     --font-color: rgb(104, 7, 117);
     --board-color: #f1ececc4;
-    --button-table: #ff66c4;
+    --button-table: rgb(255, 102, 196);
     font-size: 16px;
 
 }
@@ -28,6 +28,9 @@ body {
 
 
 /* Début header */
+
+
+
 
 
 header {

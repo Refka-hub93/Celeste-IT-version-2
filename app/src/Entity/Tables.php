@@ -33,10 +33,17 @@ class Tables
     #[ORM\OneToMany(targetEntity: Columns::class, mappedBy: 'tables')]
     private Collection $columns;
 
+    /**
+     * @var Collection<int, Notification>
+     */
+    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'tables')]
+    private Collection $notification;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
         $this->columns = new ArrayCollection();
+        $this->notification = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -119,6 +126,36 @@ class Tables
             // set the owning side to null (unless already changed)
             if ($column->getTables() === $this) {
                 $column->setTables(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notification>
+     */
+    public function getNotification(): Collection
+    {
+        return $this->notification;
+    }
+
+    public function addNotification(Notification $notification): static
+    {
+        if (!$this->notification->contains($notification)) {
+            $this->notification->add($notification);
+            $notification->setTables($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(Notification $notification): static
+    {
+        if ($this->notification->removeElement($notification)) {
+            // set the owning side to null (unless already changed)
+            if ($notification->getTables() === $this) {
+                $notification->setTables(null);
             }
         }
 

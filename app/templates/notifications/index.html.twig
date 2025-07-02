@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block title %}📨 Notifications{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+  <h2 class="mb-3">📨 Toutes les notifications</h2>
+
+  <button id="clear-all-btn" class="btn btn-outline-danger mb-3">🧹 Supprimer toutes</button>
+
+  <ul id="notif-full-list" class="list-group">
+    {% for notif in notifications %}
+      <li class="list-group-item d-flex justify-content-between align-items-center" data-id="{{ notif.id }}">
+        <span><strong>{{ notif.createdAt|date('d/m/Y H:i') }}</strong> – {{ notif.message }}</span>
+        <button class="btn btn-sm btn-outline-danger delete-notif-btn">🗑</button>
+      </li>
+    {% else %}
+      <li class="list-group-item">Aucune notification</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  <script src="{{ asset('js/notification.js') }}" defer></script>
+{% endblock %}

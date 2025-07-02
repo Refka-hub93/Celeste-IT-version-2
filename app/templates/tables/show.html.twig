@@ -6,7 +6,7 @@
 	<script src="{{ asset('js/columnsApi.js') }}" defer></script>
 	<script src="{{ asset('js/tableApi.js') }}" defer></script>
 	<script src="{{ asset('js/cardsApi.js') }}" defer></script>
-
+<script src="{{ asset('js/notification.js') }}" defer></script>
 {% endblock %}
 
 {% block title %}
@@ -15,82 +15,90 @@
 
 
 {% block body %}
-    <div class="container mt-5">
-        <h1 class="display-4 text-center text-primary">
-            🗂️ {{ tableau.title }}
-        </h1>
 
-        <!-- Lien retour avec un style de bouton Bootstrap -->
-        <div class="text-center mt-4">
-            <a href="{{ path('app_tables') }}" class="btn btn-secondary">
-                ⬅️ Retour à mes tableaux
-            </a>
-        </div>
+  <!-- 🔔 Notification ici -->
+  <div id="notification-wrapper" class="position-fixed  end-0 mb-4 me-4" style="z-index: 9999;">
+
+    <button id="notif-bell" class="btn  position-relative">
+      🔔
+      <span id="notif-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none">0</span>
+    </button>
+
+    <div id="notif-list" class="card shadow mt-2 p-2 d-none" style="width: 300px; max-height: 400px; overflow-y: auto;">
+      <div class="card-body p-2">
+        <h5 class="card-title bg-primary p-2 text-white">Notifications</h5>
+
+{# <button id="notif-clear-all" class="btn btn-sm btn-outline-danger ms-2" title="Tout supprimer">🧹</button> #}
+
+        <ul id="notif-items" class="list-unstyled text-start mb-0"></ul>
+      </div>
     </div>
+  </div>
 
-	
+	<div class="container mt-5">
+		<h1 class="display-4 text-center text-primary">
+			🗂️
+			{{ tableau.title }}
+		</h1>
+
+		<!-- Lien retour avec un style de bouton Bootstrap -->
+		<div class="text-center mt-4">
+			<a href="{{ path('app_tables') }}" class="btn btn-secondary">
+				⬅️ Retour à mes tableaux
+			</a>
+		</div>
+	</div>
+
+
 	<main class="board d-flex flex-wrap   gap-3 p-1" id="board" data-table-id="{{ tableau.id }}">
 		<div class="text-center mb-4">
 			<button id="add-list-button" class="btn btn-primary">Ajouter une liste</button>
 			<div class="cards"></div>
 		</div>
 		<div class="lists-container" id="lists-container">
-		
-		
-		{# #################### #}
-		
-		
-		{# 🔁 BOUCLE SUR LES COLONNES #}
-    {% for column in tableau.columns %}
-      <div class="list border p-2 rounded shadow" data-column-id="{{ column.id }}">
-        <div class="list-header m-1">
-          {# titre de la colonne #}
-          <input type="text"
-                 class="list-title form-control"
-                 value="{{ column.columnTitle }}"
-                 placeholder="Titre de la liste…">
 
-          <button class="add-card-button btn pe-2 m-3">Ajouter une carte</button>
-          <button class="remove-list-button btn btn-danger">Supprimer cette liste</button>
-        </div>
 
-        <ul class="cards text-center me-4 pe-2">
-          {# 🔁 BOUCLE SUR LES CARTES DE LA COLONNE #}
-		 
-			
-		  
-          {% for card in column.cards %}
-            <li class="card" draggable="true" data-card-id="{{ card.id }}">
-		 
-              <div class="card-body">
-                <h5 class="card-title btn"
-                    data-bs-toggle="modal"
-                    data-bs-target="#cardModal"
-                    data-bs-title="{{ card.cardTitle }}"
-                    data-bs-description="{{ card.description }}"
-                    data-bs-comments="">
-                  {{ card.cardTitle }}
-                </h5>
+			{# #################### #}
 
-                <button class="remove-card-button">🗑 Supprimer</button>
-              </div>
-            </li>
-          {% endfor %}
-        </ul>
-      </div>
-    {% endfor %}
-  
-		
-		
-		
-		
-		
-		
+
+			{# 🔁 BOUCLE SUR LES COLONNES #}
+				{% for column in tableau.columns %}
+					<div class="list border p-2 rounded shadow" data-column-id="{{ column.id }}"> <div
+						class="list-header m-1">
+						{# titre de la colonne #}
+						<input type="text" class="list-title form-control" value="{{ column.columnTitle }}" placeholder="Titre de la liste…">
+
+						<button class="add-card-button btn pe-2 m-3">Ajouter une carte</button>
+						<button class="remove-list-button btn btn-danger">Supprimer cette liste</button>
+					</div>
+
+					<ul
+						class="cards text-center me-4 pe-2">
+						{# 🔁 BOUCLE SUR LES CARTES DE LA COLONNE #}
+
+
+						{% for card in column.cards %}
+							<li class="card" draggable="true" data-card-id="{{ card.id }}">
+
+								<div class="card-body">
+									<h5 class="card-title btn" data-bs-toggle="modal" data-bs-target="#cardModal" data-bs-title="{{ card.cardTitle }}" data-bs-description="{{ card.description }}" data-bs-comments="">
+										{{ card.cardTitle }}
+									</h5>
+
+									<button class="remove-card-button">🗑 Supprimer</button>
+								</div>
+							</li>
+						{% endfor %}
+					</ul>
+				</div>
+			{% endfor %}
+
+
 		</div>
 	</main>
 
 	<template id="list-template">
-		<section class="list border p-2 rounded shadow  "  data-column-id="">
+		<section class="list border p-2 rounded shadow  " data-column-id="">
 			<div class="list-header m-1">
 				<input type="text" class="list-title form-control" placeholder="Titre de la liste">
 				<button class="add-card-button btn pe-2 m-3">
@@ -103,7 +111,6 @@
 			<ul class="cards text-center me-4 pe-2"></ul>
 		</section>
 	</template>
-
 
 
 	<template id="card-template">
@@ -143,6 +150,27 @@
 							<label for="card-comments" class="form-label fw-semibold">Commentaires</label>
 							<textarea id="card-comments" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez des commentaires"></textarea>
 						</div>
+
+						<div class="mb-4 w-100">
+							<label for="card-members" class="form-label fw-semibold">Membres assignés</label>
+							<input type="text" id="card-members" class="form-control" placeholder="Ex. John, Alice">
+						</div>
+
+						<div class="mb-4 w-100">
+							<label for="card-attachment" class="form-label fw-semibold">Pièce jointe (URL)</label>
+							<input type="text" id="card-attachment" class="form-control" placeholder="Ex. https://...">
+						</div>
+
+						<div class="mb-4 w-100">
+							<label for="card-notification" class="form-label fw-semibold">Notification (texte)</label>
+							<input type="text" id="card-notification" class="form-control" placeholder="Ex. à envoyer demain">
+						</div>
+
+						<div class="mb-4 w-100">
+							<label for="card-deadline" class="form-label fw-semibold">Date limite</label>
+							<input type="datetime-local" id="card-deadline" class="form-control">
+						</div>
+
 
 						<div class="d-grid">
 							<button type="submit" class="btn btn-primary">Enregistrer</button>

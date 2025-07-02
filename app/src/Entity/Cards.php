@@ -29,7 +29,7 @@ class Cards
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $startDate = null;
 
-    #[ORM\Column(length: 50, nullable: true)]
+    #[ORM\Column(length: 100, nullable: true)]
     private ?string $members = null;
 
     #[ORM\Column(length: 255, nullable: true)]

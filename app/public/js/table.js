@@ -229,6 +229,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = trigger.getAttribute('data-bs-description') || '';
       const comments = trigger.getAttribute('data-bs-comments') || '';
 
+      ///
+      const members = trigger.getAttribute('data-bs-members') || '';
+const attachment = trigger.getAttribute('data-bs-attachment') || '';
+const notification = trigger.getAttribute('data-bs-notification') || '';
+const deadline = trigger.getAttribute('data-bs-deadline') || '';
+
+document.getElementById('card-members').value = members;
+document.getElementById('card-attachment').value = attachment;
+document.getElementById('card-notification').value = notification;
+document.getElementById('card-deadline').value = deadline;
       cardModal.querySelector('#card-title').value = title;
       cardModal.querySelector('#card-description').value = description;
       cardModal.querySelector('#card-comments').value = comments;
@@ -246,15 +256,26 @@ document.addEventListener('DOMContentLoaded', () => {
       const description = document.getElementById('card-description').value.trim();
       const comments = document.getElementById('card-comments').value.trim();
 
+      // 
+const members = document.getElementById('card-members').value.trim();
+const attachment = document.getElementById('card-attachment').value.trim();
+const notification = document.getElementById('card-notification').value.trim();
+const deadline = document.getElementById('card-deadline').value;
       // 🆕 Si création, on utilise currentColumnId capturé au clic « Ajouter une carte »
       const cardId = currentCardElement?.dataset.cardId || null;
       const method = cardId ? 'PUT' : 'POST';
       const url = cardId ? `/api/cards/${cardId}` : '/api/cards';
 
       const payload = {
-        cardTitle: title,
-        description,
-        comments,
+  // Champs attendus par l’API Symfony
+  cardTitle: title,
+  description,
+  comment: comments,  // 🟢 attention : ici c'est `comment` (pas `comments`)
+  attachment,
+  members,
+  notification,
+  deadline,
+
         columns: currentColumnId, // <‑‑ champ attendu par l’API Symfony
       };
 
@@ -335,6 +356,12 @@ try {
       titleEl.setAttribute('data-bs-title', title);
       titleEl.setAttribute('data-bs-description', description);
       titleEl.setAttribute('data-bs-comments', comments);
+
+      // 🔽 AJOUTE ICI les autres :
+  titleEl.setAttribute('data-bs-members', members);
+  titleEl.setAttribute('data-bs-attachment', attachment);
+  titleEl.setAttribute('data-bs-notification', notification);
+  titleEl.setAttribute('data-bs-deadline', deadline);
     } else {
       const cardTemplate = document.getElementById('card-template');
       const clone = cardTemplate.content.cloneNode(true);
@@ -349,6 +376,11 @@ try {
       titleEl.setAttribute('data-bs-description', description);
       titleEl.setAttribute('data-bs-comments', comments);
 
+// 🔽 AJOUTE ICI AUSSI :
+titleEl.setAttribute('data-bs-members', members);
+titleEl.setAttribute('data-bs-attachment', attachment);
+titleEl.setAttribute('data-bs-notification', notification);
+titleEl.setAttribute('data-bs-deadline', deadline);
       const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
       column?.appendChild(newCard);
     }

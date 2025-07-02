@@ -3,6 +3,7 @@
 namespace App\Controller\Api;
 
 use App\Entity\Columns;
+use App\Entity\Notification;
 use App\Entity\Tables;
 use App\Repository\ColumnsRepository;
 use App\Repository\TablesRepository;
@@ -64,6 +65,18 @@ class ColumnsApiController extends AbstractController
         $column->setTables($table);
         $column->setRanking($ranking);
 
+
+$notif = new Notification();
+$notif->setMessage("Nouvelle colonne ajoutée : " . $column->getColumnTitle());
+$notif->setTables($table);
+$notif->setCreatedAt(new \DateTimeImmutable());
+
+$em->persist($notif);
+
+
+
+
+
         $em->persist($column);
         $em->flush();
 
@@ -95,6 +108,15 @@ class ColumnsApiController extends AbstractController
             $column->setRanking($data['ranking']);
         }
 
+
+$notif = new Notification();
+$notif->setMessage("Colonne modifiée : " . $column->getColumnTitle());
+$notif->setTables($column->getTables());
+$notif->setCreatedAt(new \DateTimeImmutable());
+
+$em->persist($notif);
+
+
         $em->flush();
 
         return new JsonResponse(['message' => 'Colonne mise à jour']);
@@ -113,7 +135,13 @@ class ColumnsApiController extends AbstractController
             $em->remove($card);
         }
      
-     
+     $notif = new Notification();
+$notif->setMessage("Colonne supprimée : " . $column->getColumnTitle());
+$notif->setTables($column->getTables());
+$notif->setCreatedAt(new \DateTimeImmutable());
+
+$em->persist($notif);
+
 
 
         $em->remove($column);
