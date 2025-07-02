@@ -73,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
     li.appendChild(span);
 
     const btn = document.createElement('button');
-    btn.className = 'btn btn-sm btn-outline-danger ms-2';
-    btn.innerHTML = '🗑';
+    btn.className = 'btn btn-sm  ms-2';
+    btn.innerHTML = '<i class="bi bi-trash3"></i>';
     btn.addEventListener('click', () => deleteNotif(id, li));
     li.appendChild(btn);
 

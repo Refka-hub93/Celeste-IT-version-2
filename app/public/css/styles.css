@@ -515,6 +515,12 @@ form input[type="hidden"] {
 
 /* FIN CSS page LOGIN / SIGNIN et formulaire de contact */
 
+
+/* notification */
+.custom-title {
+  color: #ffffff !important;  
+}
+
 /* Footer */
 
 footer {
