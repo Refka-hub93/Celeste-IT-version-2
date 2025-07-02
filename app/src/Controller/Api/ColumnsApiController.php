@@ -16,28 +16,28 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class ColumnsApiController extends AbstractController
 {
 
-#[Route('/api/columns', name: 'api_columns_index', methods: ['GET'])]
-public function index(Request $request, ColumnsRepository $columnsRepo): JsonResponse
-{
-    $tableId = $request->query->get('tableId');
+    #[Route('/api/columns', name: 'api_columns_index', methods: ['GET'])]
+    public function index(Request $request, ColumnsRepository $columnsRepo): JsonResponse
+    {
+        $tableId = $request->query->get('tableId');
 
-    if (!$tableId) {
-        return new JsonResponse(['error' => 'Table ID is required'], 400);
+        if (!$tableId) {
+            return new JsonResponse(['error' => 'Table ID is required'], 400);
+        }
+
+        $columns = $columnsRepo->findBy(['tables' => $tableId]);
+
+        $data = [];
+        foreach ($columns as $column) {
+            $data[] = [
+                'id' => $column->getId(),
+                'title' => $column->getColumnTitle(),
+                'ranking' => $column->getRanking()
+            ];
+        }
+
+        return new JsonResponse($data);
     }
-
-    $columns = $columnsRepo->findBy(['tables' => $tableId]);
-
-    $data = [];
-    foreach ($columns as $column) {
-        $data[] = [
-            'id' => $column->getId(),
-            'title' => $column->getColumnTitle(),
-            'ranking' => $column->getRanking()
-        ];
-    }
-
-    return new JsonResponse($data);
-}
 
 
 
@@ -107,12 +107,18 @@ public function index(Request $request, ColumnsRepository $columnsRepo): JsonRes
         if (!$column) {
             return new JsonResponse(['error' => 'Colonne introuvable'], 404);
         }
+        // // Supprimer les cartes associées à la colonne
+        // $cards = $column->getCards();
+        // foreach ($cards as $card) {
+        //     $em->remove($card);
+        // }
+     
+     
+
 
         $em->remove($column);
         $em->flush();
 
         return new JsonResponse(['message' => 'Colonne supprimée']);
     }
- 
-
-} 
+}

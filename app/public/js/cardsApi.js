@@ -18,22 +18,23 @@ function createCard(cardTitle, columnId, description = '') {
 }
 
 
-fetch('/api/cards', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({ cardTitle: "Ma carte", columns: 4})
-})
-.then(res => res.json())
-.then(data => {
-  const cardId = data.card.id;
+// fetch('/api/cards', {
+//   method: 'POST',
+//   headers: { 'Content-Type': 'application/json' },
+//   body: JSON.stringify({ cardTitle: "Ma carte", columns: 4})
+// })
+// .then(res => res.json())
+// .then(data => {
+//   console.log("Réponse de l'API :", data); // Log pour voir la structure de la réponse
+//   const cardId = data.card.id;
 
-  // 🔁 Appel de l'API pour récupérer les détails
-  return fetch(`/api/cards/${cardId}`);
-})
-.then(res => res.json())
-.then(details => {
-  console.log("Détails complets de la carte :", details);
-});
+//   // 🔁 Appel de l'API pour récupérer les détails
+//   return fetch(`/api/cards/${cardId}`);
+// })
+// .then(res => res.json())
+// .then(details => {
+//   console.log("Détails complets de la carte :", details);
+// });
 
 /**
  * ✏️ Met à jour une carte (titre, description, date, etc.)
@@ -64,6 +65,6 @@ function moveCard(cardId, newColumnId) {
 
 
 
-createCard("Nouvelle tâche", 4, "")
-  .then(data => console.log("✅ Carte créée :", data))
-  .catch(err => alert("Erreur : " + err.message));
+// createCard("Nouvelle tâche", 4, "")
+//   .then(data => console.log("✅ Carte créée :", data))
+//   .catch(err => alert("Erreur : " + err.message));
