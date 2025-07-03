@@ -372,6 +372,12 @@ article ul {
     gap: 10px;
 }
 
+
+.cards .card {
+  margin: 1rem; /* espace entre les cartes */
+}
+
+
 button {
     border: none;
     font-size: 0.9rem;
@@ -397,7 +403,14 @@ button {
 #dashborard-card {
 color: rgb(206, 13, 206);
 }
+
+
+
+
 /* Fin CSS du Tableau */
+
+
+
 
 
 /* Modal */
@@ -573,6 +586,35 @@ footer {
     border: none;
     cursor: pointer;
 }
+
+
+
+
+/* 📌 Fait défiler les cartes dans chaque colonne */
+.list {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* évite les débordements visuels */
+}
+
+.list .cards {
+  overflow-y: auto;
+  flex-grow: 1;
+  max-height: 100%;
+  padding-right: 5px;
+  margin-top: 10px;
+  scrollbar-width: thin; /* Firefox */
+}
+
+.cards::-webkit-scrollbar {
+  width: 6px;
+}
+
+.cards::-webkit-scrollbar-thumb {
+  background-color: var(--principalcolor);
+  border-radius: 6px;
+}
+
 
 /* Media queries pour les tablettes */
 @media (min-width: 768px) {

@@ -63,8 +63,4 @@ function moveCard(cardId, newColumnId) {
 }
 
 
-
-
-// createCard("Nouvelle tâche", 4, "")
-//   .then(data => console.log("✅ Carte créée :", data))
-//   .catch(err => alert("Erreur : " + err.message));
+ 

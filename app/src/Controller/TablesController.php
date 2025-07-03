@@ -128,4 +128,45 @@ final class TablesController extends AbstractController
 
         return new JsonResponse($data, Response::HTTP_OK);
     }
+
+
+
+    // ✅ Suppression d’un tableau  
+#[Route('/tables/{id}/delete', name: 'app_tables_delete', methods: ['POST'])]
+public function deleteTable(
+    Request $request,
+    Tables $tableau,
+    EntityManagerInterface $em
+): Response {
+    // Vérifie le token CSRF
+    if ($this->isCsrfTokenValid('delete_table_'.$tableau->getId(),
+                                $request->request->get('_token'))) {
+
+        $em->remove($tableau);
+        $em->flush();
+
+        $this->addFlash('success', 'Tableau supprimé avec succès.');
+    } else {
+        $this->addFlash('error', 'Jeton CSRF invalide ; suppression annulée.');
+    }
+
+    return $this->redirectToRoute('app_tables');
+}
+
+
+// // ✅ API DELETE /api/tables/{id}
+// #[Route('/api/tables/{id}', name: 'api_table_delete', methods: ['DELETE'])]
+// public function deleteTableApi(
+//     Tables $tableau,
+//     EntityManagerInterface $em
+// ): JsonResponse {
+//     $em->remove($tableau);
+//     $em->flush();
+
+//     return new JsonResponse(
+//         ['message' => 'Tableau supprimé'],
+//         Response::HTTP_NO_CONTENT
+//     );
+// }
+
 }

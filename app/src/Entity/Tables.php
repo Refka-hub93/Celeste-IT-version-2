@@ -30,7 +30,7 @@ class Tables
     /**
      * @var Collection<int, Columns>
      */
-    #[ORM\OneToMany(targetEntity: Columns::class, mappedBy: 'tables')]
+    #[ORM\OneToMany(targetEntity: Columns::class, mappedBy: 'tables', cascade: ['remove'], orphanRemoval: true)]
     private Collection $columns;
 
     /**

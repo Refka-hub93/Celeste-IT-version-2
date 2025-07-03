@@ -27,7 +27,16 @@
                             <a href="{{ path('app_tables_show', {'id': tableau.id}) }}" class="btn btn-primary text-light mt-auto w-100">
                                 🡒 Ouvrir le tableau
                             </a>
-
+ {# ▶︎ Nouveau bouton “supprimer” #}
+  <form method="post"
+        action="{{ path('app_tables_delete', {'id': tableau.id}) }}"
+        onsubmit="return confirm('Supprimer définitivement le tableau « {{ tableau.title }} » ?');">
+    <input type="hidden" name="_token"
+           value="{{ csrf_token('delete_table_' ~ tableau.id) }}">
+    <button class="btn btn-outline-danger w-100">
+      🗑 Supprimer
+    </button>
+  </form>
                             
                         </div>
                     </div>

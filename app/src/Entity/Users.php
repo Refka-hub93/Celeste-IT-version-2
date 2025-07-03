@@ -54,11 +54,14 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Orders::class, mappedBy: 'users')]
     private Collection $orders;
 
+    
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->tables = new ArrayCollection();
         $this->orders = new ArrayCollection();
+     
     }
 
     public function getId(): ?int
@@ -223,4 +226,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+  
 }

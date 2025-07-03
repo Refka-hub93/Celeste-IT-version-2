@@ -132,12 +132,7 @@ cardTitle.setAttribute('data-bs-comments', '');
 
 
 
-  // // 👉 Attache uniquement le modal au titre
-  // cardTitle.setAttribute('data-bs-toggle', 'modal');
-  // cardTitle.setAttribute('data-bs-target', '#cardModal');
-  // cardTitle.setAttribute('data-bs-title', cardTitle.textContent);
-  // cardTitle.setAttribute('data-bs-description', '');
-  // cardTitle.setAttribute('data-bs-comments', '');
+   
 
   // 🔥 Gestion suppression carte
   const removeCardButton = insertedCard.querySelector('.remove-card-button');
@@ -402,49 +397,3 @@ titleEl.setAttribute('data-bs-deadline', deadline);
   }
 });
 
-
-//   // drag and drop
-// function handleDragStart(e) {
-//   draggedCard = this;
-//   e.dataTransfer.setData('text/plain', this.dataset.cardId);
-//   setTimeout(() => {
-//     this.style.display = 'none';
-//   }, 0);
-// }
-
-// function handleDragEnd() {
-//   setTimeout(() => {
-//     this.style.display = 'block';
-//   }, 0);
-//   draggedCard = null;
-// }
-
-// function handleDragOver(e) {
-//   e.preventDefault();
-// }
-
-// function handleDragEnter(e) {
-//   e.preventDefault();
-//   this.classList.add('drag-over');
-// }
-
-// function handleDragLeave() {
-//   this.classList.remove('drag-over');
-// }
-
-// function handleDrop(e) {
-//   e.preventDefault();
-//   this.classList.remove('drag-over');
-
-//   const newColumnId = this.dataset.columnId;
-//   if (draggedCard && newColumnId) {
-//     this.querySelector('.cards').appendChild(draggedCard);
-
-//     const cardId = draggedCard.dataset.cardId;
-//     if (cardId) {
-//       moveCard(cardId, newColumnId)
-//         .then(data => console.log('✅ Carte déplacée :', data))
-//         .catch(err => console.error('❌ Déplacement échoué :', err.message));
-//     }
-//   }
-// }

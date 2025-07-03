@@ -113,44 +113,119 @@ $em->persist($notif);
 
 
     /** Mise à jour */
-    #[Route('/{id}', name: 'update', methods: ['PUT'])]
-    public function update(
-        int $id,
-        Request $request,
-        CardsRepository $cardsRepo,
-        EntityManagerInterface $em
-    ): JsonResponse {
-        $card = $cardsRepo->find($id);
-        if (!$card) {
-            return new JsonResponse(['error' => 'Carte introuvable'], 404);
+//     #[Route('/{id}', name: 'update', methods: ['PUT'])]
+//     public function update(
+//         int $id,
+//         Request $request,
+//         CardsRepository $cardsRepo,
+//         EntityManagerInterface $em
+//     ): JsonResponse {
+//         $card = $cardsRepo->find($id);
+//         if (!$card) {
+//             return new JsonResponse(['error' => 'Carte introuvable'], 404);
+//         }
+
+//         $data = json_decode($request->getContent(), true);
+//         $card->setCardTitle($data['cardTitle'] ?? $card->getCardTitle())
+//             ->setDescription($data['description'] ?? $card->getDescription())
+//             ->setComment($data['comment'] ?? $card->getComment())
+//             ->setMembers($data['members'] ?? $card->getMembers())
+//             ->setAttachment($data['attachment'] ?? $card->getAttachment())
+//             ->setNotification($data['notification'] ?? $card->getNotification())
+//             ->setDeadline(
+//                 !empty($data['deadline'])
+//                     ? new \DateTime($data['deadline'])
+//                     : $card->getDeadline()
+//             );
+
+
+
+
+
+//  // ✅ AJOUTE ICI : création d'une notification liée au tableau
+//     $notif = new Notification();
+//     $notif->setMessage("Carte mise à jour : " . $card->getCardTitle());
+//     $notif->setTables($card->getColumns()->getTables());
+//     $notif->setCreatedAt(new \DateTimeImmutable());
+
+//     $em->persist($notif);
+
+
+
+
+
+
+
+
+
+
+//         $em->flush();
+
+//         return new JsonResponse(['message' => 'Carte mise à jour']);
+//     }
+
+
+
+#[Route('/{id}', name: 'update', methods: ['PUT'])]
+public function update(
+    int $id,
+    Request $request,
+    CardsRepository $cardsRepo,
+    EntityManagerInterface $em
+): JsonResponse {
+    $card = $cardsRepo->find($id);
+    if (!$card) {
+        return new JsonResponse(['error' => 'Carte introuvable'], 404);
+    }
+
+    $data = json_decode($request->getContent(), true);
+
+    // ✅ 👇 NOUVELLE PARTIE pour le drag & drop (changement de colonne)
+    if (isset($data['columns'])) {
+        $newColumn = $em->getRepository(Columns::class)->find($data['columns']);
+        if ($newColumn) {
+            $card->setColumns($newColumn);
+
+            $notif = new Notification();
+            $notif->setMessage("Carte déplacée : " . $card->getCardTitle());
+            $notif->setTables($newColumn->getTables());
+            $notif->setCreatedAt(new \DateTimeImmutable());
+
+            $em->persist($notif);
         }
+    }
 
-        $data = json_decode($request->getContent(), true);
-        $card->setCardTitle($data['cardTitle'] ?? $card->getCardTitle())
-            ->setDescription($data['description'] ?? $card->getDescription())
-            ->setComment($data['comment'] ?? $card->getComment())
-            ->setMembers($data['members'] ?? $card->getMembers())
-            ->setAttachment($data['attachment'] ?? $card->getAttachment())
-            ->setNotification($data['notification'] ?? $card->getNotification())
-            ->setDeadline(
-                !empty($data['deadline'])
-                    ? new \DateTime($data['deadline'])
-                    : $card->getDeadline()
-            );
+    // ✅ Ton ancien code conservé tel quel :
+    $card->setCardTitle($data['cardTitle'] ?? $card->getCardTitle())
+        ->setDescription($data['description'] ?? $card->getDescription())
+        ->setComment($data['comment'] ?? $card->getComment())
+        ->setMembers($data['members'] ?? $card->getMembers())
+        ->setAttachment($data['attachment'] ?? $card->getAttachment())
+        ->setNotification($data['notification'] ?? $card->getNotification())
+        ->setDeadline(
+            !empty($data['deadline'])
+                ? new \DateTime($data['deadline'])
+                : $card->getDeadline()
+        );
 
-
- // ✅ AJOUTE ICI : création d'une notification liée au tableau
+    // ✅ Notification classique conservée
     $notif = new Notification();
     $notif->setMessage("Carte mise à jour : " . $card->getCardTitle());
     $notif->setTables($card->getColumns()->getTables());
     $notif->setCreatedAt(new \DateTimeImmutable());
 
     $em->persist($notif);
+    $em->flush();
 
-        $em->flush();
+    return new JsonResponse(['message' => 'Carte mise à jour']);
+}
 
-        return new JsonResponse(['message' => 'Carte mise à jour']);
-    }
+
+
+
+
+
+
 
     /** Suppression */
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
@@ -162,7 +237,12 @@ $em->persist($notif);
         $card = $cardsRepo->find($id);
         if (!$card) {
             return new JsonResponse(['error' => 'Carte introuvable'], 404);
+
+            
         }
+
+
+
 
 
 $notif = new Notification();

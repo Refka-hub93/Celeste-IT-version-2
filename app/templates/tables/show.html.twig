@@ -7,6 +7,8 @@
 	<script src="{{ asset('js/tableApi.js') }}" defer></script>
 	<script src="{{ asset('js/cardsApi.js') }}" defer></script>
 <script src="{{ asset('js/notification.js') }}" defer></script>
+<script src="{{ asset('js/drag.js') }}" defer></script>
+
 {% endblock %}
 
 {% block title %}
@@ -79,7 +81,7 @@
 
 
 						{% for card in column.cards %}
-							<li class="card" draggable="true" data-card-id="{{ card.id }}">
+							<li class="card" draggable="true"  role="listitem"  data-card-id="{{ card.id }}">
 
 								<div class="card-body">
 									<h5 class="card-title btn" data-bs-toggle="modal" data-bs-target="#cardModal" data-bs-title="{{ card.cardTitle }}" data-bs-description="{{ card.description }}" data-bs-comments="">
