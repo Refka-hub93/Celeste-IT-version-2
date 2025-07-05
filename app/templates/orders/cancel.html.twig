@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Paiement annulé</h2>
+   
+    <a href="{{ path('app_main') }}" class="btn btn-secondary">Retour à l'accueil</a>
+
+
+    {% set message = "Votre paiement a été annulé. Vous pouvez réessayer ou contacter le support si vous avez des questions." %}
+{% set status = 'error' %}
+
+    {% if status == 'error' %}
+        <div class="alert alert-danger">
+            <strong>Erreur :</strong> {{ message }}
+        </div>
+    {% else %}
+        <div class="alert alert-success">
+            <strong>Succès :</strong> {{ message }}
+        </div>
+    {% endif %}
+
+    <a href="{{ path('app_tables') }}" class="btn btn-primary">Retour aux tableaux</a>
+{% endblock %}
+
+

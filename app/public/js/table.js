@@ -397,3 +397,34 @@ titleEl.setAttribute('data-bs-deadline', deadline);
   }
 });
 
+
+
+document.getElementById('add-member-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    const email = document.getElementById('email-to-add').value;
+    const tableId = document.querySelector('main#board').dataset.tableId;
+
+    fetch(`/tables/${tableId}/add-user-by-email`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: new URLSearchParams({ email })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const feedback = document.getElementById('add-member-feedback');
+      if (data.error) {
+        feedback.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+      } else {
+        feedback.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+        document.getElementById('email-to-add').value = '';
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      document.getElementById('add-member-feedback').innerHTML =
+        `<div class="alert alert-danger">Une erreur est survenue</div>`;
+    });
+  });

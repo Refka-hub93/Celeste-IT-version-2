@@ -35,21 +35,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
-            // $context = [
-            //     'firstname' => $user->getFirstname(),
-            //     'lastname' => $user->getLastname(),
-            //     'email' => $user->getEmail()
-            // ];
-            // $email = (new TemplatedEmail())
-            //     ->from('demo@celeste-it.fr')
-            //     ->to($user->getEmail())
-            //     ->subject('Votre inscription sur notre site')
-            //     ->htmlTemplate('emails/welcome.html.twig')
-            //     ->context($context);
-
-            // $mailer->send($email);
+            
 
             $emailService->send(
                 'celeste-it@celest-it.fr',                   // from

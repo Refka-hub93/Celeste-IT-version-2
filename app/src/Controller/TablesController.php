@@ -66,23 +66,19 @@ final class TablesController extends AbstractController
 
 
     #[Route('/tables/{id}', name: 'app_tables_show', methods: ['GET'])]
-    public function showTable(Tables $tableau): Response
+    public function showTable(Tables $tableau, UserInterface $currentUser): Response
     {
+
+if (!$tableau->getUsers()->contains($currentUser)) {
+            $this->addFlash('error', 'Vous n\'êtes pas autorisé à voir ce tableau.');
+            return $this->redirectToRoute('app_tables');
+        }
+
+
         return $this->render('tables/show.html.twig', [
             'tableau' => $tableau,
         ]);
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -153,20 +149,54 @@ public function deleteTable(
     return $this->redirectToRoute('app_tables');
 }
 
+ #[Route('/tables/{id}/add-user-by-email', name: 'app_tables_add_user_by_email', methods: ['POST'])]
+public function addUserToTableByEmail(
+    Request $request,
+    EntityManagerInterface $em,
+    Tables $tableau,
+    UserInterface $currentUser
+): JsonResponse {
+    // Vérifie que l'utilisateur connecté est membre du tableau
+    if (!$tableau->getUsers()->contains($currentUser)) {
+        return new JsonResponse(['error' => 'Accès refusé : vous n\'êtes pas membre de ce tableau.'], Response::HTTP_FORBIDDEN);
+    }
 
-// // ✅ API DELETE /api/tables/{id}
-// #[Route('/api/tables/{id}', name: 'api_table_delete', methods: ['DELETE'])]
-// public function deleteTableApi(
-//     Tables $tableau,
-//     EntityManagerInterface $em
-// ): JsonResponse {
-//     $em->remove($tableau);
-//     $em->flush();
+    $email = $request->request->get('email');
 
-//     return new JsonResponse(
-//         ['message' => 'Tableau supprimé'],
-//         Response::HTTP_NO_CONTENT
-//     );
-// }
+    if (!$email) {
+        return new JsonResponse(['error' => 'Email requis'], Response::HTTP_BAD_REQUEST);
+    }
+
+    // Recherche de l'utilisateur par email
+    $user = $em->getRepository(Users::class)->findOneBy(['email' => $email]);
+
+    if (!$user) {
+        return new JsonResponse(['error' => 'Aucun utilisateur trouvé avec cet email'], Response::HTTP_NOT_FOUND);
+    }
+
+    // Vérifie s'il est déjà membre
+    if ($tableau->getUsers()->contains($user)) {
+        return new JsonResponse(['message' => 'Utilisateur déjà membre de ce tableau'], Response::HTTP_OK);
+    }
+
+    // Ajout du user au tableau
+    $tableau->addUser($user);
+    $em->flush();
+
+    return new JsonResponse([
+        'message' => 'Utilisateur ajouté avec succès au tableau',
+        'tableau' => [
+            'id' => $tableau->getId(),
+            'title' => $tableau->getTitle(),
+        ],
+        'user' => [
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+        ]
+    ]);
+}
+
+
+
 
 }

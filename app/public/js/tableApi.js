@@ -52,3 +52,61 @@ function fetchTables() {
     });
 }
 
+
+
+ 
+  document.addEventListener('DOMContentLoaded', () => {
+    const form      = document.getElementById('add-member-form');
+    if (!form) return;                       // Formulaire masqué si l’utilisateur n’est pas membre
+
+    const feedback  = document.getElementById('add-member-feedback');
+    const emailInput = document.getElementById('email-to-add');
+    const tableId   = document.querySelector('main#board')?.dataset.tableId;
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      feedback.innerHTML = '';               // Nettoie les messages précédents
+
+      const email = emailInput.value.trim();
+      if (!email) {
+        feedback.innerHTML = `<div class="alert alert-warning">Veuillez saisir un email.</div>`;
+        return;
+      }
+
+      try {
+        const res  = await fetch(`/tables/${tableId}/add-user-by-email`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: new URLSearchParams({ email })
+        });
+
+        const data = await res.json();       // Toutes les réponses renvoient du JSON
+
+        // ✋ Cas : l’utilisateur connecté n’est pas membre → 403
+        if (res.status === 403) {
+          feedback.innerHTML = `<div class="alert alert-danger">${data.error ?? 'Accès refusé : vous n’êtes pas membre de ce tableau.'}</div>`;
+          return;
+        }
+
+        // Cas : autre erreur (400, 404, 500…)
+        if (!res.ok || data.error) {
+          feedback.innerHTML = `<div class="alert alert-danger">${data.error ?? 'Une erreur est survenue.'}</div>`;
+          return;
+        }
+
+        // ✅ Succès
+        feedback.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+        emailInput.value = '';
+
+      } catch (err) {
+        console.error(err);
+        feedback.innerHTML = `<div class="alert alert-danger">Erreur réseau ; réessayez plus tard.</div>`;
+      }
+    });
+  });
+ 
+
+// Fonction pour ajouter un utilisateur à un tableau par email

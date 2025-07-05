@@ -29,7 +29,7 @@ class Columns
      */
     #[ORM\OneToMany(targetEntity: Cards::class, mappedBy: 'columns')]
     private Collection $cards;
-
+    // Por gérer la suppression en cascade des cartes associées à une colonne, on utilise l'annotation `onDelete: 'CASCADE'` dans la relation ManyToOne.
     public function __construct()
     {
         $this->cards = new ArrayCollection();

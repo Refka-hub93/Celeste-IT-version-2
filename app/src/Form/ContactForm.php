@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Contact;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -19,7 +20,8 @@ class ContactForm extends AbstractType
         $builder
             ->add('email')
             ->add('firstname', TextType::class, ['label' => 'Prénom'])
-            ->add('lastname', )
+           ->add('lastname', TextType::class, [
+                'label' => 'Nom' ])
             ->add('subject', ChoiceType::class, [
                 'label' => 'Sujet',
                 'choices' => [
@@ -43,13 +45,20 @@ class ContactForm extends AbstractType
                     ]),
                 ],
             ])
+           ->add('rgpd', CheckboxType::class, [
+                'label' => 'J\'accepte la collecte de mes données personnelles conformément au RGPD',
+                'required' => true,
+            ])
             ->add('submit', SubmitType::class, ['label'=>'Envoyer']);
+
     }
+
+    // j'accepte la collecte d emes données personnelles conformeme au rgpd
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Contact::class,
+            
         ]);
     }
 }

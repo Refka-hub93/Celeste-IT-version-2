@@ -23,8 +23,12 @@ class Orders
     #[ORM\Column(length: 50)]
     private ?string $status = null;
 
-    #[ORM\Column(length: 100)]
-    private ?string $totalPrice = null;
+    // #[ORM\Column(length: 100)]
+    // private ?string $totalPrice = null;
+
+    #[ORM\Column(type: Types::FLOAT)]
+    private ?float $totalPrice = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     private ?Users $users = null;
@@ -70,17 +74,18 @@ class Orders
         return $this;
     }
 
-    public function getTotalPrice(): ?string
+    public function getTotalPrice(): ?float
     {
         return $this->totalPrice;
     }
 
-    public function setTotalPrice(string $totalPrice): static
+    public function setTotalPrice(float $totalPrice): static
     {
         $this->totalPrice = $totalPrice;
 
         return $this;
     }
+
 
     public function getUsers(): ?Users
     {

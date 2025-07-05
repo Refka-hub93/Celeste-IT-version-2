@@ -61,6 +61,18 @@
                                 }) }}
                             </div>
 
+                              <div class="col-12">
+                                <div class="form-check">
+                                    {{ form_widget(form.rgpd, {
+                                        'attr': {'class': 'form-check-input'}
+                                    }) }}
+                                    {{ form_label(form.rgpd, null, {
+                                        'label_attr': {'class': 'form-check-label'}
+                                    }) }}
+                                    {{ form_errors(form.rgpd) }}
+                                </div>
+                            </div>
+
                             <div class="col-12 text-center">
                                 {{ form_row(form.submit, {
                                     'attr': {'class': 'btn btn-primary px-4 py-2'}

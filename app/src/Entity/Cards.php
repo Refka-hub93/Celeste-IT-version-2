@@ -42,6 +42,8 @@ class Cards
     private ?\DateTime $deadline = null;
 
     #[ORM\ManyToOne(inversedBy: 'cards')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]  
+    //  Cela dit à MySQL : “Si une colonne est supprimée, supprime aussi les cartes associées”.
     private ?Columns $columns = null;
 
     public function __construct()

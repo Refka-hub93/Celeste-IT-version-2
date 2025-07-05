@@ -11,16 +11,30 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[IsGranted('ROLE_USER')]
 class NotificationController extends AbstractController
 {
-    #[Route('/notifications', name: 'app_notifications')]
+    // #[Route('/notifications', name: 'app_notifications')]
 
-    public function index(NotificationRepository $notificationRepo): Response
-    {
-        $notifications = $notificationRepo->findBy([], ['createdAt' => 'DESC']);
+    // public function index(NotificationRepository $notificationRepo): Response
+    // {
+    //     $notifications = $notificationRepo->findBy([], ['createdAt' => 'DESC']);
 
-        return $this->render('notifications/index.html.twig', [
-            'notifications' => $notifications
-        ]);
-    }
+    //     return $this->render('notifications/index.html.twig', [
+    //         'notifications' => $notifications
+    //     ]);
+    // }
 
-    
+
+
+#[Route('/notifications', name: 'app_notifications')]
+public function index(NotificationRepository $notificationRepo): Response
+{
+    $user = $this->getUser(); // utilisateur connecté
+    $notifications = $notificationRepo->findBy(
+        ['user' => $user],
+        ['createdAt' => 'DESC']
+    );
+
+    return $this->render('notifications/index.html.twig', [
+        'notifications' => $notifications
+    ]);
+}
 }

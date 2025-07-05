@@ -190,5 +190,21 @@
 		</div>
 	</div>
 
+{% if tableau.users.contains(app.user) %}
+  <div class="container mt-5">
+    <div class="card shadow p-4">
+      <h5 class="card-title">Ajouter un membre au tableau</h5>
+      <form id="add-member-form" class="row g-3">
+        <div class="col-md-8">
+          <input type="email" id="email-to-add" class="form-control" placeholder="Email de l'utilisateur" required>
+        </div>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-success w-100">Ajouter</button>
+        </div>
+      </form>
+      <div id="add-member-feedback" class="mt-3"></div>
+    </div>
+  </div>
+{% endif %}
 
 {% endblock %}

@@ -25,11 +25,18 @@ class Notification
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $targetUsers = null;
 
+ 
 
-    #[ORM\ManyToOne(inversedBy: 'notification')]
-    #[ORM\JoinColumn(nullable: false)]
+
+    #[ORM\ManyToOne(inversedBy: 'notifications')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Tables $table = null;
 
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

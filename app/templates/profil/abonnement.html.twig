@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<section class="container mt-4 mb-5 p-4 shadow d-flex flex-column align-items-center text-center">
+    <h1 class="p-3 fs-2">Abonnement annuel Celeste-IT</h1>
+
+    <div class="m-4">
+        <p>Accédez à toutes les fonctionnalités de votre tableau de projet pour une année complète.</p>
+    </div>
+
+    <ul class="list-group w-100 mb-4" style="max-width: 600px;">
+        <li class="list-group-item">📅 Durée : 1 an</li>
+        <li class="list-group-item">🔒 Accès illimité à vos projets</li>
+        <li class="list-group-item">📈 Mises à jour incluses</li>
+        <li class="list-group-item">🛠️ Support prioritaire</li>
+        <li class="list-group-item">💳 Prix : <strong>49 €</strong></li>
+    </ul>
+
+    <a href="{{ path('orders_create') }}" class="btn btn-primary">
+    Souscrire à l'abonnement annuel
+</a>
+
+</section>
+{% endblock %}

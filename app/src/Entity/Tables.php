@@ -36,7 +36,8 @@ class Tables
     /**
      * @var Collection<int, Notification>
      */
-    #[ORM\OneToMany(targetEntity: Notification::class, mappedBy: 'tables')]
+   #[ORM\OneToMany(mappedBy: 'table', targetEntity: Notification::class, cascade: ['remove'], orphanRemoval: true)]
+
     private Collection $notification;
 
     public function __construct()

@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Paiement réussi ! 🎉</h2>
+    <p>Merci {{ app.user.firstname }}, votre commande <strong>#{{ order.orderNumber }}</strong> a bien été confirmée.</p>
+    <p>Montant payé : {{ order.totalPrice }} €</p>
+    <p>Date de confirmation : {{ order.confirmationDate|date('d/m/Y H:i') }}</p>
+
+    {# <a href="{{ path('homepage') }}" class="btn btn-success">Retour à l'accueil</a> #}
+{% endblock %}
