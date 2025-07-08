@@ -26,6 +26,9 @@ class Notification
     private ?string $targetUsers = null;
 
  
+//  #[ORM\ManyToOne(targetEntity: Users::class)]
+//     #[ORM\JoinColumn(nullable: false)]
+//     private ?Users $user = null;
 
 
     #[ORM\ManyToOne(inversedBy: 'notifications')]
@@ -89,4 +92,16 @@ class Notification
 
         return $this;
     }
+
+    //    public function getUser(): ?Users
+    // {
+    //     return $this->user;
+    // }
+
+    // public function setUser(?Users $user): static
+    // {
+    //     $this->user = $user;
+
+    //     return $this;
+    // }
 }
