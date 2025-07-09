@@ -55,7 +55,6 @@ function fetchTables() {
 
 
  
-  document.addEventListener('DOMContentLoaded', () => {
     const form      = document.getElementById('add-member-form');
     if (!form) return;                       // Formulaire masqué si l’utilisateur n’est pas membre
 
@@ -106,7 +105,7 @@ function fetchTables() {
         feedback.innerHTML = `<div class="alert alert-danger">Erreur réseau ; réessayez plus tard.</div>`;
       }
     });
-  });
+
  
 
 // Fonction pour ajouter un utilisateur à un tableau par email

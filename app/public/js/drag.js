@@ -5,14 +5,15 @@
  * côté backend Symfony (via /api/cards/{id} PUT).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
+
   let draggedCard = null;
 
+// Début du drag : stockage de la carte
   document.body.addEventListener('dragstart', (e) => {
     const card = e.target.closest('.card');
-    console.log('🧭 dragstart sur', card);
+    console.log(' dragstart sur', card);
     if (card) {
-      console.log('📦 dragstart sur carte ID =', card.dataset.cardId);
+      console.log(' dragstart sur carte ID =', card.dataset.cardId);
       draggedCard = card;
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', ''); // requis sur certains navigateurs
@@ -20,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+// Fin du drag : nettoyage et suppression de la classe de drag
   document.body.addEventListener('dragend', () => {
     if (draggedCard) {
       draggedCard.classList.remove('dragging');
@@ -27,10 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // ✅ Initialiser les dropzones existantes rendues par Twig
+  // Initialiser les dropzones existantes rendues par Twig :Configuration des zones existantes
   document.querySelectorAll('.cards').forEach(setupDropzone);
 
   // ✅ MutationObserver pour les colonnes créées dynamiquement
+  // Ce bloc utilise un MutationObserver pour détecter l’ajout dynamique de nouvelles colonnes (DOM injecté après chargement initial). Cela permet de leur appliquer automatiquement le comportement setupDropzone sans avoir à rafraîchir la page, assurant ainsi une expérience fluide et continue côté interface utilisateur.
   const observer = new MutationObserver(mutations => {
     mutations.forEach(mutation => {
       mutation.addedNodes.forEach(node => {
@@ -42,10 +45,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   observer.observe(document.getElementById('lists-container'), { childList: true, subtree: true });
-});
+
+// Configuration des zones de dépôt
 
 function setupDropzone(container) {
-  console.log('🧪 Dropzone initialisée sur', container);
+  console.log(' Dropzone initialisée sur', container);
 
   container.addEventListener('dragover', e => {
     e.preventDefault();
@@ -61,7 +65,7 @@ function setupDropzone(container) {
     e.preventDefault();
     e.stopPropagation();
     container.classList.remove('drag-over');
-    console.log('🔥 DROP déclenché sur colonne ID =', container.closest('.list')?.dataset.columnId);
+    console.log(' DROP déclenché sur colonne ID =', container.closest('.list')?.dataset.columnId);
 
     const card = document.querySelector('.card.dragging');
     if (!card) return;
@@ -71,13 +75,13 @@ function setupDropzone(container) {
     const cardId = parseInt(card.dataset.cardId);
 
     if (isNaN(newColumnId) || isNaN(cardId)) {
-      console.error('❌ ID colonne ou carte invalide !');
+      console.error(' ID colonne ou carte invalide !');
       return;
     }
 
-    console.log('➡️ Déplacer carte', cardId, 'vers colonne', newColumnId);
+    console.log(' Déplacer carte', cardId, 'vers colonne', newColumnId);
 
-    // Déplacement visuel
+    // Déplacement visuel dans le DOM
     container.appendChild(card);
 
     // Appel backend
@@ -91,12 +95,12 @@ function setupDropzone(container) {
         return response.json();
       })
       .then(() => {
-        console.log(`✅ Carte ${cardId} déplacée dans colonne ${newColumnId}`);
+        console.log(` Carte ${cardId} déplacée dans colonne ${newColumnId}`);
         // showSuccessToast?.();
         alert(`Carte ${cardId} déplacée dans la colonne ${newColumnId}`);
       })
       .catch(err => {
-        console.error('❌ Erreur backend :', err);
+        console.error(' Erreur backend :', err);
         alert('Erreur lors du déplacement de la carte');
       });
   });

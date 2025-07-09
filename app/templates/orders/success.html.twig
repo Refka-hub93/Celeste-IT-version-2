@@ -6,5 +6,5 @@
     <p>Montant payé : {{ order.totalPrice }} €</p>
     <p>Date de confirmation : {{ order.confirmationDate|date('d/m/Y H:i') }}</p>
 
-    {# <a href="{{ path('homepage') }}" class="btn btn-success">Retour à l'accueil</a> #}
+    <a href="{{ path('main') }}" class="btn btn-success">Retour à l'accueil</a>
 {% endblock %}

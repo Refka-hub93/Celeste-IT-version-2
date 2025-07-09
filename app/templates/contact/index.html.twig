@@ -1,90 +1,71 @@
 {% extends 'base.html.twig' %}
 
 {% block javascripts %}
-<script src="{{ asset('js/contact.js') }}" defer  ></script>
+	<script src="{{ asset('js/contact.js') }}" defer></script>
 {% endblock %}
 
 
 {% block title %}Contact
 {% endblock %}
- 
+
 
 {% block body %}
-    <section class="container pt-1">
-        {% for message in app.flashes('success') %}
-            <div class="alert alert-success">
-                {{ message }}
-            </div>
-        {% endfor %}
+	<section class="container pt-1">
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
 
-        <section class="m-1 d-flex justify-content-center align-items-center">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-12 col-md-8 col-lg-6">
-                        <div class="shadow p-4 mt-5 bg-white rounded">
-                            <h1 class="text-center mb-4 fw-bold">Nous contacter</h1>
+		<section class="m-1 d-flex justify-content-center align-items-center">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-12 col-md-8 col-lg-6">
+						<div class="shadow p-4 mt-5 bg-white rounded">
+							<h1 class="text-center mb-4 fw-bold">Nous contacter</h1>
 
-                            {{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
+							{{ form_start(form, {'attr': {'class': 'row g-4'}}) }}
 
-                            <div class="col-12">
-                                {{ form_row(form.firstname, {
+							<div class="col-12">
+								{{ form_row(form.email, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre prénom'}
+                                    'attr': {'class': 'form-control', 'placeholder': 'Votre email', tabindex="1"}
                                 }) }}
-                            </div>
+							</div>
 
-                            <div class="col-12">
-                                {{ form_row(form.lastname, {
+							<div class="col-12">
+								{{ form_row(form.subject, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre nom'}
+                                    'attr': {'class': 'form-select', tabindex="2"}
                                 }) }}
-                            </div>
+							</div>
 
-                            <div class="col-12">
-                                {{ form_row(form.email, {
+							<div class="col-12">
+								{{ form_row(form.message, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre email'}
+                                    'attr': {'class': 'form-control', 'placeholder': 'Votre message ici...', tabindex="3",'rows': 6}
                                 }) }}
-                            </div>
+							</div>
 
-                            <div class="col-12">
-                                {{ form_row(form.subject, {
-                                    'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-select'}
+							<div class="col-12">
+								<div class="form-check d-flex align-items-start gap-2 p-0">
+									{{ form_widget(form.rgpd, {'attr': {'class': 'form-check-input m-0', tabindex="4"} }) }}
+									{{ form_label(form.rgpd, null, { 'label_attr': {'class': 'form-check-label m-0'} }) }}
+									{{ form_errors(form.rgpd) }}
+								</div>
+							</div>
+							<div class="col-12 text-center">
+								{{ form_row(form.submit, {
+                                    'attr': {'class': 'btn btn-primary px-4 py-2', 'aria-label':'Envoyer le message', tabindex="5"} 
                                 }) }}
-                            </div>
-
-                            <div class="col-12">
-                                {{ form_row(form.message, {
-                                    'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre message ici...', 'rows': 6}
-                                }) }}
-                            </div>
-
-                              <div class="col-12">
-                                <div class="form-check">
-                                    {{ form_widget(form.rgpd, {
-                                        'attr': {'class': 'form-check-input'}
-                                    }) }}
-                                    {{ form_label(form.rgpd, null, {
-                                        'label_attr': {'class': 'form-check-label'}
-                                    }) }}
-                                    {{ form_errors(form.rgpd) }}
-                                </div>
-                            </div>
-
-                            <div class="col-12 text-center">
-                                {{ form_row(form.submit, {
-                                    'attr': {'class': 'btn btn-primary px-4 py-2'}
-                                }) }}
-                            </div>
+							</div>
 
 
-                            {{ form_end(form) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </section>
+							{{ form_end(form) }}
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</section>
 {% endblock %}

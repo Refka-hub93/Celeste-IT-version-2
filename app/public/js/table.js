@@ -4,96 +4,86 @@ const addListButton = document.querySelector('#add-list-button');
 const listsContainer = document.querySelector('#lists-container');
 const addButton = document.querySelectorAll('.add-card-button');
 
+// Ajout d'écouteurs sur les boutons "Ajouter une carte" déjà présents dans le DOM
 for (const button of addButton) {
   button.addEventListener('click', addButtonListener
   );
 }
 
-
 const removeListButton = document.querySelectorAll('.remove-list-button');
 
+// Écouteurs sur les boutons "Supprimer cette liste" déjà présents
 for (const button of removeListButton) {
   button.addEventListener('click', function () {
     const newList = this.closest('.list');
 
-//  // ✅ Demande de confirmation
+    // Demande de confirmation
     if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
       return; // l’utilisateur a annulé
     }
 
-
-    // Récupération de l'ID de la colonne à supprimer
+    // Suppression côté back-end (appel API ou fonction) suppression de la colonne dans la base
     deleteColumn(newList.dataset.columnId);
 
+    // Suppression dans le DOM (interface)
     listsContainer.removeChild(newList);
   }
   );
 }
-// removeListButton.addEventListener('click', function () {
-//   insertedCard.remove();
-// });
+
 const removeCardButton = document.querySelectorAll('.remove-card-button');
 
+// Écouteurs sur les boutons "Supprimer la carte" déjà présents
 for (const button of removeCardButton) {
   button.addEventListener('click', function () {
     const newList = this.closest('.card');
-    // Récupération de l'ID de la colonne à supprimer
+
+    // Suppression côté back-end
+    // BACKEND : suppression de la carte dans la base
     deleteCard(newList.dataset.cardId);
 
+    // Suppression dans l'interface
     newList.parentElement.removeChild(newList);
   }
   );
 }
 
-// let draggedCard = null;
-// // Gestion du glisser-déposer des cartes
+// Ajout de nouvelle liste (template cloné dynamiquement)
 
-// Gestion de l'ajout de nouvelle liste
 addListButton.addEventListener('click', function () {
   const listTemplate = document.querySelector('#list-template');
   const listClone = listTemplate.content.cloneNode(true);
   listsContainer.appendChild(listClone);
 
   const newList = listsContainer.lastElementChild;
-
-
-
-// ➕ Événements drag & drop pour la colonne
-// newList.addEventListener('dragover', handleDragOver);
-// newList.addEventListener('dragenter', handleDragEnter);
-// newList.addEventListener('dragleave', handleDragLeave);
-// newList.addEventListener('drop', handleDrop);
-
   const addCardButton = newList.querySelector('.add-card-button');
   const removeListButton = newList.querySelector('.remove-list-button');
-
-
 
   // Ajout de carte dans la liste
   addCardButton.addEventListener('click', addButtonListener);
 
-// drag and drop
-
-// li.setAttribute('draggable', 'true');
-// li.addEventListener('dragstart', handleDragStart);
-// li.addEventListener('dragend', handleDragEnd);
-
-
   // Suppression de liste
   removeListButton.addEventListener('click', function () {
-//  // ✅ Demande de confirmation
+    //  Demande de confirmation
     if (!confirm('Supprimer cette liste et toutes ses cartes ?')) {
       return; // l’utilisateur a annulé
     }
 
-    // ########
+    // Suppression côté back-end  et suppression de la colonne dans la base
     deleteColumn(newList.dataset.columnId);
-    listsContainer.removeChild(newList);
 
+    // Suppression dans l'interface
+    listsContainer.removeChild(newList);
   });
 
 });
 
+
+
+
+
+
+// Partie API
 
 /**
  * 🗑️ Supprime une colonne.
@@ -122,17 +112,17 @@ function addButtonListener() {
   const insertedCard = cardsContainer.lastElementChild;
   const cardTitle = insertedCard.querySelector('.card-title');
 
-// 🛠️ Initialisation correcte de la carte vide
-// cardTitle.textContent = 'Nouvelle carte';  // Ce qui s'affiche visuellement
-cardTitle.setAttribute('data-bs-toggle', 'modal');
-cardTitle.setAttribute('data-bs-target', '#cardModal');
-cardTitle.setAttribute('data-bs-title', '');         // ❌ Vide pour éviter remplissage
-cardTitle.setAttribute('data-bs-description', '');
-cardTitle.setAttribute('data-bs-comments', '');
+  // 🛠️ Initialisation correcte de la carte vide
+  // cardTitle.textContent = 'Nouvelle carte';  // Ce qui s'affiche visuellement
+  cardTitle.setAttribute('data-bs-toggle', 'modal');
+  cardTitle.setAttribute('data-bs-target', '#cardModal');
+  cardTitle.setAttribute('data-bs-title', '');         // ❌ Vide pour éviter remplissage
+  cardTitle.setAttribute('data-bs-description', '');
+  cardTitle.setAttribute('data-bs-comments', '');
 
 
 
-   
+
 
   // 🔥 Gestion suppression carte
   const removeCardButton = insertedCard.querySelector('.remove-card-button');
@@ -171,247 +161,177 @@ async function checkResponse(response) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 /**
  * cardSubmit.js
  * --------------------------------------------------
  * Gère la création et la mise à jour des cartes via
  * le formulaire du modal (#card-details-form).
  *
- * ⚠️ 2025‑07‑01 — Fix :
- *   • Le backend Symfony attend le champ « columns » (et non « column »).
- *   • Journalise le corps de réponse HTTP en cas d’erreur pour faciliter le debug.
+ *    Le backend Symfony attend le champ « columns » (et non « column »).
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('card-details-form');
-  const cardModal = document.getElementById('cardModal');
-  let currentCardElement = null;
-  let currentColumnId = null; // mémorise la colonne cible quand on clique « Ajouter une carte »
 
-  /* --------------------------------------------------
-   * Détection de la colonne avant ouverture du modal
-   * -------------------------------------------------- */
-  document.body.addEventListener('click', (e) => {
-    const addBtn = e.target.closest('.add-card-button');
-    if (addBtn) {
-      const list = addBtn.closest('.list');
-      currentColumnId = list?.dataset.columnId || null;
-    }
-  });
+const form = document.getElementById('card-details-form');
+const cardModal = document.getElementById('cardModal');
+let currentCardElement = null;
+let currentColumnId = null; // mémorise la colonne cible quand on clique « Ajouter une carte »
 
-  /* --------------------------------------------------
-   * Pré‑remplissage lors de l’ouverture du modal
-   * -------------------------------------------------- */
-  if (cardModal) {
-    cardModal.addEventListener('show.bs.modal', (event) => {
-      const trigger = event.relatedTarget;
-
-      currentCardElement = trigger.closest('li.card'); // null si création
-      if (!currentCardElement) {
-        form.reset(); // mode création
-      }
-      const title = trigger.getAttribute('data-bs-title') || '';
-      const description = trigger.getAttribute('data-bs-description') || '';
-      const comments = trigger.getAttribute('data-bs-comments') || '';
-
-      ///
-      const members = trigger.getAttribute('data-bs-members') || '';
-const attachment = trigger.getAttribute('data-bs-attachment') || '';
-const notification = trigger.getAttribute('data-bs-notification') || '';
-const deadline = trigger.getAttribute('data-bs-deadline') || '';
-
-document.getElementById('card-members').value = members;
-document.getElementById('card-attachment').value = attachment;
-document.getElementById('card-notification').value = notification;
-document.getElementById('card-deadline').value = deadline;
-      cardModal.querySelector('#card-title').value = title;
-      cardModal.querySelector('#card-description').value = description;
-      cardModal.querySelector('#card-comments').value = comments;
-    });
-  }
-
-  /* --------------------------------------------------
-   * Soumission du formulaire
-   * -------------------------------------------------- */
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const title = document.getElementById('card-title').value.trim();
-      const description = document.getElementById('card-description').value.trim();
-      const comments = document.getElementById('card-comments').value.trim();
-
-      // 
-const members = document.getElementById('card-members').value.trim();
-const attachment = document.getElementById('card-attachment').value.trim();
-const notification = document.getElementById('card-notification').value.trim();
-const deadline = document.getElementById('card-deadline').value;
-      // 🆕 Si création, on utilise currentColumnId capturé au clic « Ajouter une carte »
-      const cardId = currentCardElement?.dataset.cardId || null;
-      const method = cardId ? 'PUT' : 'POST';
-      const url = cardId ? `/api/cards/${cardId}` : '/api/cards';
-
-      const payload = {
-  // Champs attendus par l’API Symfony
-  cardTitle: title,
-  description,
-  comment: comments,  // 🟢 attention : ici c'est `comment` (pas `comments`)
-  attachment,
-  members,
-  notification,
-  deadline,
-
-        columns: currentColumnId, // <‑‑ champ attendu par l’API Symfony
-      };
-
-      // try {
-      //   const response = await fetch(url, {
-      //     method,
-      //     headers: {
-      //       'Content-Type': 'application/json',
-      //     },
-      //     body: JSON.stringify(payload),
-      //   });
-
-      //   if (!response.ok) {
-      //     const errorText = await response.text();
-      //     throw new Error(`HTTP ${response.status} — ${errorText}`);
-      //   }
-
-      //   const result = await response.json();
-
-      //   /* ---------- Mise à jour DOM ---------- */
-      //   if (cardId) {
-      //     // Modification d’une carte existante
-      //     currentCardElement.querySelector('.card-title').textContent = title;
-      //   } else {
-      //     // Création : injecte la nouvelle carte dans la bonne colonne
-      //     const cardTemplate = document.getElementById('card-template');
-      //     const clone = cardTemplate.content.cloneNode(true);
-      //     const newCard = clone.querySelector('.card');
-      //     newCard.dataset.cardId = result.id;
-      //     const titleEl = newCard.querySelector('.card-title');
-      //     titleEl.textContent = title;
-      //     titleEl.setAttribute('data-bs-toggle', 'modal');
-      //     titleEl.setAttribute('data-bs-target', '#cardModal');
-      //     titleEl.setAttribute('data-bs-title', title);
-      //     titleEl.setAttribute('data-bs-description', description);
-      //     titleEl.setAttribute('data-bs-comments', comments);
-
-      //     const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
-      //     column?.appendChild(newCard);
-      //   }
-
-      //   /* ---------- Nettoyage ---------- */
-      //   bootstrap.Modal.getInstance(cardModal).hide();
-      //   form.reset();
-      //   currentCardElement = null;
-      //   currentColumnId = null;
-      // } catch (error) {
-      //   console.error('❌ Enregistrement échoué :', error);
-      //   alert('Une erreur est survenue — consulte la console pour plus de détails');
-      // }
-try {
-  const response = await fetch(url, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const errorText = await response.text();
-    throw new Error(`HTTP ${response.status} — ${errorText}`);
-  }
-
-  const result = await response.json();
-
-  /* ---------- Mise à jour DOM ---------- */
-  if (cardId) {
-    // Modification d’une carte existante
-    currentCardElement.querySelector('.card-title').textContent = title;
-  } else {
-    // Création réelle après clic sur "Ajouter une carte"
-    if (currentCardElement) {
-      currentCardElement.dataset.cardId = result.card.id;
-
-      const titleEl = currentCardElement.querySelector('.card-title');
-      titleEl.textContent = title;
-      titleEl.setAttribute('data-bs-title', title);
-      titleEl.setAttribute('data-bs-description', description);
-      titleEl.setAttribute('data-bs-comments', comments);
-
-      // 🔽 AJOUTE ICI les autres :
-  titleEl.setAttribute('data-bs-members', members);
-  titleEl.setAttribute('data-bs-attachment', attachment);
-  titleEl.setAttribute('data-bs-notification', notification);
-  titleEl.setAttribute('data-bs-deadline', deadline);
-    } else {
-      const cardTemplate = document.getElementById('card-template');
-      const clone = cardTemplate.content.cloneNode(true);
-      const newCard = clone.querySelector('.card');
-      newCard.dataset.cardId = result.card.id;
-
-      const titleEl = newCard.querySelector('.card-title');
-      titleEl.textContent = title;
-      titleEl.setAttribute('data-bs-toggle', 'modal');
-      titleEl.setAttribute('data-bs-target', '#cardModal');
-      titleEl.setAttribute('data-bs-title', title);
-      titleEl.setAttribute('data-bs-description', description);
-      titleEl.setAttribute('data-bs-comments', comments);
-
-// 🔽 AJOUTE ICI AUSSI :
-titleEl.setAttribute('data-bs-members', members);
-titleEl.setAttribute('data-bs-attachment', attachment);
-titleEl.setAttribute('data-bs-notification', notification);
-titleEl.setAttribute('data-bs-deadline', deadline);
-      const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
-      column?.appendChild(newCard);
-    }
-  }
-
-  // ✅ Nettoyage (à faire quoi qu’il arrive après réussite)
-  bootstrap.Modal.getInstance(cardModal).hide();
-  form.reset();
-  currentCardElement = null;
-  currentColumnId = null;
-
-} catch (error) {
-  console.error('❌ Enregistrement échoué :', error);
-  alert('Une erreur est survenue — consulte la console pour plus de détails');
-}
-
-      
-    });
+/* --------------------------------------------------
+ * Détection de la colonne avant ouverture du modal
+ * -------------------------------------------------- */
+document.body.addEventListener('click', (e) => {
+  const addBtn = e.target.closest('.add-card-button');
+  if (addBtn) {
+    const list = addBtn.closest('.list');
+    currentColumnId = list?.dataset.columnId || null;
   }
 });
 
+/* --------------------------------------------------
+ * Pré‑remplissage lors de l’ouverture du modal
+ * -------------------------------------------------- */
+if (cardModal) {
+  cardModal.addEventListener('show.bs.modal', (event) => {
+    const trigger = event.relatedTarget;
 
+    currentCardElement = trigger.closest('li.card'); // null si création
+    if (!currentCardElement) {
+      form.reset(); // mode création
+    }
+    const title = trigger.getAttribute('data-bs-title') || '';
+    const description = trigger.getAttribute('data-bs-description') || '';
+    const comments = trigger.getAttribute('data-bs-comments') || '';
 
-document.getElementById('add-member-form').addEventListener('submit', function (e) {
+    ///
+    
+    const attachment = trigger.getAttribute('data-bs-attachment') || '';
+       const deadline = trigger.getAttribute('data-bs-deadline') || '';
+
+    document.getElementById('card-attachment').value = attachment;
+     document.getElementById('card-deadline').value = deadline;
+    cardModal.querySelector('#card-title').value = title;
+    cardModal.querySelector('#card-description').value = description;
+    cardModal.querySelector('#card-comments').value = comments;
+  });
+}
+
+/* --------------------------------------------------
+ * Soumission du formulaire
+ * -------------------------------------------------- */
+if (form) {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    const email = document.getElementById('email-to-add').value;
-    const tableId = document.querySelector('main#board').dataset.tableId;
+    const title = document.getElementById('card-title').value.trim();
+    const description = document.getElementById('card-description').value.trim();
+    const comments = document.getElementById('card-comments').value.trim();
 
-    fetch(`/tables/${tableId}/add-user-by-email`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-      body: new URLSearchParams({ email })
-    })
+    // 
+    const attachment = document.getElementById('card-attachment').value.trim();
+    const deadline = document.getElementById('card-deadline').value;
+    // 🆕 Si création, on utilise currentColumnId capturé au clic « Ajouter une carte »
+    const cardId = currentCardElement?.dataset.cardId || null;
+    const method = cardId ? 'PUT' : 'POST';
+    const url = cardId ? `/api/cards/${cardId}` : '/api/cards';
+
+    const payload = {
+      // Champs attendus par l’API Symfony
+      cardTitle: title,
+      description,
+      comment: comments,  // 🟢 attention : ici c'est `comment` (pas `comments`)
+      attachment,
+      notification,
+      deadline,
+
+      columns: currentColumnId, // <‑‑ champ attendu par l’API Symfony
+    };
+
+    try {
+      const response = await fetch(url, {
+        method,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`HTTP ${response.status} — ${errorText}`);
+      }
+
+      const result = await response.json();
+
+      /* ---------- Mise à jour DOM ---------- */
+      if (cardId) {
+        // Modification d’une carte existante
+        currentCardElement.querySelector('.card-title').textContent = title;
+      } else {
+        // Création réelle après clic sur "Ajouter une carte"
+        if (currentCardElement) {
+          currentCardElement.dataset.cardId = result.card.id;
+
+          const titleEl = currentCardElement.querySelector('.card-title');
+          titleEl.textContent = title;
+          titleEl.setAttribute('data-bs-title', title);
+          titleEl.setAttribute('data-bs-description', description);
+          titleEl.setAttribute('data-bs-comments', comments);
+
+          // 🔽 AJOUTE ICI les autres :
+          titleEl.setAttribute('data-bs-attachment', attachment);
+          titleEl.setAttribute('data-bs-deadline', deadline);
+        } else {
+          const cardTemplate = document.getElementById('card-template');
+          const clone = cardTemplate.content.cloneNode(true);
+          const newCard = clone.querySelector('.card');
+          newCard.dataset.cardId = result.card.id;
+
+          const titleEl = newCard.querySelector('.card-title');
+          titleEl.textContent = title;
+          titleEl.setAttribute('data-bs-toggle', 'modal');
+          titleEl.setAttribute('data-bs-target', '#cardModal');
+          titleEl.setAttribute('data-bs-title', title);
+          titleEl.setAttribute('data-bs-description', description);
+          titleEl.setAttribute('data-bs-comments', comments);
+
+          // 🔽 AJOUTE ICI AUSSI :
+          titleEl.setAttribute('data-bs-attachment', attachment);
+          titleEl.setAttribute('data-bs-deadline', deadline);
+          const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
+          column?.appendChild(newCard);
+        }
+      }
+
+      // ✅ Nettoyage (à faire quoi qu’il arrive après réussite)
+      bootstrap.Modal.getInstance(cardModal).hide();
+      form.reset();
+      currentCardElement = null;
+      currentColumnId = null;
+
+    } catch (error) {
+      console.error('❌ Enregistrement échoué :', error);
+      alert('Une erreur est survenue — consulte la console pour plus de détails');
+    }
+
+
+  });
+}
+
+// GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG
+
+document.getElementById('add-member-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+
+  const email = document.getElementById('email-to-add').value;
+  const tableId = document.querySelector('main#board').dataset.tableId;
+
+  fetch(`/tables/${tableId}/add-user-by-email`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    },
+    body: new URLSearchParams({ email })
+  })
     .then(res => res.json())
     .then(data => {
       const feedback = document.getElementById('add-member-feedback');
@@ -427,4 +347,4 @@ document.getElementById('add-member-form').addEventListener('submit', function (
       document.getElementById('add-member-feedback').innerHTML =
         `<div class="alert alert-danger">Une erreur est survenue</div>`;
     });
-  });
+});

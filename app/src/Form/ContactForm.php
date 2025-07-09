@@ -19,9 +19,7 @@ class ContactForm extends AbstractType
     {
         $builder
             ->add('email')
-            ->add('firstname', TextType::class, ['label' => 'Prénom'])
-           ->add('lastname', TextType::class, [
-                'label' => 'Nom' ])
+           
             ->add('subject', ChoiceType::class, [
                 'label' => 'Sujet',
                 'choices' => [

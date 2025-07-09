@@ -24,8 +24,6 @@ final class ContactController extends AbstractController
             $data = $form->getData();
             // dd($data);
             $context = [
-                'firstname' => $data['firstname'],
-                'lastname' => $data['lastname'],
                 'sender' => $data['email'],
                 'subject' => $data['subject'],
                 'message' => $data['message']

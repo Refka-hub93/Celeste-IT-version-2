@@ -10,6 +10,12 @@
     --button-table: rgb(255, 102, 196);
     font-size: 16px;
 
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+
 }
 
 
@@ -374,7 +380,8 @@ article ul {
 
 
 .cards .card {
-  margin: 1rem; /* espace entre les cartes */
+    margin: 1rem;
+    /* espace entre les cartes */
 }
 
 
@@ -392,16 +399,18 @@ button {
 
 
 .card {
-  cursor: move; /* Change le curseur pour indiquer que la carte est déplaçable */
+    cursor: move;
+    /* Change le curseur pour indiquer que la carte est déplaçable */
 }
 
 .list.drag-over {
-  background-color: #f0f0f0; /* Change la couleur de fond pour indiquer que la liste est une cible de dépôt valide */
+    background-color: #f0f0f0;
+    /* Change la couleur de fond pour indiquer que la liste est une cible de dépôt valide */
 }
 
 
 #dashborard-card {
-color: rgb(206, 13, 206);
+    color: rgb(206, 13, 206);
 }
 
 
@@ -416,16 +425,21 @@ color: rgb(206, 13, 206);
 /* Modal */
 
 #add-table-page {
-    padding: 3rem;                /* Espacement intérieur */
+    padding: 3rem;
+    /* Espacement intérieur */
     background-color: #f8f9fa;
     border-radius: 10px;
-    margin: 4rem auto;            /* Marge en haut et bas, centré horizontalement */
-    max-width: 1000px;             /* Augmenter la largeur maximale pour un meilleur design sur les grands écrans */
-    
+    margin: 4rem auto;
+    /* Marge en haut et bas, centré horizontalement */
+    max-width: 1000px;
+    /* Augmenter la largeur maximale pour un meilleur design sur les grands écrans */
+
     form {
         margin: 2rem auto;
-        width: 100%;               /* Prendre toute la largeur possible */
-        padding: 2rem;             /* Réduire un peu le padding pour ne pas surcharger */
+        width: 100%;
+        /* Prendre toute la largeur possible */
+        padding: 2rem;
+        /* Réduire un peu le padding pour ne pas surcharger */
     }
 
     .cadre {
@@ -433,9 +447,12 @@ color: rgb(206, 13, 206);
         border-radius: 10px;
         padding: 2rem;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        width: 100%;               /* Prendre toute la largeur disponible */
-        max-width: 900px;          /* Limiter la largeur de .cadre pour les grands écrans */
-        margin: 0 auto;            /* Centrer .cadre horizontalement */
+        width: 100%;
+        /* Prendre toute la largeur disponible */
+        max-width: 900px;
+        /* Limiter la largeur de .cadre pour les grands écrans */
+        margin: 0 auto;
+        /* Centrer .cadre horizontalement */
     }
 }
 
@@ -531,7 +548,7 @@ form input[type="hidden"] {
 
 /* notification */
 .custom-title {
-  color: #ffffff !important;  
+    color: #ffffff !important;
 }
 
 /* Footer */
@@ -569,7 +586,7 @@ footer {
 
 
 }
- 
+
 
 
 /* Fin Footer */
@@ -592,27 +609,29 @@ footer {
 
 /* 📌 Fait défiler les cartes dans chaque colonne */
 .list {
-  display: flex;
-  flex-direction: column;
-  overflow: hidden; /* évite les débordements visuels */
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    /* évite les débordements visuels */
 }
 
 .list .cards {
-  overflow-y: auto;
-  flex-grow: 1;
-  max-height: 100%;
-  padding-right: 5px;
-  margin-top: 10px;
-  scrollbar-width: thin; /* Firefox */
+    overflow-y: auto;
+    flex-grow: 1;
+    max-height: 100%;
+    padding-right: 5px;
+    margin-top: 10px;
+    scrollbar-width: thin;
+    /* Firefox */
 }
 
 .cards::-webkit-scrollbar {
-  width: 6px;
+    width: 6px;
 }
 
 .cards::-webkit-scrollbar-thumb {
-  background-color: var(--principalcolor);
-  border-radius: 6px;
+    background-color: var(--principalcolor);
+    border-radius: 6px;
 }
 
 

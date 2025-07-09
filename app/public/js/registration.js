@@ -18,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const boutonAfficher = document.createElement("button");
     boutonAfficher.type = "button";
     boutonAfficher.className = "btn-show";
-    boutonAfficher.innerHTML = "👁️";
+    boutonAfficher.textContent = "👁️"; // automatiquement échappé
     champMotDePasse.parentElement.style.position = "relative";
     champMotDePasse.parentElement.appendChild(boutonAfficher);
 
