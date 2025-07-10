@@ -1,0 +1,30 @@
+{# templates/security/login.html.twig #}
+{% extends 'base.html.twig' %}
+
+ 
+{% block title %}Demande réinitiatlisation de mot de passe
+{% endblock %}
+
+{% block body %}
+	{# ——— SECTION CENTRÉE ——— #}
+	<section class="m-1 d-flex justify-content-center align-items-center">
+		<h1>Réinitiatlisation de mot de passe</h1>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-6">
+					<div class="shadow p-4 mt-5 bg-white rounded text-center">
+
+
+						{{ form_start(passForm, {'attr': {'class': 'row g-3'}}) }}
+
+						{{ form_row(passForm.password) }}
+						<button type="submit">Envoyer</button>
+
+						{{ form_end(passForm) }}
+
+
+					</div>
+				</div>
+			</div>
+		</section>
+	{% endblock %}

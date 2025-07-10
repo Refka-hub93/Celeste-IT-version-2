@@ -6,6 +6,7 @@
 parameters:
     stripe.public.key: '%env(STRIPE_PUBLIC_KEY)%'
     stripe.secret.key: '%env(STRIPE_SECRET_KEY)%'
+    app.jwtsecret: '%env(APP_jwtsecret)%'
 
 services:
     # default configuration for services in *this* file
