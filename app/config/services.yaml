@@ -4,6 +4,7 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    cards_uploads_directory: '%kernel.project_dir%/public/uploads/cards'
     stripe.public.key: '%env(STRIPE_PUBLIC_KEY)%'
     stripe.secret.key: '%env(STRIPE_SECRET_KEY)%'
     app.jwtsecret: '%env(APP_jwtsecret)%'

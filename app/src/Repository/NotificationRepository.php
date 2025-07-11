@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Notification;
+use App\Entity\Users;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -15,6 +16,22 @@ class NotificationRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Notification::class);
     }
+
+// Pour créer une requete sql
+    // NotificationRepository
+    public function findByUserAndTable(Users $user, int $tableId): array
+    {
+        return $this->createQueryBuilder('n')
+            ->andWhere('n.users = :user')
+            ->andWhere('n.table = :tableId')
+            ->setParameter('user', $user)
+            ->setParameter('tableId', $tableId)
+            ->orderBy('n.createdAt', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    
 
     //    /**
     //     * @return Notification[] Returns an array of Notification objects

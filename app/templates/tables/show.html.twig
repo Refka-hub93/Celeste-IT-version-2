@@ -42,6 +42,24 @@
 			{{ tableau.title }}
 		</h1>
 
+		{# Informations sur les users du tableau #}
+		<div class="container mt-4">
+			<div class="card shadow-sm border p-3">
+				<h5 class="card-title">
+					<i class="bi bi-people-fill me-2"></i>Équipe du tableau</h5>
+				<ul class="list-group">
+					{% for user in tableau.users %}
+						<li class="list-group-item d-flex align-items-center justify-content-between">
+							<span>{{ user.email }}</span>
+							{% if user == app.user %}
+								<span class="badge bg-primary">Vous</span>
+							{% endif %}
+						</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+
 		{# Lien retour #}
 
 		<div class="text-center mt-4">
@@ -83,7 +101,7 @@
 							<li class="card" draggable="true" role="listitem" data-card-id="{{ card.id }}">
 
 								<div class="card-body">
-									<h5 class="card-title btn" data-bs-toggle="modal" data-bs-target="#cardModal" data-bs-title="{{ card.cardTitle }}" data-bs-description="{{ card.description }}" data-bs-comments="">
+									<h5 class="card-title btn" data-bs-toggle="modal" data-bs-target="#cardModal" data-bs-title="{{ card.cardTitle }}" data-bs-description="{{ card.description }}" data-bs-comments="" >
 										{{ card.cardTitle }}
 									</h5>
 
@@ -127,7 +145,7 @@
 
 
 	{# Modal Bootstrap #}
-	<div class="modal fade" id="cardModal" tabindex="-1" aria-labelledby="cardModalLabel" aria-hidden="true">
+	<div class="modal fade" id="cardModal" aria-labelledby="cardModalLabel" aria-hidden="true">
 		<div class="modal-dialog modal-lg">
 			<div class="modal-content p-3">
 
@@ -149,17 +167,9 @@
 							<textarea id="card-description" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez une description"></textarea>
 						</div>
 
-						<div class="mb-4 w-100">
-							<label for="card-comments" class="form-label fw-semibold">Commentaires</label>
-							<textarea id="card-comments" class="form-control form-control-lg w-100" rows="4" placeholder="Ajoutez des commentaires"></textarea>
-						</div>
-
 						
-						<div class="mb-4 w-100">
-							<label for="card-attachment" class="form-label fw-semibold">Pièce jointe (URL)</label>
-							<input type="text" id="card-attachment" class="form-control" placeholder="Ex. https://...">
-						</div>
 
+					
 						<div class="mb-4 w-100">
 							<label for="card-deadline" class="form-label fw-semibold">Date limite</label>
 							<input type="datetime-local" id="card-deadline" class="form-control">
@@ -171,6 +181,15 @@
 						</div>
 
 					</form>
+					<p>Commentaires</p>
+					<div id="comments-thread" class="mb-3"></div>
+
+						<form id="comment-form" class="d-flex gap-2">
+							<input type="text" id="new-comment" class="form-control" placeholder="Votre commentaire…">
+
+							<button type="submit" class="btn btn-success w-75">Enregistrer le commentaire</button>
+							
+						</form>
 				</div>
 
 				<div class="modal-footer">
@@ -181,6 +200,7 @@
 		</div>
 	</div>
 
+	{# Formulaire pour ajouter un membre au tableau #}
 	{% if tableau.users.contains(app.user) %}
 		<div class="container mt-5">
 			<div class="card shadow p-4">

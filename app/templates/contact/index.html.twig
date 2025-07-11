@@ -29,34 +29,34 @@
 							<div class="col-12">
 								{{ form_row(form.email, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre email', tabindex="1"}
+                                    'attr': {'class': 'form-control', 'placeholder': 'Votre email'}
                                 }) }}
 							</div>
 
 							<div class="col-12">
 								{{ form_row(form.subject, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-select', tabindex="2"}
+                                    'attr': {'class': 'form-select'}
                                 }) }}
 							</div>
 
 							<div class="col-12">
 								{{ form_row(form.message, {
                                     'label_attr': {'class': 'form-label'},
-                                    'attr': {'class': 'form-control', 'placeholder': 'Votre message ici...', tabindex="3",'rows': 6}
+                                    'attr': {'class': 'form-control', 'placeholder': 'Votre message ici...','rows': 6}
                                 }) }}
 							</div>
 
 							<div class="col-12">
 								<div class="form-check d-flex align-items-start gap-2 p-0">
-									{{ form_widget(form.rgpd, {'attr': {'class': 'form-check-input m-0', tabindex="4"} }) }}
+									{{ form_widget(form.rgpd, {'attr': {'class': 'form-check-input m-0'} }) }}
 									{{ form_label(form.rgpd, null, { 'label_attr': {'class': 'form-check-label m-0'} }) }}
 									{{ form_errors(form.rgpd) }}
 								</div>
 							</div>
 							<div class="col-12 text-center">
 								{{ form_row(form.submit, {
-                                    'attr': {'class': 'btn btn-primary px-4 py-2', 'aria-label':'Envoyer le message', tabindex="5"} 
+                                    'attr': {'class': 'btn btn-primary px-4 py-2', 'aria-label':'Envoyer le message'} 
                                 }) }}
 							</div>
 

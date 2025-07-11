@@ -32,15 +32,14 @@ function fetchTables() {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
-            // Ajoute l'Authorization si nécessaire
+           
         }
     })
     .then(response => response.json())
     .then(data => {
         console.log('Tableaux existants :', data);
-        // Tu peux les afficher dynamiquement ici :
         data.forEach(table => {
-            // Par exemple, ajouter dans le DOM :
+     
             const container = document.getElementById('tables-container');
             const div = document.createElement('div');
             div.textContent = table.title;
@@ -54,9 +53,15 @@ function fetchTables() {
 
 
 
- 
-    const form      = document.getElementById('add-member-form');
-    if (!form) return;                       // Formulaire masqué si l’utilisateur n’est pas membre
+ // Fonction pour gérer l'ajout d'un membre
+function initAddMemberForm() {
+    const form = document.getElementById('add-member-form');
+    if (!form) {
+        console.log('Formulaire add-member-form non trouvé');
+        return;  
+    }
+    // const form      = document.getElementById('add-member-form');
+    // if (!form) return;                       // Formulaire masqué si l’utilisateur n’est pas membre
 
     const feedback  = document.getElementById('add-member-feedback');
     const emailInput = document.getElementById('email-to-add');
@@ -106,6 +111,8 @@ function fetchTables() {
       }
     });
 
- 
+}
+
+ initAddMemberForm();
 
 // Fonction pour ajouter un utilisateur à un tableau par email

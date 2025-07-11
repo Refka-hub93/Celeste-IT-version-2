@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CardsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -20,8 +22,6 @@ class Cards
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    private ?string $comment = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
@@ -40,9 +40,16 @@ class Cards
     //  Cela dit à MySQL : “Si une colonne est supprimée, supprime aussi les cartes associées”.
     private ?Columns $columns = null;
 
+    /**
+     * @var Collection<int, Comments>
+     */
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'cards',  cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->comments = new ArrayCollection();
     }
 
 
@@ -75,19 +82,7 @@ class Cards
         return $this;
     }
 
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): static
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
-    public function getCreatedAt(): ?\DateTimeImmutable
+       public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->createdAt;
     }
@@ -111,30 +106,7 @@ class Cards
         return $this;
     }
 
-    public function getMembers(): ?string
-    {
-        return $this->members;
-    }
-
-    public function setMembers(?string $members): static
-    {
-        $this->members = $members;
-
-        return $this;
-    }
-
-    public function getNotification(): ?string
-    {
-        return $this->notification;
-    }
-
-    public function setNotification(?string $notification): static
-    {
-        $this->notification = $notification;
-
-        return $this;
-    }
-
+  
     public function getAttachment(): ?string
     {
         return $this->attachment;
@@ -167,6 +139,36 @@ class Cards
     public function setColumns(?Columns $columns): static
     {
         $this->columns = $columns;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setCards($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getCards() === $this) {
+                $comment->setCards(null);
+            }
+        }
 
         return $this;
     }

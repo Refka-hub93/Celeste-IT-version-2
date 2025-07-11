@@ -7,6 +7,7 @@ use App\Entity\Notification;
 use App\Entity\Tables;
 use App\Repository\ColumnsRepository;
 use App\Repository\TablesRepository;
+use App\Service\ManageNotif;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -43,7 +44,7 @@ class ColumnsApiController extends AbstractController
 
 
     #[Route('', name: 'create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em, TablesRepository $tablesRepo): JsonResponse
+    public function create(Request $request, EntityManagerInterface $em, TablesRepository $tablesRepo, ManageNotif $manageNotif): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -66,12 +67,9 @@ class ColumnsApiController extends AbstractController
         $column->setRanking($ranking);
 
 
-$notif = new Notification();
-$notif->setMessage("Nouvelle colonne ajoutée : " . $column->getColumnTitle());
-$notif->setTables($table);
-$notif->setCreatedAt(new \DateTimeImmutable());
-
-$em->persist($notif);
+ 
+        // ✅ Envoyer à tous les membres
+        $manageNotif->notifyAllMembers($column->getTables(), "Nouvelle colonne ajoutée : " . $column->getColumnTitle());
 
 
 
@@ -91,7 +89,7 @@ $em->persist($notif);
     }
 
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
-    public function update(int $id, Request $request, ColumnsRepository $columnsRepo, EntityManagerInterface $em): JsonResponse
+    public function update(int $id, Request $request, ColumnsRepository $columnsRepo, EntityManagerInterface $em, ManageNotif $manageNotif): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -109,12 +107,9 @@ $em->persist($notif);
         }
 
 
-$notif = new Notification();
-$notif->setMessage("Colonne modifiée : " . $column->getColumnTitle());
-$notif->setTables($column->getTables());
-$notif->setCreatedAt(new \DateTimeImmutable());
-
-$em->persist($notif);
+      
+ //  Envoyer à tous les membres
+        $manageNotif->notifyAllMembers($column->getTables(), "Une colonne a été modifiée : " . $column->getColumnTitle());
 
 
         $em->flush();
@@ -123,7 +118,7 @@ $em->persist($notif);
     }
 
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
-    public function delete(int $id, ColumnsRepository $columnsRepo, EntityManagerInterface $em): JsonResponse
+    public function delete(int $id, ColumnsRepository $columnsRepo, EntityManagerInterface $em, ManageNotif $manageNotif): JsonResponse
     {
         $column = $columnsRepo->find($id);
         if (!$column) {
@@ -134,13 +129,10 @@ $em->persist($notif);
         foreach ($cards as $card) {
             $em->remove($card);
         }
-     
-     $notif = new Notification();
-$notif->setMessage("Colonne supprimée : " . $column->getColumnTitle());
-$notif->setTables($column->getTables());
-$notif->setCreatedAt(new \DateTimeImmutable());
 
-$em->persist($notif);
+  
+        //   Envoyer à tous les membres
+        $manageNotif->notifyAllMembers($column->getTables(), "Colonne supprimée : " . $column->getColumnTitle());
 
 
 

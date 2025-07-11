@@ -2,49 +2,45 @@
 
 namespace App\Entity;
 
-use App\Repository\NotificationRepository;
+use App\Repository\CommentsRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: NotificationRepository::class)]
-class Notification
+#[ORM\Entity(repositoryClass: CommentsRepository::class)]
+class Comments
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $message = null;
+    #[ORM\Column(type: Types::TEXT)]
+    private ?string $content = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
- 
-    #[ORM\ManyToOne(inversedBy: 'notifications')]
-    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
-    private ?Tables $table = null;
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Cards $cards = null;
 
-    #[ORM\ManyToOne(inversedBy: 'notification')]
+    #[ORM\ManyToOne(inversedBy: 'comments')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Users $users = null;
 
-    public function __construct()
-    {
-        $this->createdAt = new \DateTimeImmutable();
-    }
-    
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getMessage(): ?string
+    public function getContent(): ?string
     {
-        return $this->message;
+        return $this->content;
     }
 
-    public function setMessage(string $message): static
+    public function setContent(string $content): static
     {
-        $this->message = $message;
+        $this->content = $content;
 
         return $this;
     }
@@ -61,19 +57,17 @@ class Notification
         return $this;
     }
 
-     
-    public function getTables(): ?Tables
+    public function getCards(): ?Cards
     {
-        return $this->table;
+        return $this->cards;
     }
 
-    public function setTables(?Tables $tables): static
+    public function setCards(?Cards $cards): static
     {
-        $this->table = $tables;
+        $this->cards = $cards;
 
         return $this;
     }
- 
 
     public function getUsers(): ?Users
     {

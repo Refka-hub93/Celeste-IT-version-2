@@ -82,7 +82,7 @@ if (!$tableau->getUsers()->contains($currentUser)) {
 
 
 
-    // ✅ API pour créer un tableau 
+    //  API pour créer un tableau 
     #[Route('/api/tables', name: 'api_table_create', methods: ['POST'])]
     public function createTableApi(Request $request, EntityManagerInterface $em, UserInterface $user): JsonResponse
     {
@@ -149,6 +149,11 @@ public function deleteTable(
     return $this->redirectToRoute('app_tables');
 }
 
+
+// API pour ajouter un utilisateur à un tableau par email
+// Cette route permet à un utilisateur connecté d'ajouter un autre utilisateur à un tableau en utilisant
+// son adresse email. Elle vérifie d'abord que l'utilisateur connecté est bien membre du tableau
+// avant de procéder à l'ajout. Si l'utilisateur n'est pas trouvé ou s'il  est déjà membre, des messages d'erreur appropriés sont renvoyés.
  #[Route('/tables/{id}/add-user-by-email', name: 'app_tables_add_user_by_email', methods: ['POST'])]
 public function addUserToTableByEmail(
     Request $request,

@@ -187,48 +187,83 @@ document.body.addEventListener('click', (e) => {
   }
 });
 
-/* --------------------------------------------------
- * Pré‑remplissage lors de l’ouverture du modal
- * -------------------------------------------------- */
+ 
 if (cardModal) {
   cardModal.addEventListener('show.bs.modal', (event) => {
     const trigger = event.relatedTarget;
 
-    currentCardElement = trigger.closest('li.card'); // null si création
+    currentCardElement = trigger.closest('li.card');
     if (!currentCardElement) {
-      form.reset(); // mode création
+      form.reset();
     }
-    const title = trigger.getAttribute('data-bs-title') || '';
-    const description = trigger.getAttribute('data-bs-description') || '';
-    const comments = trigger.getAttribute('data-bs-comments') || '';
 
-    ///
-    
-    const attachment = trigger.getAttribute('data-bs-attachment') || '';
-       const deadline = trigger.getAttribute('data-bs-deadline') || '';
 
-    document.getElementById('card-attachment').value = attachment;
-     document.getElementById('card-deadline').value = deadline;
-    cardModal.querySelector('#card-title').value = title;
-    cardModal.querySelector('#card-description').value = description;
-    cardModal.querySelector('#card-comments').value = comments;
+  // ✅ toujours vider l'ancien thread
+  document.getElementById('comments-thread').innerHTML = '';
+
+
+    if (currentCardElement) {
+      const cardId = currentCardElement.dataset.cardId;
+      if (cardId) {
+        loadComments(cardId); //  appel la fonction pour charger les commentaires
+      }
+    }
+
+    const title = trigger?.getAttribute('data-bs-title') || '';
+    const description = trigger?.getAttribute('data-bs-description') || '';
+    const comments = trigger?.getAttribute('data-bs-comments') || '';
+        const deadline = trigger?.getAttribute('data-bs-deadline') || '';
+
+    const titleEl = document.getElementById('card-title');
+    const descEl = document.getElementById('card-description');
+    const commentsEl = document.getElementById('comment-form');
+    const deadlineEl = document.getElementById('card-deadline');
+
+
+    if (titleEl) titleEl.value = title;
+    if (descEl) descEl.value = description;
+    if (commentsEl) commentsEl.value = comments;
+    if (deadlineEl) deadlineEl.value = deadline;
+
   });
 }
+
+
+
 
 /* --------------------------------------------------
  * Soumission du formulaire
  * -------------------------------------------------- */
 if (form) {
+
   form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const title = document.getElementById('card-title').value.trim();
-    const description = document.getElementById('card-description').value.trim();
-    const comments = document.getElementById('card-comments').value.trim();
+  // ✅ Protection sans changer tes noms
+  const titleInput = document.getElementById('card-title');
+  const descriptionInput = document.getElementById('card-description');
+  const commentsInput = document.getElementById('comment-form');
+  const deadlineInput = document.getElementById('card-deadline');
 
-    // 
-    const attachment = document.getElementById('card-attachment').value.trim();
-    const deadline = document.getElementById('card-deadline').value;
+  if (!titleInput || !descriptionInput || !commentsInput || !deadlineInput) {
+    console.error("❌ Un ou plusieurs champs sont introuvables dans le DOM.");
+    alert("Erreur : formulaire incomplet. Vérifie les champs.");
+    console.log("Champs manquants :",
+      !titleInput ? "card-title" : "",
+      !descriptionInput ? "card-description" : "",
+      !commentsInput ? "comment-form" : "",
+      !deadlineInput ? "card-deadline" : ""
+    );
+    return;
+
+  }
+
+  // ✅ On garde TES noms
+  const title = titleInput.value.trim();
+  const description = descriptionInput.value.trim();
+  const comments = commentsInput.value.trim();
+  const deadline = deadlineInput.value;
+
     // 🆕 Si création, on utilise currentColumnId capturé au clic « Ajouter une carte »
     const cardId = currentCardElement?.dataset.cardId || null;
     const method = cardId ? 'PUT' : 'POST';
@@ -239,8 +274,6 @@ if (form) {
       cardTitle: title,
       description,
       comment: comments,  // 🟢 attention : ici c'est `comment` (pas `comments`)
-      attachment,
-      notification,
       deadline,
 
       columns: currentColumnId, // <‑‑ champ attendu par l’API Symfony
@@ -278,7 +311,7 @@ if (form) {
           titleEl.setAttribute('data-bs-comments', comments);
 
           // 🔽 AJOUTE ICI les autres :
-          titleEl.setAttribute('data-bs-attachment', attachment);
+       
           titleEl.setAttribute('data-bs-deadline', deadline);
         } else {
           const cardTemplate = document.getElementById('card-template');
@@ -295,8 +328,7 @@ if (form) {
           titleEl.setAttribute('data-bs-comments', comments);
 
           // 🔽 AJOUTE ICI AUSSI :
-          titleEl.setAttribute('data-bs-attachment', attachment);
-          titleEl.setAttribute('data-bs-deadline', deadline);
+            titleEl.setAttribute('data-bs-deadline', deadline);
           const column = document.querySelector(`.list[data-column-id="${currentColumnId}"] ul.cards`);
           column?.appendChild(newCard);
         }

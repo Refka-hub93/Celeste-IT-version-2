@@ -1,55 +1,5 @@
 
 
-// document.addEventListener('DOMContentLoaded', () => {
-//   const bell = document.getElementById('notif-bell');
-//   const notifList = document.getElementById('notif-list');
-//   const notifCount = document.getElementById('notif-count');
-//   const notifItems = document.getElementById('notif-items');
-
-//   if (!bell || !notifList || !notifCount || !notifItems) {
-//     console.warn("🔔 Composants de notifications non trouvés dans le DOM");
-//     return;
-//   }
-
-//   // ▶️ Toggle ouverture/fermeture de la boîte
-//   bell.addEventListener('click', () => {
-//     notifList.classList.toggle('d-none');
-//   });
-
-//   // ➕ Fonction pour ajouter une notification
-//   window.pushNotification = function (message) {
-//     const li = document.createElement('li');
-//     li.className = "p-2 border-bottom small text-dark";
-//     li.textContent = message;
-
-//     notifItems.prepend(li); // Ajoute en haut
-
-//     // Mise à jour du compteur
-//     const current = parseInt(notifCount.textContent || '0', 10);
-//     notifCount.textContent = current + 1;
-//     notifCount.classList.remove('d-none');
-//   };
-
-//   // 🟣 (optionnel) Charger les notifications depuis une API
-//   const board = document.querySelector('#board');
-//   const tableId = board?.dataset.tableId;
-
-//   if (tableId) {
-//    fetch(`/api/notification?tableId=${tableId}`)
-//   .then(res => {
-//     if (!res.ok) throw new Error("API error : " + res.status);
-//     return res.json();
-//   })
-//   .then(data => {
-//     data.forEach(n => pushNotification(n.message));
-//   })
-//   .catch(err => console.error("❌ Erreur chargement notification :", err));
-
-//   }
-// });
-
-
-
 document.addEventListener('DOMContentLoaded', () => {
   /* ------------- DROP-DOWN (page tableau) ------------- */
   const bell       = document.getElementById('notif-bell');

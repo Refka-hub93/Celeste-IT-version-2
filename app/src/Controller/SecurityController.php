@@ -109,7 +109,7 @@ class SecurityController extends AbstractController
 }
 
 // requirements: ['token' => '.+'] indique à Symfony d'accepter n'importe quel caractère, y compris les . et _ dans {token}.
-    #[Route('/resetPassword/{token}', name: 'reset_password', requirements: ['token' => '.+'])]
+    #[Route('/editPassword/{token}', name: 'reset_password', requirements: ['token' => '.+'])]
     public function resetPasswordToken(
         $token,
         JWTService $jwt,
@@ -145,7 +145,7 @@ class SecurityController extends AbstractController
                     $this->addFlash('success', 'Mot de passe changé avec succès');
                     return $this->redirectToRoute('app_login');
                 }
-                return $this->render('security/reset_password.html.twig', [
+                return $this->render('security/forgotten_password.html.twig', [
                     'passForm' => $form->createView()
                 ]);
             }

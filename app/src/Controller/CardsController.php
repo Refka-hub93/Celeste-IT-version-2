@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Entity\Cards;
@@ -9,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 #[IsGranted('ROLE_USER')]
 #[Route('/cards', name: 'app_card_')]
@@ -19,8 +21,10 @@ class CardsController extends AbstractController
     public function new(
         Request $request,
         int $columnId,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+       
     ): Response {
+        // Récupération d’une colonne cible avant ajout d’une carte
         $column = $em->getRepository(Columns::class)->find($columnId);
         if (!$column) {
             throw $this->createNotFoundException('Colonne introuvable');
@@ -28,17 +32,22 @@ class CardsController extends AbstractController
 
         if ($request->isMethod('POST')) {
             $title = $request->request->get('card_title');
+
+             
+
             if ($title) {
                 $card = new Cards();
                 $card->setCardTitle($title)
-                     ->setColumns($column);
+                    ->setColumns($column);
 
-                $em->persist($card);
+
+               $em->persist($card);
                 $em->flush();
 
                 $this->addFlash('success', 'Carte ajoutée');
                 return $this->redirectToRoute(
-                    'app_column_show', ['id' => $columnId]
+                    'app_column_show',
+                    ['id' => $columnId]
                 );
             }
             $this->addFlash('error', 'Le titre est requis');
