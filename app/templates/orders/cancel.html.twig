@@ -1,25 +1,33 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Paiement annulé</h2>
-   
-    <a href="{{ path('app_main') }}" class="btn btn-secondary">Retour à l'accueil</a>
+<div class="container my-5">
+    <div class="card shadow border rounded p-4 mx-auto" style="max-width: 600px;">
+        <div class="card-body text-center">
+            <h2 class="card-title text-danger mb-4">❌ Paiement annulé</h2>
 
+            {% set message = "Votre paiement a été annulé. Vous pouvez réessayer ou contacter le support si vous avez des questions." %}
+            {% set status = 'error' %}
 
-    {% set message = "Votre paiement a été annulé. Vous pouvez réessayer ou contacter le support si vous avez des questions." %}
-{% set status = 'error' %}
+            {% if status == 'error' %}
+                <div class="alert alert-danger">
+                    <strong>Erreur :</strong> {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-success">
+                    <strong>Succès :</strong> {{ message }}
+                </div>
+            {% endif %}
 
-    {% if status == 'error' %}
-        <div class="alert alert-danger">
-            <strong>Erreur :</strong> {{ message }}
+            <div class="d-flex flex-column gap-3 mt-4">
+                <a href="{{ path('app_main') }}" class="btn btn-outline-secondary">
+                    ⬅️ Retour à l'accueil
+                </a>
+                <a href="{{ path('app_tables') }}" class="btn btn-primary">
+                     Accéder à mes tableaux
+                </a>
+            </div>
         </div>
-    {% else %}
-        <div class="alert alert-success">
-            <strong>Succès :</strong> {{ message }}
-        </div>
-    {% endif %}
-
-    <a href="{{ path('app_tables') }}" class="btn btn-primary">Retour aux tableaux</a>
+    </div>
+</div>
 {% endblock %}
-
-

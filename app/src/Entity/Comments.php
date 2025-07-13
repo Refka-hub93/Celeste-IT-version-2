@@ -21,8 +21,9 @@ class Comments
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Cards $cards = null;
+#[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+private ?Cards $cards = null;
+
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]

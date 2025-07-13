@@ -45,10 +45,10 @@ public function list(Security $security, OrdersRepository $ordersRepo): Response
             return $this->redirectToRoute('app_login');
         }
 
-        // ✅ Définir le prix (en euros)
+        //  Définir le prix (en euros)
         $prix = 49.00;
 
-        // ✅ Créer la commande
+        //  Créer la commande
         $order = new Orders();
         $order->setUsers($user);
         $order->setOrderNumber(uniqid('order_'));

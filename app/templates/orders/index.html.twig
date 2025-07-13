@@ -1,52 +1,54 @@
-{% extends 'base.html.twig' %}
  
 
+{% extends 'base.html.twig' %}
+ 
 {% block title %}Mes commandes{% endblock %}
 
 {% block body %}
-<div class="container mt-4">
-    <h2 class="mb-4">Mes commandes</h2>
+<div class="container my-4 flex-grow-1">
+    <div class="card shadow-sm border rounded p-3 p-md-4">
+        <h2 class="mb-4 text-center">Mes commandes</h2>
 
-    {% if orders is empty %}
-        <p>Vous n'avez encore passé aucune commande.</p>
-    {% else %}
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Commande</th>
-                    <th>Montant</th>
-                    <th>Statut</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for order in orders %}
-                    <tr>
-                        <td>#{{ order.orderNumber }}</td>
-                        <td>{{ order.totalPrice }} €</td>
-                        <td>
-                            {% if order.status == 'paid' %}
-                                <span class="text-success">Payée</span>
-                            {% elseif order.status == 'pending' %}
-                                <span class="text-warning">En attente</span>
-                            {% else %}
-                                {{ order.status }}
-                            {% endif %}
-                        </td>
-                        <td>{{ order.confirmationDate|date('d/m/Y H:i') }}</td>
-                        <td>
-                            <a href="{{ path('orders_create') }}" class="btn btn-sm btn-outline-primary">
-                                Renouveler l’abonnement
-                            </a>
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+        {% if orders is empty %}
+            <p class="text-center">Vous n'avez encore passé aucune commande.</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Commande</th>
+                            <th>Montant</th>
+                            <th>Statut</th>
+                            <th>Date</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>#{{ order.orderNumber }}</td>
+                                <td>{{ order.totalPrice }} €</td>
+                                <td>
+                                    {% if order.status == 'paid' %}
+                                        <span class="text-success fw-bold">Payée</span>
+                                    {% elseif order.status == 'pending' %}
+                                        <span class="text-warning fw-bold">En attente</span>
+                                    {% else %}
+                                        {{ order.status }}
+                                    {% endif %}
+                                </td>
+                                <td>{{ order.confirmationDate|date('d/m/Y H:i') }}</td>
+                                <td>
+                                    <a href="{{ path('orders_create') }}" class="btn btn-sm btn-outline-primary">
+                                        Renouveler
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
-
-
- 

@@ -170,6 +170,8 @@ class CardsApiController extends AbstractController
             return new JsonResponse(['error' => 'Carte introuvable'], 404);
         }
 
+
+ 
         // Création de la notification avant la suppression
       
   $manageNotif->notifyAllMembers($card->getColumns()->getTables(), "Une carte a été supprimée" . $card->getCardTitle());

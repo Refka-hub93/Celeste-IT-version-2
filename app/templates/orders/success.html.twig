@@ -1,10 +1,23 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h2>Paiement réussi ! 🎉</h2>
-    <p>Merci {{ app.user.firstname }}, votre commande <strong>#{{ order.orderNumber }}</strong> a bien été confirmée.</p>
-    <p>Montant payé : {{ order.totalPrice }} €</p>
-    <p>Date de confirmation : {{ order.confirmationDate|date('d/m/Y H:i') }}</p>
+<div class="container my-5">
+    <div class="card shadow border rounded p-4 mx-auto" style="max-width: 600px;">
+        <div class="card-body text-center">
+            <h2 class="card-title text-success mb-4">✅ Paiement réussi !</h2>
 
-    <a href="{{ path('main') }}" class="btn btn-success">Retour à l'accueil</a>
+            <p class="fs-5">
+                Merci <strong>{{ app.user.firstname }}</strong>, votre commande 
+                <strong>#{{ order.orderNumber }}</strong> a bien été confirmée.
+            </p>
+
+            <p class="mb-2"><strong>Montant payé :</strong> {{ order.totalPrice }} €</p>
+            <p class="mb-4"><strong>Date de confirmation :</strong> {{ order.confirmationDate|date('d/m/Y H:i') }}</p>
+
+            <a href="{{ path('app_main') }}" class="btn btn-success">
+                  Retour à l'accueil
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}

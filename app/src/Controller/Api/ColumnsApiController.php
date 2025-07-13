@@ -68,7 +68,7 @@ class ColumnsApiController extends AbstractController
 
 
  
-        // ✅ Envoyer à tous les membres
+        // Envoyer à tous les membres
         $manageNotif->notifyAllMembers($column->getTables(), "Nouvelle colonne ajoutée : " . $column->getColumnTitle());
 
 
